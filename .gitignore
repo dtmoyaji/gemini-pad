@@ -1,0 +1,8 @@
+node_modules
+release-builds
+dist
+temp
+.vscode
+talk_history
+package-lock.json
+.env

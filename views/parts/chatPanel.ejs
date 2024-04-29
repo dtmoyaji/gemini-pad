@@ -1,0 +1,57 @@
+<div component="chatPanel">
+
+  <form id="message-form" action="">
+    <div id="chat-options">
+      <input type="checkbox" id="reuse-response" class="chat-toggle">
+      <label for="reuse-response">上のテキストを利用する。</label>
+    </div>
+    <textarea id="user-query" type="" autocomplete="off"></textarea>
+    <button id="send-button">送信</button>
+  </form>
+
+  <script>
+    window.input_area = document.getElementById('user-query');
+
+    async function sendQuery() {
+      var message = document.getElementById('user-query').value;
+      var output_component_value = window.monaco_editor.getValue();
+      if (document.getElementById('reuse-response').checked) {
+        message = window.monaco_editor.getValue() + '\n---\n' + message;
+      }
+      electron.send('chat-message', message);
+    }
+
+    // 送信ボタンクリック時の処理
+    document.getElementById('message-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      sendQuery();
+    });
+
+    // Enter で送信
+    document.getElementById('user-query').addEventListener('keydown', (event) => {
+      if (!event.shiftKey && event.key === 'Enter') {
+        event.preventDefault();
+        sendQuery();
+      }
+    });
+
+    // shift + Deleteでqueryをクリア
+    document.getElementById('user-query').addEventListener('keydown', (event) => {
+      if (event.shiftKey && event.key === 'Delete') {
+        document.getElementById('user-query').value = '';
+        event.preventDefault();
+      }
+      if (event.key === 'Alt') {
+        document.getElementById('reuse-response').checked = !document.getElementById('reuse-response').checked;
+        event.preventDefault();
+      }
+    });
+
+    // 会話履歴を受信したとき
+    electron.receive('one-history-reply', (message) => {
+      const query = message.query;
+      window.input_area.value = query;
+    });
+  </script>
+
+</div>

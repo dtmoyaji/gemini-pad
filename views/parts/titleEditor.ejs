@@ -1,0 +1,23 @@
+<form id="titleEditor">
+    <div class="inline-inputs">
+        <label for="title" class="inline-input-label" id="title-editor-label">タイトル:</label>
+        <input type="text" class="inline-input-field" id="query-title" name="title" value="">
+    </div>
+</form>
+
+<script>
+    window.queryTitle = document.getElementById('query-title');
+
+    // タイトル受信時の処理
+    electron.receive('chat-title-reply', (title) => {
+        if (window.queryTitle !== undefined) {
+            window.queryTitle.value = title;
+        }
+    });
+
+    // 会話履歴を受信したとき
+    electron.receive('one-history-reply', (message) => {
+        const title = message.title;
+        window.queryTitle.value = title;
+    });
+</script>

@@ -1,0 +1,18 @@
+<div component="markdownView">
+
+    <div class="markdown-html-view">
+    </div>
+    
+    <script>
+        electron.receive('markdown-to-html-reply', (html) => {
+            document.querySelector('.markdown-html-view').innerHTML = html;
+        });
+
+        // 会話履歴を受信したとき
+        electron.receive('one-history-reply', (message) => {
+            const answer = message.answer;
+            electron.send('markdown-to-html', answer);
+        });
+    </script>
+
+</div>

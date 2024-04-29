@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+  <title>Gemini Pad</title>
+  <link rel="stylesheet" href="../node_modules/monaco-editor/min/vs/editor/editor.main.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+  <div class="right-panel">
+    <%- include('parts/historyPanel') %>
+  </div>
+
+  <div class="center-panel">
+    <div class="view-selector-panel">
+      <button id="html-view-button" class="view-selector" selected="true">HTML</button>
+      <button id="markdown-view-button" class="view-selector">エディタ</button>
+    </div>
+    <div class="component title-editor-panel">
+      <%- include('parts/titleEditor') %>
+    </div>
+    <div class="component markdown-view-panel">
+      <%- include('parts/markdownView') %>
+    </div>
+    <div class="component chat-panel">
+      <%- include('parts/editor') %>
+    </div>
+    <div class="component query-panel">
+      <%- include('parts/chatPanel') %>
+    </div>
+  </div>
+
+  <script>
+    // タブの切り替え処理
+    window.addEventListener('DOMContentLoaded', (event) => {
+      const buttons = document.querySelectorAll('.view-selector');
+      buttons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+          buttons.forEach((b) => {
+            b.removeAttribute('selected');
+          });
+          event.target.setAttribute('selected', 'true');
+          switch (event.target.id) {
+            case 'markdown-view-button':
+              // component title-editor-panelを非表示
+              document.querySelector('.component.chat-panel').style.visibility = 'visible';
+              // component markdown-view-panelを表示
+              document.querySelector('.component.markdown-view-panel').style.visibility = 'hidden';
+              break;
+            case 'html-view-button':
+              // component title-editor-panelを非表示
+              document.querySelector('.component.chat-panel').style.visibility = 'hidden';
+              // component markdown-view-panelを表示
+              document.querySelector('.component.markdown-view-panel').style.visibility = 'visible';
+              break;
+          }
+        });
+      });
+    });
+  </script>
+
+  <script>
+    electron.receive('manual-transfer-reply' , (manual) => {
+      window.monaco_editor.setValue(manual);
+      electron.send('markdown-to-html', manual);
+    });
+
+    window.addEventListener('load', function () {
+      electron.send('manual-transfer', '');
+      window.input_area.focus();
+    });
+  </script>
+</body>
+
+</html>

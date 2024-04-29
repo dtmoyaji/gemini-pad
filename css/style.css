@@ -1,0 +1,245 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    position: absolute;
+    top: 0;
+    bottom: 1px;
+    left: 0;
+    right: 0;
+    background-color: #EEEEEE;
+    overflow: hidden;
+}
+
+.title {
+    font-weight: bolder;
+    font-size: 0.9em;
+    padding: 3px 8px;
+}
+
+
+.right-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 25%;
+}
+
+.view-selector-panel {
+    display: flex;
+    padding-left: 8px;
+    padding-top: 3px;
+    height: 1.6em;
+}
+
+.view-selector {
+    font-size: 0.9em;
+    padding: 3px 8px 0px 8px;
+    border-width: 0;
+    border-bottom: none;
+    border-width: 1px;
+    border-color: darkgray;
+    background-color: lightgray;
+}
+
+.view-selector[selected="true"] {
+    background-color: whitesmoke;
+}
+
+.search_panel {
+    display: flex;
+    font-size: 0.9em;
+    padding: 3px 8px;
+}
+
+.search_field {
+    display: inline-block;
+    width: 80%;
+    font-size: 0.9em;
+    padding: 3px 8px;
+    border-width: 1px;
+    border-radius: 20px;
+}
+
+.search_button {
+    display: inline-block;
+    width: 20%;
+    font-size: 0.9em;
+    vertical-align: top;
+    background-image: url('../assets/search.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    cursor: pointer;
+    border: none;
+}
+
+.chat-history {
+    display: block;
+    font-size: 0.9em;
+    padding: 3px 8px;
+    border-width: 1px;
+    border-radius: 3px;
+
+}
+
+.talk_history {
+    display: block;
+    font-size: 0.9em;
+    padding: 3px 8px;
+}
+
+.left-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 25%;
+    background-color: whitesmoke;
+}
+
+.center-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 25%;
+    bottom: 0;
+}
+
+.component.title-editor-panel {
+    position: absolute;
+    top: 1.6em;
+    left: 0;
+    right: 0;
+    height: 2em;
+    background-color: whitesmoke;
+    padding: 3px 8px;
+}
+
+.inline-inputs {
+    display: block;
+    height: 1.55em;
+}
+
+.inline-input-label {
+    display: inline-block;
+    font-size: 0.8em;
+    vertical-align: middle;
+    text-align: center;
+    padding: 0 0.5em;
+    width: 14%;
+    ;
+}
+
+.inline-input-field {
+    display: inline-block;
+    width: 75%;
+    height: 100%;
+    vertical-align: middle;
+    padding: 0 0.5em;
+    border-width: 1px;
+}
+
+#query-title {
+    border-radius: 20px;
+}
+
+
+.component.chat-panel {
+    position: absolute;
+    top: 3.6em;
+    left: 0;
+    right: 0;
+    bottom: 20vh;
+    visibility: hidden;
+}
+
+.component.markdown-view-panel{
+    position: absolute;
+    top: 3.6em;
+    left: 0;
+    right: 0;
+    bottom: 20vh;
+    background-color: white;
+    overflow: auto;
+    padding: 1.5em;
+}
+
+.component.markdown-view-panel * {
+    margin-bottom: 0.5em;
+}
+
+.component.markdown-view-panel p {
+    padding: 0 1em;
+}
+
+
+.component.markdown-view-panel pre{
+    background-color: #f4f4f4;
+    margin: 0.5em 2em;
+    padding: 1em 1em;
+    overflow: auto;
+}
+
+.component.markdown-view-panel ol {
+    counter-reset: item;
+    padding-left: 4em;
+}
+
+.component.markdown-view-panel ul {
+    padding-left: 4em;
+}
+
+.component.query-panel {
+    position: absolute;
+    bottom: 0;
+    height: 20vh;
+    left: 0;
+    right: 0;
+}
+
+#container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+}
+
+#message-form {
+    position: absolute;
+    padding: 0 1% 2% 1%;
+    height: 100%;
+    width: 100%;
+    vertical-align: top;
+    background-color: lightgray;
+}
+
+#chat-options {
+    display: block;
+    height: 1.5em;
+}
+
+#chat-options label {
+    font-size: 0.8em;
+    vertical-align: middle;
+}
+
+#user-query {
+    height: 90%;
+    width: 90%;
+    padding: 4px;
+    border-radius: 6px;
+}
+
+#send-button {
+    width: 8%;
+    height: 2em;
+    vertical-align: top;
+    border-width: 1px;
+    border-radius: 6px;
+}

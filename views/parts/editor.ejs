@@ -1,0 +1,65 @@
+<!-- editor -->
+<div id="container"></div>
+<script src="../node_modules/monaco-editor/min/vs/loader.js"></script>
+
+<div class="scripts">
+  <script class="initializer">
+    // 初期化
+
+    require.config({
+      paths: {
+        'vs': '../node_modules/monaco-editor/min/vs'
+      }
+    });
+
+    require(['vs/editor/editor.main'], function () {
+      window.monaco_editor = monaco.editor.create(document.getElementById('container'), {
+        value: [''].join('\n'),
+        language: 'markdown',
+        wrappingIndent: 'same',
+        wordWrap: 'on',
+        minimap: {
+          enabled: true
+        },
+      });
+    });
+  </script>
+
+  <script class="receiver">
+    // 受信部
+    // メッセージ受信時の処理
+    electron.receive('chat-reply', (message) => {
+      if (window.monaco_editor !== undefined) {
+        window.monaco_editor.setValue(message);
+        showHtml(message);
+        window.monaco_editor.getModels()[0].setPosition({
+          lineNumber: 1,
+          column: 1
+        });
+      }
+    });
+
+    // 会話履歴を受信したとき
+    electron.receive('one-history-reply', (message) => {
+      // メッセージを表示する
+      const answer = message.answer;
+      window.monaco_editor.setValue(answer);
+    });
+  </script>
+
+  <script class="contorller">
+    // コンポーネントの制御
+
+    // エディタのリサイズ
+    function resizeEditor() {
+      document.body.style.width = window.innerWidth + 'px';
+      if (window.monaco_editor) {
+        window.monaco_editor.layout();
+      }
+    }
+
+    // イベントリスナーの追加
+    window.addEventListener('resize', resizeEditor);
+    window.addEventListener('mouseup', resizeEditor);
+  </script>
+</div>
