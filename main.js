@@ -61,13 +61,14 @@ app.whenReady().then(async () => {
     // Event listener for macOS
     app.on('activate', function () {
         if (BrowserWindow.getAllWindows().length === 0) createWindow();
-
     });
 
     await initializer.initDatabase();
     const talkList = await database.getTalkList(10);
+    const bookmarkedTalks = await database.getBookmarkedTalkList(10);
     mainWindow.webContents.on('did-finish-load', () => {
         mainWindow.webContents.send('chat-history-reply', talkList);
+        mainWindow.webContents.send('bookmarked-talks-reply', bookmarkedTalks);
     });
 });
 
@@ -154,6 +155,11 @@ ipcMain.on('chat-message', async (event, arg) => {
         database.putTalk(queryTitle, arg, replyMessage, keywords);
         let talkList = await database.getTalkList(process.env.HISTORY_LIMIT);
         event.reply('chat-history-reply', talkList);
+
+        // ブックマークされた会話を取得する。
+        let bookmarkedTalks = await database.getBookmarkedTalkList(process.env.HISTORY_LIMIT);
+        event.reply('bookmarked-talks-reply', bookmarkedTalks);
+
     } catch (error) {
         // ダイアログを表示する。
         const dialog = require('electron').dialog;
@@ -164,7 +170,6 @@ ipcMain.on('chat-message', async (event, arg) => {
         }
     }
 });
-
 
 ipcMain.on('save-settings', async (event, arg) => {
     let writeData = '';
@@ -180,6 +185,18 @@ ipcMain.on('save-settings', async (event, arg) => {
 ipcMain.on('talk-history-clicked', async (event, arg) => {
     const talk = await database.getTalk(arg);
     event.reply('one-history-reply', talk);
+});
+
+ipcMain.on('talk-history-bookmark-clicked', async (event, id) => {
+    database.setBookmarkedTalk(id, true);
+    const talkList = await database.getBookmarkedTalkList(process.env.HISTORY_LIMIT);
+    event.reply('bookmarked-talks-reply', talkList);
+});
+
+ipcMain.on('bookmark-garbage-clicked', async (event, id) => {
+    database.setBookmarkedTalk(id, false);
+    const talkList = await database.getBookmarkedTalkList(process.env.HISTORY_LIMIT);
+    event.reply('bookmarked-talks-reply', talkList);
 });
 
 ipcMain.on('markdown-to-html', async (event, arg) => {

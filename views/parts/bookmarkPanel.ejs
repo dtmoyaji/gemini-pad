@@ -1,36 +1,39 @@
-<div component="historyPanel">
+<div component="bookmarkPanel">
 
-    <div class="title history_panel">通信履歴</div>
+    <div class="title bookmarkPanel">しおり</div>
 
+    <!-- 
     <div class="search_panel">
-        <input type="text" class="search_field" id="search" placeholder="検索">
-        <button class="search_button" id="search_button"></button>
+        <input type="text" class="search_field" id="bookmark_search" placeholder="検索">
+        <button class="search_button" id="bookmark_search_button"></button>
     </div>
-
-    <ul id="talk_histories">
-        <li class="talk_history" list_id="1">
-            <div class="bookmark_button"></div>
-            <span class="talk_history_item_title">ここに履歴が表示されます</span>
+    -->
+    
+    <ul id="bookmarks">
+        <li class="bookmark" list_id="1">
+            <div class="bookmark_garbage_button"></div>
+            <span class="talk_history_item_title">ここにしおりが表示されます</span>
         </li>
     </ul>
 
     <script>
         // メッセージ受信時の処理
-        electron.receive('chat-history-reply', (message) => {
+        electron.receive('bookmarked-talks-reply', (message) => {
             // リストをクリア
-            var talk_histories = document.getElementById('talk_histories');
+            var talk_histories = document.getElementById('bookmarks');
             while (talk_histories.firstChild) {
                 talk_histories.removeChild(talk_histories.firstChild);
             }
             // メッセージを追加
             for (var i = 0; i < message.length; i++) {
                 var li = document.createElement('li');
-                li.setAttribute('class', 'talk_history');
+                li.setAttribute('class', 'bookmark');
+                li.setAttribute('list_id', message[i].id);
                 talk_histories.appendChild(li);
 
                 // liの中にタグを追加
                 var innerBookmarkTag = document.createElement('div');
-                innerBookmarkTag.setAttribute('class', 'bookmark_button');
+                innerBookmarkTag.setAttribute('class', 'bookmark_garbage_button');
                 innerBookmarkTag.setAttribute('list_id', message[i].id);
                 li.appendChild(innerBookmarkTag);
 
@@ -40,32 +43,32 @@
                 innerSpan.setAttribute('list_id', message[i].id);
                 li.appendChild(innerSpan);
 
+
                 // 新たに作成された要素に対してclickイベントリスナーを追加
                 innerSpan.addEventListener('click', function () {
                     var messageId = this.getAttribute('list_id');
                     electron.send('talk-history-clicked', messageId);
                 });
 
-                // bookmark_buttonクリック時の処理
+                // bookmark_garbage_buttonクリック時の処理
                 innerBookmarkTag.addEventListener('click', function () {
                     var messageId = this.getAttribute('list_id');
-                    electron.send('talk-history-bookmark-clicked', messageId);
+                    electron.send('bookmark-garbage-clicked', messageId);
                 });
-
             }
         });
 
         // 検索ボタンクリック時の処理
-        document.getElementById('search_button').addEventListener('click', function () {
+        document.getElementById('bookmark_search_button').addEventListener('click', function () {
             var search = document.getElementById('search').value;
-            electron.send('search-chat-history', search);
+            electron.send('search-bookmark', search);
         });
 
         // search_fieldでEnterキーが押された時の処理
         document.getElementById('search').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 var search = document.getElementById('search').value;
-                electron.send('search-chat-history', search);
+                electron.send('search-bookmark', search);
             }
         });
 

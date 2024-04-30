@@ -13,6 +13,7 @@
 <body>
 
   <div class="right-panel">
+    <%- include('parts/bookmarkPanel') %>
     <%- include('parts/historyPanel') %>
   </div>
 
@@ -65,7 +66,7 @@
   </script>
 
   <script>
-    electron.receive('manual-transfer-reply' , (manual) => {
+    electron.receive('manual-transfer-reply', (manual) => {
       window.monaco_editor.setValue(manual);
       electron.send('markdown-to-html', manual);
     });

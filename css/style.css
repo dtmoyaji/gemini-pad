@@ -1,3 +1,7 @@
+:root{
+    --talk-list-icon-size: 12px;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -78,19 +82,59 @@ body {
     border: none;
 }
 
+.bookmark_button{
+    display: inline-block;
+    width: var(--talk-list-icon-size);
+    height: var(--talk-list-icon-size);
+    font-size: 0.9em;
+    vertical-align: top;
+    background-image: url('../assets/bookmark.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    cursor: pointer;
+    border: none;
+    margin: 1px 6px 1px 1px;
+    vertical-align: middle;
+}
+
+.bookmark_garbage_button{
+    display: inline-block;
+    width: var(--talk-list-icon-size);
+    height: var(--talk-list-icon-size);
+    font-size: 0.9em;
+    vertical-align: top;
+    background-image: url('../assets/minus.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    cursor: pointer;
+    border: none;
+    margin: 1px 6px 1px 1px;
+    vertical-align: middle;
+}
+
+.bookmark_garbage_button:hover, .bookmark_button:hover{
+    background-color:rgb(252, 255, 209);
+}
+
 .chat-history {
     display: block;
     font-size: 0.9em;
     padding: 3px 8px;
     border-width: 1px;
     border-radius: 3px;
-
 }
 
-.talk_history {
+.talk_history, .bookmark {
     display: block;
     font-size: 0.9em;
     padding: 3px 8px;
+}
+
+.talk_history_item_title:hover{
+    cursor: pointer;
+    font-weight: bolder;
 }
 
 .left-panel {

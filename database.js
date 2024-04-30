@@ -73,6 +73,32 @@ async function getTalkList(listSize) {
     });
 }
 
+async function getBookmarkedTalkList(listSize) {
+    return new Promise((resolve, reject) => {
+        data.all('SELECT * FROM talk_history WHERE bookmarked = TRUE ORDER BY bookmark_ordinal, id DESC LIMIT ?',
+            [listSize], (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+    });
+}
+
+async function setBookmarkedTalk(id, bookmarkable) {
+    return new Promise((resolve, reject) => {
+        data.run('UPDATE talk_history SET bookmarked = ? WHERE id = ?',
+            [bookmarkable, id], (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+    });
+}
+
 /**
  * 文字列を含むデータを検索する。検索フィールドは、タイトル、質問、回答、キーワードのいずれか。
  */
@@ -112,7 +138,9 @@ module.exports = {
     getTalk,
     putTalk,
     getTalkList,
-    findTalk
+    findTalk,
+    getBookmarkedTalkList,
+    setBookmarkedTalk
 };
 
 
