@@ -26,7 +26,7 @@ function initEnv() {
         DEV_CONSOLE_MODE = false
 
         HISTORY_DIR = talk_history
-        HISTORY_LIMIT = 20
+        HISTORY_LIMIT = 100
         `;
         // parametersの各行をトリムする。
         const parameters_array = parameters.split('\n');
