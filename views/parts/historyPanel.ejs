@@ -11,6 +11,7 @@
         <li class="talk_history" list_id="1">
             <div class="bookmark_button"></div>
             <span class="talk_history_item_title">ここに履歴が表示されます</span>
+            <div class="delete_button"></div>
         </li>
     </ul>
 
@@ -40,6 +41,11 @@
                 innerSpan.setAttribute('list_id', message[i].id);
                 li.appendChild(innerSpan);
 
+                var innerDeleteTag = document.createElement('div');
+                innerDeleteTag.setAttribute('class', 'delete_button');
+                innerDeleteTag.setAttribute('list_id', message[i].id);
+                li.appendChild(innerDeleteTag);
+
                 // 新たに作成された要素に対してclickイベントリスナーを追加
                 innerSpan.addEventListener('click', function () {
                     var messageId = this.getAttribute('list_id');
@@ -50,6 +56,12 @@
                 innerBookmarkTag.addEventListener('click', function () {
                     var messageId = this.getAttribute('list_id');
                     electron.send('talk-history-bookmark-clicked', messageId);
+                });
+
+                // delete_buttonクリック時の処理
+                innerDeleteTag.addEventListener('click', function () {
+                    var messageId = this.getAttribute('list_id');
+                    electron.send('talk-history-delete-clicked', messageId);
                 });
 
             }

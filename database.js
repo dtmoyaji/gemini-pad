@@ -63,7 +63,7 @@ function putTalk(title, query, answer, keywords) {
  */
 async function getTalkList(listSize) {
     return new Promise((resolve, reject) => {
-        data.all('SELECT * FROM talk_history ORDER BY id DESC LIMIT ?', [listSize], (err, rows) => {
+        data.all('SELECT * FROM talk_history WHERE bookmarked = FALSE ORDER BY id DESC LIMIT ?', [listSize], (err, rows) => {
             if (err) {
                 reject(err);
             } else {
@@ -132,6 +132,24 @@ async function getTalk(id) {
     });
 }
 
+
+/**
+ * 会話を削除する。
+ * @param {*} id
+ * @returns
+ */
+async function removeTalk(id){
+    return new Promise((resolve, reject) => {
+        data.run('DELETE FROM talk_history WHERE id = ?', [id], (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
 module.exports = {
     initDatabase,
     isInitialized,
@@ -140,7 +158,8 @@ module.exports = {
     getTalkList,
     findTalk,
     getBookmarkedTalkList,
-    setBookmarkedTalk
+    setBookmarkedTalk,
+    removeTalk
 };
 
 

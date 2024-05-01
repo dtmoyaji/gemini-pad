@@ -1,5 +1,6 @@
-:root{
+:root {
     --talk-list-icon-size: 12px;
+    --background-default: #ebebeb;
 }
 
 * {
@@ -14,7 +15,7 @@ body {
     bottom: 1px;
     left: 0;
     right: 0;
-    background-color: #EEEEEE;
+    background-color: var(--background-default);
     overflow: hidden;
 }
 
@@ -38,6 +39,7 @@ body {
     padding-left: 8px;
     padding-top: 3px;
     height: 1.6em;
+    background-color: var(--background-default);
 }
 
 .view-selector {
@@ -51,7 +53,7 @@ body {
 }
 
 .view-selector[selected="true"] {
-    background-color: whitesmoke;
+    background-color: var(--background-default);
 }
 
 .search_panel {
@@ -80,9 +82,33 @@ body {
     background-size: contain;
     cursor: pointer;
     border: none;
+    background-color: var(--background-default);
 }
 
-.bookmark_button{
+div[component='bookmarkPanel'] {
+    position: absolute;
+    top: 0;
+    height: 25vh;
+    left: 0;
+    right: 0;
+}
+
+.title.bookmarkPanel {
+    height: 1.8em;
+    vertical-align: middle;
+    background-color: var(--background-default);
+}
+
+#bookmarks {
+    overflow: auto;
+    left: 0;
+    right: 0;
+    top: 2em;
+    height: calc(25vh - 1.8em);
+    background-color: var(--background-default);
+}
+
+.bookmark_button {
     display: inline-block;
     width: var(--talk-list-icon-size);
     height: var(--talk-list-icon-size);
@@ -98,7 +124,7 @@ body {
     vertical-align: middle;
 }
 
-.bookmark_garbage_button{
+.bookmark_garbage_button {
     display: inline-block;
     width: var(--talk-list-icon-size);
     height: var(--talk-list-icon-size);
@@ -114,8 +140,20 @@ body {
     vertical-align: middle;
 }
 
-.bookmark_garbage_button:hover, .bookmark_button:hover{
-    background-color:rgb(252, 255, 209);
+.delete_button {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    font-size: 0.9em;
+    vertical-align: top;
+    background-image: url('../assets/delete.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    cursor: pointer;
+    border: none;
+    margin: 1px 1px 1px 4px;
+    vertical-align: middle;
 }
 
 .chat-history {
@@ -126,13 +164,38 @@ body {
     border-radius: 3px;
 }
 
-.talk_history, .bookmark {
+div[component='historyPanel'] {
+    position: absolute;
+    top: 25vh;
+    bottom: 0;
+}
+
+.title.history_panel{
+    height: 1.8em;
+    vertical-align: middle;
+    background-color: var(--background-default);
+}
+
+.search_panel{
+    height: 1.8em;
+    vertical-align: middle;
+    background-color: var(--background-default);
+}
+
+#talk_histories {
+    overflow: auto;
+    height: calc(75vh - 3.6em);
+    background-color: var(--background-default);
+}
+
+.talk_history,
+.bookmark {
     display: block;
     font-size: 0.9em;
     padding: 3px 8px;
 }
 
-.talk_history_item_title:hover{
+.talk_history_item_title:hover {
     cursor: pointer;
     font-weight: bolder;
 }
@@ -143,7 +206,7 @@ body {
     left: 0;
     bottom: 0;
     width: 25%;
-    background-color: whitesmoke;
+    background-color: var(--background-default);
 }
 
 .center-panel {
@@ -160,7 +223,7 @@ body {
     left: 0;
     right: 0;
     height: 2em;
-    background-color: whitesmoke;
+    background-color: var(--background-default);
     padding: 3px 8px;
 }
 
@@ -202,7 +265,7 @@ body {
     visibility: hidden;
 }
 
-.component.markdown-view-panel{
+.component.markdown-view-panel {
     position: absolute;
     top: 3.6em;
     left: 0;
@@ -222,7 +285,7 @@ body {
 }
 
 
-.component.markdown-view-panel pre{
+.component.markdown-view-panel pre {
     background-color: #f4f4f4;
     margin: 0.5em 2em;
     padding: 1em 1em;
@@ -260,7 +323,7 @@ body {
     height: 100%;
     width: 100%;
     vertical-align: top;
-    background-color: lightgray;
+    background-color: var(--background-default);
 }
 
 #chat-options {

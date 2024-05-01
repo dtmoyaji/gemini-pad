@@ -64,8 +64,8 @@ app.whenReady().then(async () => {
     });
 
     await initializer.initDatabase();
-    const talkList = await database.getTalkList(10);
-    const bookmarkedTalks = await database.getBookmarkedTalkList(10);
+    const talkList = await database.getTalkList(process.env.HISTORY_LIMIT);
+    const bookmarkedTalks = await database.getBookmarkedTalkList(process.env.HISTORY_LIMIT);
     mainWindow.webContents.on('did-finish-load', () => {
         mainWindow.webContents.send('chat-history-reply', talkList);
         mainWindow.webContents.send('bookmarked-talks-reply', bookmarkedTalks);
@@ -189,14 +189,18 @@ ipcMain.on('talk-history-clicked', async (event, arg) => {
 
 ipcMain.on('talk-history-bookmark-clicked', async (event, id) => {
     database.setBookmarkedTalk(id, true);
-    const talkList = await database.getBookmarkedTalkList(process.env.HISTORY_LIMIT);
-    event.reply('bookmarked-talks-reply', talkList);
+    const bookmarkedTalkList = await database.getBookmarkedTalkList(process.env.HISTORY_LIMIT);
+    event.reply('bookmarked-talks-reply', bookmarkedTalkList);
+    const talkList = await database.getTalkList(process.env.HISTORY_LIMIT);
+    event.reply('chat-history-reply', talkList);
 });
 
 ipcMain.on('bookmark-garbage-clicked', async (event, id) => {
     database.setBookmarkedTalk(id, false);
-    const talkList = await database.getBookmarkedTalkList(process.env.HISTORY_LIMIT);
-    event.reply('bookmarked-talks-reply', talkList);
+    const bookmarkedTalkList = await database.getBookmarkedTalkList(process.env.HISTORY_LIMIT);
+    event.reply('bookmarked-talks-reply', bookmarkedTalkList);
+    const talkList = await database.getTalkList(process.env.HISTORY_LIMIT);
+    event.reply('chat-history-reply', talkList);
 });
 
 ipcMain.on('markdown-to-html', async (event, arg) => {
@@ -211,6 +215,12 @@ ipcMain.on('manual-transfer', async (event, arg) => {
 
 ipcMain.on('search-chat-history', async (event, arg) => {
     const talkList = await database.findTalk(arg);
+    event.reply('chat-history-reply', talkList);
+});
+
+ipcMain.on('talk-history-delete-clicked', async (event, id) => {
+    database.removeTalk(id);
+    const talkList = await database.getTalkList(process.env.HISTORY_LIMIT);
     event.reply('chat-history-reply', talkList);
 });
 
