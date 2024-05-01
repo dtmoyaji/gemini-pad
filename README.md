@@ -23,7 +23,7 @@
 ### キー操作
 
 テキスト入力時に、Shift + Enter で改行、Enter で質問の送信、Shift + Delete で質問内容の消去を行います。
-Shift + Space で前回の回答の再利用を on/off します。
+Alt で前回の回答の再利用を on/off します。
 
 ## 回答形式について
 
