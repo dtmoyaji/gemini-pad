@@ -135,7 +135,6 @@ ipcMain.on('chat-message', async (event, arg) => {
         // 質問の回答を取得する。
         let replyMessage = await Gemini.queryGemini(arg);
         event.reply('chat-reply', replyMessage);
-        event.reply('markdown-to-html-reply', marked.marked(replyMessage));
 
         // タイトルを取得する。
         let titleQuery = join('次の文に30文字以下の長さでタイトルを考えてください。\n---\n', arg, replyMessage);
@@ -223,6 +222,7 @@ ipcMain.on('talk-history-delete-clicked', async (event, id) => {
     const talkList = await database.getTalkList(process.env.HISTORY_LIMIT);
     event.reply('chat-history-reply', talkList);
 });
+
 
 initializer.initEnv();
 initializer.initDirectories();

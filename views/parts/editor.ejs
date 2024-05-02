@@ -58,6 +58,15 @@
       }
     }
 
+    // エディタの値が変更されたときの処理F
+    window.addEventListener('load', function () {
+      window.monaco_editor.onDidChangeModelContent(function (event) {
+        // ここでエディタの値が変更されたときの処理を行う
+        var currentValue = window.monaco_editor.getValue();
+        electron.send('markdown-to-html', currentValue);
+      });
+    });
+
     // イベントリスナーの追加
     window.addEventListener('resize', resizeEditor);
     window.addEventListener('mouseup', resizeEditor);
