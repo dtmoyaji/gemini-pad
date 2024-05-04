@@ -3,48 +3,49 @@
 
 <head>
   <title><%= title %></title>
+  <link rel="stylesheet" href="../css/settings.css">
 </head>
 
 <body>
   <H1>設定ページ</H1>
   <a id='return' href="/">戻る</a>
   <form>
-    <div>
-      <label for="GEMINI_API_KEY" class="label_setting">GEMINI_API_KEY :</label>
+    <div class="setting_line">
+      <label for="GEMINI_API_KEY" class="label_setting">GEMINI_API_KEY</label>
       <input name="GEMINI_API_KEY" type="text" value="<%= data.env.GEMINI_API_KEY %>" />
     </div>
-    <div>
-      <label for="GEMINI_MODEL" class="label_setting">GEMINI_MODEL :</label>
+    <div class="setting_line">
+      <label for="GEMINI_MODEL" class="label_setting">GEMINI_MODEL</label>
       <input name="GEMINI_MODEL" type="text" value="<%= data.env.GEMINI_MODEL %>" />
     </div>
-    <div>
-      <label for="GEMINI_TEMPERATURE" class="label_setting">GEMINI_TEMPERATURE :</label>
+    <div class="setting_line">
+      <label for="GEMINI_TEMPERATURE" class="label_setting">GEMINI_TEMPERATURE</label>
       <input name="GEMINI_TEMPERATURE" type="text" value="<%= data.env.GEMINI_TEMPERATURE %>" />
     </div>
-    <div>
-      <label for="GEMINI_MAX_OUTPUT_TOKENS" class="label_setting">GEMINI_MAX_OUTPUT_TOKENS :</label>
+    <div class="setting_line">
+      <label for="GEMINI_MAX_OUTPUT_TOKENS" class="label_setting">GEMINI_MAX_OUTPUT_TOKENS</label>
       <input name="GEMINI_MAX_OUTPUT_TOKENS" type="text" value="<%= data.env.GEMINI_MAX_OUTPUT_TOKENS %>" />
     </div>
-    <div>
-      <label for="GEMINI_TOP_P" class="label_setting">GEMINI_TOP_P :</label>
+    <div class="setting_line">
+      <label for="GEMINI_TOP_P" class="label_setting">GEMINI_TOP_P</label>
       <input name = "GEMINI_TOP_P" type="text" value="<%= data.env.GEMINI_TOP_P %>" />
     </div>
-    <div>
-      <label for="GEMINI_TOP_K" class="label_setting">GEMINI_TOP_K :</label>
+    <div class="setting_line">
+      <label for="GEMINI_TOP_K" class="label_setting">GEMINI_TOP_K</label>
       <input name="GEMINI_TOP_K" type="text" value="<%= data.env.GEMINI_TOP_K %>" />
     </div>
-    <div>
-      <label for="DEV_CONSOLE_MODE" class="label_setting">DEV_CONSOLE_MODE :</label>
+    <div class="setting_line">
+      <label for="DEV_CONSOLE_MODE" class="label_setting">DEV_CONSOLE_MODE</label>
       <input name="DEV_CONSOLE_MODE" type="text" value="<%= data.env.DEV_CONSOLE_MODE %>" />
     </div>
-    <div>
-      <label for="HISTORY_DIR" class="label_setting">HISTORY_DIR :</label>
+    <div class="setting_line">
+      <label for="HISTORY_DIR" class="label_setting">HISTORY_DIR</label>
       <input name="HISTORY_DIR" type="text" value="<%= data.env.HISTORY_DIR %>" />
     </div>
-    <div>
-      <label for="HISTORY_LIMIT" class="label_setting">HISTORY_LIMIT :</label>
+    <div class="setting_line">
+      <label for="HISTORY_LIMIT" class="label_setting">HISTORY_LIMIT</label>
       <input name="HISTORY_LIMIT" type="text" value="<%= data.env.HISTORY_LIMIT %>" />
-    </div>
+    </div class="setting_line">
     <div>
       <button type="submit">保存</button>
     </div>
