@@ -1,0 +1,16 @@
+<link rel="stylesheet" href="../css/loading.css">
+<div class="loading"></div>
+
+<script>
+
+    electron.receive('show-loading-reply', (message) => {
+        const loading = document.querySelector('.loading');
+        if(message === 'loading') {
+            loading.style.display = 'block';
+            return;
+        }else{
+            loading.style.display = 'none';
+        }
+    });
+
+</script>

@@ -129,12 +129,16 @@ ipcMain.on('change-page', async (event, payload) => {
  */
 ipcMain.on('chat-message', async (event, arg) => {
     const Gemini = await import('gemini-driver/geminiDriver.mjs');
-    console.log(arg); // prints "arg" in the console
+    //console.log(arg); // prints "arg" in the console
 
     try {
+        event.reply('show-loading-reply', 'loading');
+
         // 質問の回答を取得する。
         let replyMessage = await Gemini.queryGemini(arg);
         event.reply('chat-reply', replyMessage);
+
+        event.reply('show-loading-reply', 'loaded');
 
         // タイトルを取得する。
         let titleQuery = join('次の文に30文字以下の長さでタイトルを考えてください。\n---\n', arg, replyMessage);
@@ -221,6 +225,10 @@ ipcMain.on('talk-history-delete-clicked', async (event, id) => {
     database.removeTalk(id);
     const talkList = await database.getTalkList(process.env.HISTORY_LIMIT);
     event.reply('chat-history-reply', talkList);
+});
+
+ipcMain.on('show-loading', async (event, arg) => {
+    event.reply('show-loading-reply', arg);
 });
 
 
