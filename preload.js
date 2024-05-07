@@ -1,5 +1,5 @@
 // preload.js
-const { contextBridge, ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer, nativeTheme } = require('electron');
 
 contextBridge.exposeInMainWorld(
   'electron',
@@ -10,3 +10,4 @@ contextBridge.exposeInMainWorld(
 );
 
 window.require = require;
+

@@ -1,5 +1,5 @@
 const { renderFile } = require('ejs');
-const { BrowserWindow, app, ipcMain, screen } = require('electron');
+const { BrowserWindow, app, ipcMain, screen, nativeImage, nativeTheme } = require('electron');
 const { writeFileSync } = require('fs');
 const { join } = require('path');
 const dotenv = require('dotenv');
@@ -56,6 +56,10 @@ async function createWindow() {
 
 // Event listener for when Electron has finished initialization
 app.whenReady().then(async () => {
+    if (process.env.DARK_MODE === 'true') {
+        nativeTheme.themeSource = 'dark';
+    }
+
     mainWindow = await createWindow();
 
     // Event listener for macOS
@@ -69,6 +73,11 @@ app.whenReady().then(async () => {
     mainWindow.webContents.on('did-finish-load', () => {
         mainWindow.webContents.send('chat-history-reply', talkList);
         mainWindow.webContents.send('bookmarked-talks-reply', bookmarkedTalks);
+
+        // ダークモードの設定を送信する。
+        if (process.env.DARK_MODE === 'true') {
+            mainWindow.webContents.send('set-dark-mode', process.env.DARK_MODE);
+        }
     });
 });
 

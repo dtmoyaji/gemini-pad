@@ -27,6 +27,8 @@ function initEnv() {
 
         HISTORY_DIR = talk_history
         HISTORY_LIMIT = 100
+
+        DARK_MODE = true
         `;
         // parametersの各行をトリムする。
         const parameters_array = parameters.split('\n');

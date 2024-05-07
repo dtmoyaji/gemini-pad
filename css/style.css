@@ -1,6 +1,8 @@
 :root {
     --talk-list-icon-size: 12px;
     --background-default: #ebebeb;
+    --dark-background-default: #303030af;
+    --dark-color-default: white;
 }
 
 * {
@@ -48,12 +50,17 @@ body {
     border-width: 0;
     border-bottom: none;
     border-width: 1px;
-    border-color: darkgray;
+    border-color: silver;
     background-color: lightgray;
 }
 
 .view-selector[selected="true"] {
     background-color: var(--background-default);
+    color: black;
+}
+
+.dark-mode .view-selector[selected="true"] {
+    background-color: var(--dark-background-default);
 }
 
 .search_panel {
@@ -350,3 +357,10 @@ div[component='historyPanel'] {
     border-width: 1px;
     border-radius: 6px;
 }
+
+.dark-mode body{
+    background-color: var(--dark-background-default);
+    color: whitesmoke;
+    border-color: black;
+}
+

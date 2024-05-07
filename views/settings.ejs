@@ -47,7 +47,12 @@
       <input name="HISTORY_LIMIT" type="text" value="<%= data.env.HISTORY_LIMIT %>" />
     </div class="setting_line">
     <div>
-      <button type="submit">保存</button>
+      <div class="setting_line">
+        <label for="DARK_MODE" class="label_setting">DARK_MODE</label>
+        <input name="DARK_MODE" type="text" value="<%= data.env.DARK_MODE %>" />
+      </div class="setting_line">
+      <div>
+        <button type="submit">保存</button>
     </div>
   </form>
   <script>
