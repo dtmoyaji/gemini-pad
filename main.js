@@ -1,5 +1,5 @@
 const { renderFile } = require('ejs');
-const { BrowserWindow, app, ipcMain, screen, nativeImage, nativeTheme } = require('electron');
+const { BrowserWindow, app, ipcMain, screen, nativeImage, nativeTheme, dialog } = require('electron');
 const { writeFileSync } = require('fs');
 const { join } = require('path');
 const dotenv = require('dotenv');
@@ -238,6 +238,26 @@ ipcMain.on('talk-history-delete-clicked', async (event, id) => {
 
 ipcMain.on('show-loading', async (event, arg) => {
     event.reply('show-loading-reply', arg);
+});
+
+ipcMain.on('remove-chat-history', async (event, arg) => {
+    let options = {
+        type: 'question', buttons: ['OK', 'Cancel'], defaultId: 1,
+        title: '確認', message: '全ての通信履歴を削除しますか？',
+    };
+    await dialog.showMessageBox(mainWindow, options).then((returnValue) => {
+        if (returnValue.response === 0) {
+            database.removeAllNotBookmarkedTalks();
+            event.reply('chat-history-reply', []);
+        }
+    });
+    options = {
+        type: 'info', buttons: ['OK'], defaultId: 0,
+        title: '削除しました', message: 'しおりを挟んでいない通信履歴を全て削除しました。',
+    };
+    await dialog.showMessageBox(mainWindow, options).then((returnValue) => {
+        mainWindow.focus();
+    });
 });
 
 

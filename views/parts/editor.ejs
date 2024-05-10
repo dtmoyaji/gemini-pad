@@ -31,11 +31,13 @@
     electron.receive('chat-reply', (message) => {
       if (window.monaco_editor !== undefined) {
         window.monaco_editor.setValue(message);
-        showHtml(message);
-        window.monaco_editor.getModels()[0].setPosition({
-          lineNumber: 1,
-          column: 1
-        });
+        // エディタのカーソルを先頭に移動
+        if (window.monaco_editor.getModels().length > 0) {
+          window.monaco_editor.getModels()[0].setPosition({
+            lineNumber: 1,
+            column: 1
+          });
+        }
       }
     });
 

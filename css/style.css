@@ -92,6 +92,20 @@ body {
     background-color: var(--background-default);
 }
 
+.remove_history_button {
+    display: inline-block;
+    width: 20%;
+    font-size: 0.9em;
+    vertical-align: top;
+    background-image: url('../assets/trash.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    cursor: pointer;
+    border: none;
+    background-color: var(--background-default);
+}
+
 div[component='bookmarkPanel'] {
     position: absolute;
     top: 0;

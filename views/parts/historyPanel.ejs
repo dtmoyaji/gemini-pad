@@ -5,6 +5,7 @@
     <div class="search_panel">
         <input type="text" class="search_field" id="search" placeholder="検索">
         <button class="search_button" id="search_button"></button>
+        <button class="remove_history_button" id="remove_history_button"></button>
     </div>
 
     <ul id="talk_histories">
@@ -79,6 +80,11 @@
                 var search = document.getElementById('search').value;
                 electron.send('search-chat-history', search);
             }
+        });
+
+        // remove_history_buttonクリック時の処理
+        document.getElementById('remove_history_button').addEventListener('click', function () {
+            electron.send('remove-chat-history');
         });
 
     </script>

@@ -2,13 +2,11 @@
 
     <div class="title bookmarkPanel">しおり</div>
 
-    <!-- 
     <div class="search_panel">
         <input type="text" class="search_field" id="bookmark_search" placeholder="検索">
         <button class="search_button" id="bookmark_search_button"></button>
     </div>
-    -->
-    
+
     <ul id="bookmarks">
         <li class="bookmark" list_id="1">
             <div class="bookmark_garbage_button"></div>
@@ -65,7 +63,7 @@
         });
 
         // search_fieldでEnterキーが押された時の処理
-        document.getElementById('search').addEventListener('keypress', function (e) {
+        document.getElementById('bookmark_search').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 var search = document.getElementById('search').value;
                 electron.send('search-bookmark', search);
