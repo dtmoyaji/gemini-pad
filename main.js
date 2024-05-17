@@ -14,7 +14,7 @@ let mainWindow;
 
 // これをあとで外部注入できるようにする。
 let promptTemplate = [
-    {role: "system", content: "あなたは親切で正確な回答を行うチャットボットです。相手の質問を精密に解釈して回答します。"},
+    {role: "system", content: "あなたは親切で正確な回答を行うチャットボットです。相手の質問を精密に解釈して精密に回答します。"},
 ];
 
 let pastPrompt = [];
