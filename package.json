@@ -1,7 +1,7 @@
 {
   "name": "gemini-pad",
   "productName": "Gemini Pad",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "My Electron App",
   "main": "main.js",
   "build": {
