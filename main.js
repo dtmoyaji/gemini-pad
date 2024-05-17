@@ -7,6 +7,8 @@ const fs = require('fs');
 const database = require('./database.js');
 const initializer = require('./initializer.js');
 const marked = require('marked');
+const file_utils = require('./file_utils.js');
+const { get } = require('http');
 
 let mainWindow;
 
@@ -29,6 +31,7 @@ async function createWindow() {
         height: screen_height,
         y: 0,
         webPreferences: {
+            nodeIntegration: true,
             preload: join(__dirname, 'preload.js'),
             contextIsolation: true,
             contentSecurityPolicy: "script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com"
@@ -91,11 +94,12 @@ async function changePage(payload) {
     renderFile(srcFile,
         {
             title: payload.title,
-            data: payload.data
+            data: payload.data,
+            dirname: __dirname.replace(/\\/g, '/'),
         },
         {},
         function (err, str) {
-            const tempFile = join(__dirname, 'temp/currentView.html');
+            const tempFile = join(file_utils.getAppDir(), 'temp/currentView.html');
             if (str === undefined) {
                 str = 'ページデータが生成できませんでした。';
             }

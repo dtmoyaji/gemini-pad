@@ -6,3 +6,4 @@ dist
 temp
 talk_history
 package-lock.json
+test.bat

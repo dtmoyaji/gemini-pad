@@ -1,6 +1,6 @@
 <!-- editor -->
 <div id="container"></div>
-<script src="../node_modules/monaco-editor/min/vs/loader.js"></script>
+<script src="<%= dirname %>/node_modules/monaco-editor/min/vs/loader.js"></script>
 
 <div class="scripts">
   <script class="initializer">
@@ -8,7 +8,7 @@
 
     require.config({
       paths: {
-        'vs': '../node_modules/monaco-editor/min/vs'
+        'vs': '<%= dirname %>/node_modules/monaco-editor/min/vs'
       }
     });
 

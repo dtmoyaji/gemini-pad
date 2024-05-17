@@ -44,11 +44,14 @@ function initEnv() {
  * フォルダ階層を初期化する。
  */
 function initDirectories() {
+    const appDir = file_utils.getAppDir();
     // フォルダ階層を作成する。
-    file_utils.createDir(path.join(__dirname, 'temp')); // ejsでレンダリングしたhtmlを保存する。
-    file_utils.createDir(path.join(__dirname, process.env.HISTORY_DIR)); //ここに会話履歴を保存する。
-    file_utils.createEmptyFile(path.join(__dirname, 'temp/currentView.html'));
+    file_utils.createDir(path.join(appDir, 'temp')); // ejsでレンダリングしたhtmlを保存する。
+    file_utils.createDir(path.join(appDir, process.env.HISTORY_DIR)); //ここに会話履歴を保存する。
+    file_utils.createEmptyFile(path.join(appDir, 'temp/currentView.html'));
 }
+
+
 
 /**
  * データベースを初期化する。

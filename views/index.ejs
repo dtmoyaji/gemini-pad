@@ -6,8 +6,8 @@
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
   <title>Gemini Pad</title>
-  <link rel="stylesheet" href="../node_modules/monaco-editor/min/vs/editor/editor.main.css">
-  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="<%= dirname %>/node_modules/monaco-editor/min/vs/editor/editor.main.css">
+  <link rel="stylesheet" href="<%= dirname %>/css/style.css">
   <script>
     electron.receive('set-dark-mode', (message) => {
       if (message === 'true') {
