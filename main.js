@@ -14,7 +14,7 @@ let mainWindow;
 
 // これをあとで外部注入できるようにする。
 let promptTemplate = [
-    {role: "system", content: "あなたは親切で正確な回答を行うチャットボットです。相手の質問を精密に解釈して精密に回答します。"},
+    {role: "system", content: "あなたは親切で正確な回答を行うチャットボットです。相手の質問を精密に解釈して精密に回答します。最後まで回答を粘り強く続けます。"},
 ];
 
 let pastPrompt = [];
@@ -51,15 +51,12 @@ async function createWindow() {
         win.webContents.openDevTools();
     };
 
-    // readme.mdを読み込んで格納する。
-    const readme = fs.readFileSync(join(__dirname, 'README.md'), 'utf8');
-
     // Load your HTML file
     mainWindow = win;
     if (process.env.GEMINI_API_KEY === '' || process.env.GEMINI_API_KEY === undefined) {
         changePage({ page: 'settings', title: 'Hello, World!', data: { env: process.env } });
     } else {
-        changePage({ page: 'index', title: 'Hello, World!', data: { manual: readme } });
+        showManual();
     }
     return win;
 }
@@ -164,18 +161,18 @@ ipcMain.on('chat-message', async (event, arg) => {
         event.reply('show-loading-reply', 'loaded');
 
         // タイトルを取得する。
-        let titleQuery = join('次の文に30文字以下の長さでタイトルを考えてください。\n---\n', arg, replyMessage);
-        let queryTitle = await Gemini.queryGemini(titleQuery);
+        let titleQuery = [];
+        titleQuery = [...pastPrompt];
+        titleQuery.push({role: "assistant", content: replyMessage});
+        titleQuery.push({role: "user", content: '会話内容にタイトルを生成してください。\nmarkdownは使わないでください。'});
+        let queryTitle = await Gemini.queryGemini(JSON.stringify(titleQuery));
         event.reply('chat-title-reply', queryTitle);
 
         // キーワードを取得する。
-        let keywordQuery = join(
-            '次の文にSEOに効果的な10のキーワードを考えてください。\n---\n',
-            'タイトル :',
-            queryTitle,
-            '\n---\n',
-            arg, replyMessage);
-        let keywords = await Gemini.queryGemini(keywordQuery);
+        let keywordQuery = [];
+        keywordQuery = [...pastPrompt];
+        keywordQuery.push({role: "assistant", content: '会話内容について、SEOに効果的な10のキーワードを考えてください。'});
+        let keywords = await Gemini.queryGemini(JSON.stringify(keywordQuery));
 
         // 会話履歴に追加する。
         database.putTalk(queryTitle, arg, replyMessage, keywords);
@@ -194,8 +191,15 @@ ipcMain.on('chat-message', async (event, arg) => {
         } else {
             dialog.showErrorBox('エラー', error.message);
         }
+        showManual();
     }
 });
+
+// マニュアルページを表示する。
+function showManual(){
+    const readme = fs.readFileSync(join(__dirname, 'README.md'), 'utf8');
+    changePage({ page: 'index', title: 'Hello, World!', data: { manual: readme } });
+}
 
 ipcMain.on('save-settings', async (event, arg) => {
     let writeData = '';
