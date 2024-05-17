@@ -245,18 +245,18 @@ ipcMain.on('remove-chat-history', async (event, arg) => {
         type: 'question', buttons: ['OK', 'Cancel'], defaultId: 1,
         title: '確認', message: '全ての通信履歴を削除しますか？',
     };
-    await dialog.showMessageBox(mainWindow, options).then((returnValue) => {
+    await dialog.showMessageBox(mainWindow, options).then(async (returnValue) => {
         if (returnValue.response === 0) {
             database.removeAllNotBookmarkedTalks();
             event.reply('chat-history-reply', []);
+            options = {
+                type: 'info', buttons: ['OK'], defaultId: 0,
+                title: '削除しました', message: 'しおりを挟んでいない通信履歴を全て削除しました。',
+            };
+            await dialog.showMessageBox(mainWindow, options).then((returnValue) => {
+                mainWindow.focus();
+            });
         }
-    });
-    options = {
-        type: 'info', buttons: ['OK'], defaultId: 0,
-        title: '削除しました', message: 'しおりを挟んでいない通信履歴を全て削除しました。',
-    };
-    await dialog.showMessageBox(mainWindow, options).then((returnValue) => {
-        mainWindow.focus();
     });
 });
 
