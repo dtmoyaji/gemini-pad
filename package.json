@@ -6,16 +6,19 @@
   "main": "main.js",
   "build": {
     "appId": "club.tmworks.geminipad",
-    "productName": "Gemini Pad",
+    "productName": "gemini-pad",
     "files": [
       "**/*",
       "**/node_modules/*",
-      "**/.env",
+      "!**/.env",
+      "!**/temp",
+      "!**/talk_history",
       "!**/release-builds/*"
     ],
     "win": {
       "target": "nsis"
-    }
+    },
+    "asar": false
   },
   "scripts": {
     "start": "electron .",
