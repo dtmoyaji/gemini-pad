@@ -12,6 +12,13 @@ const { get } = require('http');
 
 let mainWindow;
 
+// これをあとで外部注入できるようにする。
+let promptTemplate = [
+    {role: "system", content: "あなたは親切で正確な回答を行うチャットボットです。相手の質問を精密に解釈して回答します。"},
+];
+
+let pastPrompt = [];
+
 // Create a renderer with a custom link function
 const renderer = new marked.Renderer();
 renderer.link = function (href, title, text) {
@@ -148,7 +155,10 @@ ipcMain.on('chat-message', async (event, arg) => {
         event.reply('show-loading-reply', 'loading');
 
         // 質問の回答を取得する。
-        let replyMessage = await Gemini.queryGemini(arg);
+        pastPrompt = [];
+        pastPrompt = [...promptTemplate];
+        pastPrompt.push({role: "user", content: arg});
+        let replyMessage = await Gemini.queryGemini(JSON.stringify(pastPrompt));
         event.reply('chat-reply', replyMessage);
 
         event.reply('show-loading-reply', 'loaded');
