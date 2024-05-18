@@ -14,7 +14,6 @@ let mainWindow;
 
 // これをあとで外部注入できるようにする。
 let promptTemplate = [
-    {role: "system", content: "あなたは親切で正確な回答を行うチャットボットです。相手の質問を精密に解釈して精密に回答します。最後まで回答を粘り強く続けます。"},
 ];
 
 let pastPrompt = [];
@@ -282,3 +281,13 @@ ipcMain.on('remove-chat-history', async (event, arg) => {
 initializer.initEnv();
 initializer.initDirectories();
 initializer.initMenus();
+const personalities = initializer.initializePersonality();
+personalities.then((data) => {
+    for(let i = 0; i < data.length; i++){
+        const personality = data[i];
+        if(personality.name === process.env.PERSONALITY){
+            promptTemplate.push({role: personality.role, content: personality.content});
+            break;
+        }
+    }
+});

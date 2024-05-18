@@ -2,7 +2,9 @@
 <html>
 
 <head>
-  <title><%= title %></title>
+  <title>
+    <%= title %>
+  </title>
   <link rel="stylesheet" href="../css/settings.css">
 </head>
 
@@ -28,12 +30,13 @@
     </div>
     <div class="setting_line">
       <label for="GEMINI_TOP_P" class="label_setting">GEMINI_TOP_P</label>
-      <input name = "GEMINI_TOP_P" type="text" value="<%= data.env.GEMINI_TOP_P %>" />
+      <input name="GEMINI_TOP_P" type="text" value="<%= data.env.GEMINI_TOP_P %>" />
     </div>
     <div class="setting_line">
       <label for="GEMINI_TOP_K" class="label_setting">GEMINI_TOP_K</label>
       <input name="GEMINI_TOP_K" type="text" value="<%= data.env.GEMINI_TOP_K %>" />
     </div>
+    <br>
     <div class="setting_line">
       <label for="DEV_CONSOLE_MODE" class="label_setting">DEV_CONSOLE_MODE</label>
       <input name="DEV_CONSOLE_MODE" type="text" value="<%= data.env.DEV_CONSOLE_MODE %>" />
@@ -46,13 +49,17 @@
       <label for="HISTORY_LIMIT" class="label_setting">HISTORY_LIMIT</label>
       <input name="HISTORY_LIMIT" type="text" value="<%= data.env.HISTORY_LIMIT %>" />
     </div class="setting_line">
+    <div class="setting_line">
+      <label for="DARK_MODE" class="label_setting">DARK_MODE</label>
+      <input name="DARK_MODE" type="text" value="<%= data.env.DARK_MODE %>" />
+    </div class="setting_line">
+    <br>
+    <div class="setting_line">
+      <label for="PERSONALITY" class="label_setting">PERSONALITY</label>
+      <input name="PERSONALITY" type="text" value="<%= data.env.PERSONALITY %>" />
+    </div class="setting_line">
     <div>
-      <div class="setting_line">
-        <label for="DARK_MODE" class="label_setting">DARK_MODE</label>
-        <input name="DARK_MODE" type="text" value="<%= data.env.DARK_MODE %>" />
-      </div class="setting_line">
-      <div>
-        <button type="submit">保存</button>
+      <button type="submit">保存</button>
     </div>
   </form>
   <p style="display:block;padding: 1em 2em;">
@@ -66,9 +73,9 @@
   <script>
     document.getElementById('return').addEventListener('click', (event) => {
       event.preventDefault();
-      electron.send('change-page', { page: 'index'});
+      electron.send('change-page', { page: 'index' });
     });
-    
+
     document.querySelector('form').addEventListener('submit', async (event) => {
       event.preventDefault();
       const formData = new FormData(event.target);

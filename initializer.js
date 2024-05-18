@@ -29,6 +29,8 @@ function initEnv() {
         HISTORY_LIMIT = 100
 
         DARK_MODE = true
+
+        PERSONALITY = default
         `;
         // parametersの各行をトリムする。
         const parameters_array = parameters.split('\n');
@@ -68,9 +70,27 @@ async function initMenus() {
     Menu.setApplicationMenu(menu);
 }
 
+/**
+ * personality内のjsonファイルを全て読み込んでリストにする。
+ */
+async function initializePersonality(){
+    const personalityDir = path.join(file_utils.getAppDir(), 'personality');
+    const files = fs.readdirSync(personalityDir);
+    const personalityList = [];
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (file.endsWith('.json')) {
+            const personality = JSON.parse(fs.readFileSync(path.join(personalityDir, file), 'utf8'));
+            personalityList.push(personality);
+        }
+    }
+    return personalityList;
+}
+
 module.exports = {
     initEnv,
     initDirectories,
     initDatabase,
-    initMenus
+    initMenus,
+    initializePersonality
 };
