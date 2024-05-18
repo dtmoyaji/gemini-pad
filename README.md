@@ -33,3 +33,12 @@ Gemini からの回答は、特に指定をしない場合 Markdown 形式で行
 
 Gemini のモデルパラメータの詳細については、Google AI for Developers の [生成モデルについて](https://ai.google.dev/gemini-api/docs/models/generative-models?hl=ja&_gl=1*1fu959e*_up*MQ..*_ga*MTgyNTQxNDY0NC4xNzE0MDIxNDY3*_ga_P1DBVKWT6V*MTcxNDAyMTQ2Ny4xLjAuMTcxNDAyMTg1NC4wLjAuMA..) を参照してください。
 
+## パーソナリティについて
+
+設定画面のPERSONALITYの項目で以下の3つのパーソナリティを選ぶことができます。設定を変更すると、回答の傾向や会話の口調が変化します。
+
+* **default:** 既定のチャットボットパーソナリティ。
+* **kansai:** 関西の男性のパーソナリティ。
+* **rin:** お嬢様のパーソナリティ。
+
+変更した後に再起動が必要です。
