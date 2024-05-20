@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 const path = require('path');
-const sqlite = require('sqlite3');
+const sqlite = require('sqlite3').verbose();
 const file_utils = require('./file_utils.js');
 
 dotenv.config();
@@ -64,13 +64,14 @@ function putTalk(title, query, answer, keywords) {
  */
 async function getTalkList(listSize) {
     return new Promise((resolve, reject) => {
-        data.all('SELECT * FROM talk_history WHERE bookmarked = FALSE ORDER BY id DESC LIMIT ?', [listSize], (err, rows) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(rows);
-            }
-        });
+        data.all('SELECT * FROM talk_history WHERE bookmarked = FALSE ORDER BY id DESC LIMIT ?'
+            , [listSize], (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
     });
 }
 

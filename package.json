@@ -28,11 +28,13 @@
   "author": "DtmOyaji",
   "license": "MIT",
   "devDependencies": {
+    "@electron/rebuild": "^3.6.0",
     "electron": "^30.0.1",
-    "electron-builder": "^24.13.3",
-    "electron-packager": "^17.1.2"
+    "electron-builder": "^24.13.3"
   },
   "dependencies": {
+    "@electron/packager": "^18.3.2",
+    "@npmcli/fs": "^3.1.1",
     "7zip-bin": "^5.2.0",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
@@ -40,6 +42,8 @@
     "marked": "^12.0.2",
     "mime": "^4.0.1",
     "monaco-editor": "^0.47.0",
+    "prebuild": "^7.2.2",
+    "prebuild-install": "^7.1.2",
     "sqlite3": "^5.1.7"
   },
   "peerDependencies": {
