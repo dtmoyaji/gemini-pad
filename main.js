@@ -12,7 +12,6 @@ const { get } = require('http');
 
 let mainWindow;
 
-// これをあとで外部注入できるようにする。
 let promptTemplate = [
 ];
 
