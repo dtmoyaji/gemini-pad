@@ -16,8 +16,8 @@ function initEnv() {
         fs.writeFileSync('.env', '', 'utf8');
         // .envファイルにパラメータを書き込む。
         const parameters = `
-        USER_ORGAN = Gemini pad using company
-        USER_NAME = Gemini pad User
+        USER_ORGAN = 
+        USER_NAME = 
 
         GEMINI_API_KEY = 
         GEMINI_MODEL = gemini-1.0-pro
