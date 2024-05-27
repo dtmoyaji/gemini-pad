@@ -281,12 +281,22 @@ initializer.initEnv();
 initializer.initDirectories();
 initializer.initMenus();
 const personalities = initializer.initializePersonality();
+
 personalities.then((data) => {
-    for(let i = 0; i < data.length; i++){
-        const personality = data[i];
+    for(const personality of data){
         if(personality.name === process.env.PERSONALITY){
             promptTemplate.push({role: personality.role, content: personality.content});
             break;
         }
     }
 });
+
+// USER_ORGANが設定されている場合、プロンプトに追加する。
+if(process.env.USER_ORGAN !== ''){
+    promptTemplate.push({role: 'system', content: `ユーザーの所属は${process.env.USER_ORGAN}です。`});
+}
+
+// USER_NAMEが設定されている場合、プロンプトに追加する。
+if(process.env.USER_NAME !== ''){
+    promptTemplate.push({role: 'system', content: `ユーザー名は${process.env.USER_NAME}です。`});
+}

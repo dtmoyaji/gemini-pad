@@ -13,6 +13,15 @@
   <a id='return' href="/">戻る</a>
   <form>
     <div class="setting_line">
+      <label for="USER_ORGAN" class="label_setting">ユーザー所属</label>
+      <input name="USER_ORGAN" type="text" value="<%= data.env.USER_ORGAN %>" />
+    </div class="setting_line">
+    <div class="setting_line">
+      <label for="USER_NAME" class="label_setting">ユーザー名</label>
+      <input name="USER_NAME" type="text" value="<%= data.env.USER_NAME %>" />
+    </div class="setting_line">
+    <br>
+    <div class="setting_line">
       <label for="GEMINI_API_KEY" class="label_setting">GEMINI_API_KEY</label>
       <input name="GEMINI_API_KEY" type="text" value="<%= data.env.GEMINI_API_KEY %>" />
     </div>
