@@ -33,9 +33,9 @@
     "electron-builder": "^24.13.3"
   },
   "dependencies": {
+    "7zip-bin": "^5.2.0",
     "@electron/packager": "^18.3.2",
     "@npmcli/fs": "^3.1.1",
-    "7zip-bin": "^5.2.0",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "exceljs": "^4.4.0",
@@ -45,7 +45,7 @@
     "monaco-editor": "^0.47.0",
     "prebuild": "^7.2.2",
     "prebuild-install": "^7.1.2",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "5.1.6"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
