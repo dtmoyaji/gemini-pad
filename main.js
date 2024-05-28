@@ -161,11 +161,11 @@ ipcMain.on('chat-message', async (event, arg) => {
             process.env.GOOGLE_CSE_ID !== ''
         ) {
             let externalInfo = await getExternalInfo(arg);
-            let data = { "data": [] };
-            for (let item of externalInfo) {
-                data.data.push(item);
-            }
-            if (data.data.length > 0) {
+            if (externalInfo !== undefined && externalInfo.length > 0) {
+                let data = { "data": [] };
+                for (let item of externalInfo) {
+                    data.data.push(item);
+                }
                 pastPrompt.push({ "role": "system", "content": "参考情報としてURLを回答に含めてください。" });
                 pastPrompt.push(data);
             }
@@ -218,8 +218,8 @@ async function getExternalInfo(prompt) {
     const Gemini = await import('gemini-driver/geminiDriver.mjs');
     try {
         let promptData = [
-            { "system": "あなたはweb検索のプロフェッショナルです。" },
-            { "user": `---\n${prompt}\n---\nこの情報収集に最適な検索文章を考えて提示してください。prefixを付けないでテキストだけ返してください。` }
+            { "system": "あなたはweb検索のプロフェッショナルです。最後まで粘り強く回答を考えます。" },
+            { "user": `---\n${prompt}\n---\nこの内容に適するweb検索の文章を考えて提示してください。prefixを付けないでテキストだけ返してください。` }
         ];
         let szPrompt = JSON.stringify(promptData);
         let keyworkds = await Gemini.queryGemini(szPrompt);
@@ -235,7 +235,7 @@ async function getExternalInfo(prompt) {
         });
 
         for (let item of response.data.items) {
-            if (item.mime !== 'application/pdf') {
+            if (item.mime === undefined || item.mime !== 'application/pdf') {
                 let itemLink = item.link;
                 // itemLinkから情報を取得する。
                 try {
@@ -279,6 +279,8 @@ ipcMain.on('save-settings', async (event, arg) => {
     fs.writeFileSync('.env', writeData, 'utf8');
     dotenv.config();
     event.reply('settings-saved', '保存しました.');
+    // リブートする。
+    app.relaunch();
 });
 
 ipcMain.on('talk-history-clicked', async (event, arg) => {
