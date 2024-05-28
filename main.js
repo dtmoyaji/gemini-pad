@@ -165,8 +165,10 @@ ipcMain.on('chat-message', async (event, arg) => {
             for (let item of externalInfo) {
                 data.data.push(item);
             }
-            pastPrompt.push({"role": "system", "content": "参考情報としてURLを回答に含めてください。"});
-            pastPrompt.push(data);
+            if (data.data.length > 0) {
+                pastPrompt.push({ "role": "system", "content": "参考情報としてURLを回答に含めてください。" });
+                pastPrompt.push(data);
+            }
         }
 
         pastPrompt.push({ role: "user", content: arg });
@@ -249,7 +251,7 @@ async function getExternalInfo(prompt) {
                     // 先頭から2k文字までで切り取る。
                     itemData = itemData.substring(0, 2048);
                     //console.log(itemLink);
-                    returnData.push({ "role" : "note", "url": itemLink, "content": itemData });
+                    returnData.push({ "role": "note", "url": itemLink, "content": itemData });
                 } catch (error) {
                     console.error(error); // エラーメッセージをログに出力
                 }
