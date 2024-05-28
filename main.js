@@ -165,6 +165,7 @@ ipcMain.on('chat-message', async (event, arg) => {
             for (let item of externalInfo) {
                 data.data.push(item);
             }
+            pastPrompt.push({"role": "system", "content": "参考情報としてURLを回答に含めてください。"});
             pastPrompt.push(data);
         }
 
