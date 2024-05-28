@@ -248,6 +248,7 @@ div[component='historyPanel'] {
     padding: 3px 8px;
 }
 
+
 .inline-inputs {
     display: block;
     height: 1.55em;
@@ -272,10 +273,27 @@ div[component='historyPanel'] {
     border-width: 1px;
 }
 
+.button-navigator-clip{
+    display: inline-block;
+    width: 24px;
+    height: 100%;
+    font-size: 0.9em;
+    vertical-align: top;
+    background-image: url('../assets/clip.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    cursor: pointer;
+    border: none;
+    background-color: var(--background-default);
+    text-indent:100%;
+	white-space:nowrap;
+	overflow:hidden;
+}
+
 #query-title {
     border-radius: 20px;
 }
-
 
 .component.chat-panel {
     position: absolute;

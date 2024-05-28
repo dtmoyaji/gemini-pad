@@ -2,6 +2,7 @@
     <div class="inline-inputs">
         <label for="title" class="inline-input-label" id="title-editor-label">タイトル:</label>
         <input type="text" class="inline-input-field" id="query-title" name="title" value="">
+        <a class="button-navigator-clip" id="clip">CLIP</a>
     </div>
 </form>
 
@@ -19,5 +20,11 @@
     electron.receive('one-history-reply', (message) => {
         const title = message.title;
         window.queryTitle.value = title;
+    });
+
+    // クリップボタンクリック時の処理
+    document.getElementById('clip').addEventListener('click', () => {
+        const title = window.queryTitle.value;
+        electron.send('clip-response', null);
     });
 </script>

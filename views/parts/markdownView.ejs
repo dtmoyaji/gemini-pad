@@ -2,8 +2,23 @@
 
     <div class="markdown-html-view">
     </div>
-    
+
     <script>
+        // 内容をクリップボードにコピー
+        electron.receive('clip-response', (message) => {
+            const htmlContent = document.querySelector('.markdown-html-view');
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.selectNodeContents(htmlContent);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            document.execCommand('copy');
+            selection.removeAllRanges();
+
+            // クリップボードにコピーしました
+            alert('クリップボードにコピーしました');
+        });
+
         electron.receive('markdown-to-html-reply', (html) => {
             document.querySelector('.markdown-html-view').innerHTML = html;
         });

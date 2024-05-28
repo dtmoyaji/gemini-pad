@@ -156,17 +156,18 @@ ipcMain.on('chat-message', async (event, arg) => {
         pastPrompt = [...promptTemplate];
 
         // webの情報を取得する。
+        let refinfo = "";
         if (process.env.USE_SEARCH_RESULT === 'true' &&
             process.env.GOOGLE_API_KEY !== '' &&
             process.env.GOOGLE_CSE_ID !== ''
         ) {
-            let externalInfo = await getExternalInfo(arg);
+            externalInfo = await getExternalInfo(arg);
             if (externalInfo !== undefined && externalInfo.length > 0) {
                 let data = { "data": [] };
                 for (let item of externalInfo) {
                     data.data.push(item);
+                    refinfo += `\n\n[${item.title}](${item.url}) `;
                 }
-                pastPrompt.push({ "role": "system", "content": "参考情報としてURLを回答に含めてください。" });
                 pastPrompt.push(data);
             }
         }
@@ -174,6 +175,9 @@ ipcMain.on('chat-message', async (event, arg) => {
         pastPrompt.push({ role: "user", content: arg });
         let prompt = JSON.stringify(pastPrompt);
         let replyMessage = await Gemini.queryGemini(prompt);
+        if(refinfo !== '') {
+            replyMessage += `\n\n**参考**\n${refinfo}`;
+        }
         event.reply('chat-reply', replyMessage);
 
         event.reply('show-loading-reply', 'loaded');
@@ -182,7 +186,7 @@ ipcMain.on('chat-message', async (event, arg) => {
         let titleQuery = [];
         titleQuery = [...pastPrompt];
         titleQuery.push({ role: "assistant", content: replyMessage });
-        titleQuery.push({ role: "user", content: '会話内容にタイトルを生成してください。\nmarkdownは使わないでください。' });
+        titleQuery.push({ role: "user", content: '会話内容にタイトルを生成してください。\nmarkdownは使わないでください。簡潔な内容にしてください。' });
         let queryTitle = await Gemini.queryGemini(JSON.stringify(titleQuery));
         event.reply('chat-title-reply', queryTitle);
 
@@ -217,26 +221,21 @@ ipcMain.on('chat-message', async (event, arg) => {
 async function getExternalInfo(prompt) {
     const Gemini = await import('gemini-driver/geminiDriver.mjs');
     try {
-        let promptData = [
-            { "system": "あなたはweb検索のプロフェッショナルです。最後まで粘り強く回答を考えます。" },
-            { "user": `---\n${prompt}\n---\nこの内容に適するweb検索の文章を考えて提示してください。prefixを付けないでテキストだけ返してください。` }
-        ];
-        let szPrompt = JSON.stringify(promptData);
-        let keyworkds = await Gemini.queryGemini(szPrompt);
-
+        let keyworkds = prompt;
         let returnData = [];
         const response = await axios.get('https://www.googleapis.com/customsearch/v1', {
             params: {
                 key: process.env.GOOGLE_API_KEY,
                 cx: process.env.GOOGLE_CSE_ID,
                 q: keyworkds,
-                num: 2,
+                num: 5,
             }
         });
 
         for (let item of response.data.items) {
             if (item.mime === undefined || item.mime !== 'application/pdf') {
                 let itemLink = item.link;
+                console.log(`get ${itemLink}`);
                 // itemLinkから情報を取得する。
                 try {
                     let itemResponse = await axios.get(itemLink);
@@ -251,7 +250,7 @@ async function getExternalInfo(prompt) {
                     // 先頭から2k文字までで切り取る。
                     itemData = itemData.substring(0, 2048);
                     //console.log(itemLink);
-                    returnData.push({ "role": "note", "url": itemLink, "content": itemData });
+                    returnData.push({ "role": "note", "title": item.title, "url": itemLink, "content": itemData });
                 } catch (error) {
                     console.error(error); // エラーメッセージをログに出力
                 }
@@ -269,6 +268,10 @@ function showManual() {
     const readme = fs.readFileSync(join(__dirname, 'README.md'), 'utf8');
     changePage({ page: 'index', title: 'Hello, World!', data: { manual: readme } });
 }
+
+ipcMain.on('clip-response', async (event, arg) => {
+    event.reply('clip-response', arg);
+});
 
 ipcMain.on('save-settings', async (event, arg) => {
     let writeData = '';
