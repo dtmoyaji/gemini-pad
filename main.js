@@ -249,7 +249,7 @@ async function getExternalInfo(prompt) {
                     // 先頭から2k文字までで切り取る。
                     itemData = itemData.substring(0, 2048);
                     //console.log(itemLink);
-                    returnData.push({ "role" : "note", "url": itemLink, "data": itemData });
+                    returnData.push({ "role" : "note", "url": itemLink, "content": itemData });
                 } catch (error) {
                     console.error(error); // エラーメッセージをログに出力
                 }
