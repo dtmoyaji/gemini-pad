@@ -26,6 +26,10 @@ function initEnv() {
         GEMINI_TOP_P = 1.0
         GEMINI_TOP_K = 1
 
+        USE_SEARCH_RESULT = false
+        GOOGLE_API_KEY =
+        GOOGLE_SEARCH_ENGINE_ID =
+
         DEV_CONSOLE_MODE = false
 
         HISTORY_DIR = talk_history
