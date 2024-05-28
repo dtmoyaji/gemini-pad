@@ -172,6 +172,7 @@ ipcMain.on('chat-message', async (event, arg) => {
             }
         }
 
+        console.log("回答を取得");
         pastPrompt.push({ role: "user", content: arg });
         let prompt = JSON.stringify(pastPrompt);
         let replyMessage = await Gemini.queryGemini(prompt);
@@ -183,17 +184,21 @@ ipcMain.on('chat-message', async (event, arg) => {
         event.reply('show-loading-reply', 'loaded');
 
         // タイトルを取得する。
+        console.log("タイトルを取得");
         let titleQuery = [];
         titleQuery = [...pastPrompt];
+        titleQuery.push({ role: "user", content: arg });
         titleQuery.push({ role: "assistant", content: replyMessage });
         titleQuery.push({ role: "user", content: '会話内容にタイトルを生成してください。\nmarkdownは使わないでください。簡潔な内容にしてください。' });
         let queryTitle = await Gemini.queryGemini(JSON.stringify(titleQuery));
         event.reply('chat-title-reply', queryTitle);
 
         // キーワードを取得する。
+        console.log("キーワードを取得");
         let keywordQuery = [];
         keywordQuery = [...pastPrompt];
-        keywordQuery.push({ role: "assistant", content: '会話内容について、SEOに効果的な10のキーワードを考えてください。' });
+        keywordQuery.push({ role: "user", content: arg });
+        keywordQuery.push({ role: "assistant", content: '会話内容について、SEOに効果的なキーワードを考えてください。' });
         let keywords = await Gemini.queryGemini(JSON.stringify(keywordQuery));
 
         // 会話履歴に追加する。
