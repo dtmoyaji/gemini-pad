@@ -11,6 +11,7 @@ const file_utils = require('./file_utils.js');
 const { get } = require('http');
 const axios = require('axios');
 const cheerio = require('cheerio');
+const { searchDuckDuckGo, searchGoogleCSE } = require('./externalSearch.js');
 
 let mainWindow;
 
@@ -18,6 +19,8 @@ let promptTemplate = [
 ];
 
 let pastPrompt = [];
+
+
 
 // Create a renderer with a custom link function
 const renderer = new marked.Renderer();
@@ -27,6 +30,14 @@ renderer.link = function (href, title, text) {
 
 // Set the renderer to marked
 marked.setOptions({ renderer });
+
+async function getExternalInfo(query) {
+    if (process.env.GOOGLE_API_KEY === '' || process.env.GOOGLE_CSE_ID === '') {
+        return await searchDuckDuckGo(query);
+    } else {
+        return await searchGoogleCSE(query);
+    }
+}
 
 // Create a new Electron window
 async function createWindow() {
@@ -160,16 +171,13 @@ ipcMain.on('chat-message', async (event, arg) => {
 
         // webの情報を取得する。
         let refinfo = "";
-        if (process.env.USE_SEARCH_RESULT === 'true' &&
-            process.env.GOOGLE_API_KEY !== '' &&
-            process.env.GOOGLE_CSE_ID !== ''
-        ) {
+        if (process.env.USE_SEARCH_RESULT === 'true') {
             let externalInfo = await getExternalInfo(arg);
             if (externalInfo !== undefined && externalInfo.length > 0) {
                 let data = { "data": [] };
                 for (let item of externalInfo) {
                     data.data.push(item);
-                    refinfo += `\n\n[${item.title}](${item.url}) `;
+                    refinfo += `\n\n[${item.title}](${item.link}) `;
                 }
                 pastPrompt.push(data);
             }
@@ -225,57 +233,6 @@ ipcMain.on('chat-message', async (event, arg) => {
     }
 });
 
-// Google CSE を使って、外部情報を取得する。検索結果のURLから情報を取得し、JSON形式で返す。
-async function getExternalInfo(prompt) {
-    // 改行でsplitして、trimして再結合する。
-    prompt = prompt.split('\n').map((line) => line.trim()).join(' ');
-    // \\nをスペースに置換する。
-    prompt = prompt.replace(/\\n/g, ' ');
-    // 連続する空白を削除する。
-    prompt = prompt.replace(/\s+/g, ' ');
-
-    try {
-        let keyworkds = prompt;
-        let returnData = [];
-        const response = await axios.get('https://www.googleapis.com/customsearch/v1', {
-            params: {
-                key: process.env.GOOGLE_API_KEY,
-                cx: process.env.GOOGLE_CSE_ID,
-                q: keyworkds,
-                num: 5,
-            }
-        });
-
-        if (response.data.searchInformation.totalResults !== '0') {
-            for (let item of response.data.items) {
-                if (item.mime === undefined || item.mime !== 'application/pdf') {
-                    let itemLink = item.link;
-                    console.log(`get ${itemLink}`);
-                    // itemLinkから情報を取得する。
-                    try {
-                        let itemResponse = await axios.get(itemLink);
-
-                        let itemData = itemResponse.data;
-                        const $ = cheerio.load(itemData);
-                        itemData = $('body').text();
-                        // 改行でsplitして、trimして再結合する。
-                        itemData = itemData.split('\n').map((line) => line.trim()).join(' ');
-                        // 連続する空白を削除する。
-                        itemData = itemData.replace(/\s+/g, ' ');
-                        // 先頭から2k文字までで切り取る。
-                        itemData = itemData.substring(0, 2048);
-                        returnData.push({ "role": "note", "title": item.title, "url": itemLink, "content": itemData });
-                    } catch (error) {
-                        console.error(error); // エラーメッセージをログに出力
-                    }
-                }
-            }
-        }
-        return returnData;
-    } catch (error) {
-        console.error(error.response.data); // エラーメッセージをログに出力
-    }
-}
 
 // マニュアルページを表示する。
 function showManual() {
