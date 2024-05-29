@@ -1,7 +1,7 @@
 {
   "name": "gemini-pad",
   "productName": "Gemini Pad",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "My Electron App",
   "main": "main.js",
   "build": {
@@ -42,7 +42,7 @@
     "ejs": "^3.1.10",
     "electron-i18n": "^1.3136.0",
     "exceljs": "^4.4.0",
-    "gemini-driver": "../gemini-driver",
+    "gemini-driver": "../gemini-driver/",
     "marked": "^12.0.2",
     "mime": "^4.0.1",
     "monaco-editor": "^0.47.0",

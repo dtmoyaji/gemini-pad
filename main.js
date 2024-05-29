@@ -224,7 +224,6 @@ ipcMain.on('chat-message', async (event, arg) => {
 
 // Google CSE を使って、外部情報を取得する。検索結果のURLから情報を取得し、JSON形式で返す。
 async function getExternalInfo(prompt) {
-    const Gemini = await import('gemini-driver/geminiDriver.mjs');
     try {
         let keyworkds = prompt;
         let returnData = [];
@@ -254,7 +253,6 @@ async function getExternalInfo(prompt) {
                     itemData = itemData.replace(/\s+/g, ' ');
                     // 先頭から2k文字までで切り取る。
                     itemData = itemData.substring(0, 2048);
-                    //console.log(itemLink);
                     returnData.push({ "role": "note", "title": item.title, "url": itemLink, "content": itemData });
                 } catch (error) {
                     console.error(error); // エラーメッセージをログに出力
