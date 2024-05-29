@@ -145,8 +145,9 @@ ipcMain.on('change-page', async (event, payload) => {
  * チャットメッセージを受信した。
  */
 ipcMain.on('chat-message', async (event, arg) => {
+
     const Gemini = await import('gemini-driver/geminiDriver.mjs');
-    //console.log(arg); // prints "arg" in the console
+    console.log(arg); // prints "arg" in the console
 
     try {
         event.reply('show-loading-reply', 'loading');
@@ -176,7 +177,7 @@ ipcMain.on('chat-message', async (event, arg) => {
         pastPrompt.push({ role: "user", content: arg });
         let prompt = JSON.stringify(pastPrompt);
         let replyMessage = await Gemini.queryGemini(prompt);
-        if(refinfo !== '') {
+        if (refinfo !== '') {
             replyMessage += `\n\n**参考**\n${refinfo}`;
         }
         event.reply('chat-reply', replyMessage);
@@ -236,30 +237,31 @@ async function getExternalInfo(prompt) {
             }
         });
 
-        for (let item of response.data.items) {
-            if (item.mime === undefined || item.mime !== 'application/pdf') {
-                let itemLink = item.link;
-                console.log(`get ${itemLink}`);
-                // itemLinkから情報を取得する。
-                try {
-                    let itemResponse = await axios.get(itemLink);
+        if (response.data.items !== undefined) {
+            for (let item of response.data.items) {
+                if (item.mime === undefined || item.mime !== 'application/pdf') {
+                    let itemLink = item.link;
+                    console.log(`get ${itemLink}`);
+                    // itemLinkから情報を取得する。
+                    try {
+                        let itemResponse = await axios.get(itemLink);
 
-                    let itemData = itemResponse.data;
-                    const $ = cheerio.load(itemData);
-                    itemData = $('body').text();
-                    // 改行でsplitして、trimして再結合する。
-                    itemData = itemData.split('\n').map((line) => line.trim()).join(' ');
-                    // 連続する空白を削除する。
-                    itemData = itemData.replace(/\s+/g, ' ');
-                    // 先頭から2k文字までで切り取る。
-                    itemData = itemData.substring(0, 2048);
-                    returnData.push({ "role": "note", "title": item.title, "url": itemLink, "content": itemData });
-                } catch (error) {
-                    console.error(error); // エラーメッセージをログに出力
+                        let itemData = itemResponse.data;
+                        const $ = cheerio.load(itemData);
+                        itemData = $('body').text();
+                        // 改行でsplitして、trimして再結合する。
+                        itemData = itemData.split('\n').map((line) => line.trim()).join(' ');
+                        // 連続する空白を削除する。
+                        itemData = itemData.replace(/\s+/g, ' ');
+                        // 先頭から2k文字までで切り取る。
+                        itemData = itemData.substring(0, 2048);
+                        returnData.push({ "role": "note", "title": item.title, "url": itemLink, "content": itemData });
+                    } catch (error) {
+                        console.error(error); // エラーメッセージをログに出力
+                    }
                 }
             }
         }
-
         return returnData;
     } catch (error) {
         console.error(error.response.data); // エラーメッセージをログに出力
