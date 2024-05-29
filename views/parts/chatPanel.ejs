@@ -16,7 +16,7 @@
       var message = document.getElementById('user-query').value;
       var output_component_value = window.monaco_editor.getValue();
       if (document.getElementById('reuse-response').checked) {
-        message = window.monaco_editor.getValue() + '\n\n---\n\n' + message;
+        message = window.monaco_editor.getValue() + '\n\n\n' + message;
       }
       electron.send('chat-message', message);
     }

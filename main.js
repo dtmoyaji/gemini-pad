@@ -145,6 +145,8 @@ ipcMain.on('change-page', async (event, payload) => {
  * チャットメッセージを受信した。
  */
 ipcMain.on('chat-message', async (event, arg) => {
+    // argの改行コードを\\nに変換する。
+    arg = arg.replace(/\n/g, '\\n');
 
     const Gemini = await import('gemini-driver/geminiDriver.mjs');
     console.log(arg); // prints "arg" in the console
@@ -162,7 +164,7 @@ ipcMain.on('chat-message', async (event, arg) => {
             process.env.GOOGLE_API_KEY !== '' &&
             process.env.GOOGLE_CSE_ID !== ''
         ) {
-            externalInfo = await getExternalInfo(arg);
+            let externalInfo = await getExternalInfo(arg);
             if (externalInfo !== undefined && externalInfo.length > 0) {
                 let data = { "data": [] };
                 for (let item of externalInfo) {
@@ -225,6 +227,13 @@ ipcMain.on('chat-message', async (event, arg) => {
 
 // Google CSE を使って、外部情報を取得する。検索結果のURLから情報を取得し、JSON形式で返す。
 async function getExternalInfo(prompt) {
+    // 改行でsplitして、trimして再結合する。
+    prompt = prompt.split('\n').map((line) => line.trim()).join(' ');
+    // \\nをスペースに置換する。
+    prompt = prompt.replace(/\\n/g, ' ');
+    // 連続する空白を削除する。
+    prompt = prompt.replace(/\s+/g, ' ');
+
     try {
         let keyworkds = prompt;
         let returnData = [];
@@ -237,7 +246,7 @@ async function getExternalInfo(prompt) {
             }
         });
 
-        if (response.data.items !== undefined) {
+        if (response.data.searchInformation.totalResults !== '0') {
             for (let item of response.data.items) {
                 if (item.mime === undefined || item.mime !== 'application/pdf') {
                     let itemLink = item.link;
