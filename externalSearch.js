@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-async function searchDuckDuckGo(query, maxResults = 5) {
+async function searchDuckDuckGo(query, maxResults = 3) {
     const url = `https://duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
     console.log(url);
     try {
@@ -41,7 +41,7 @@ async function searchDuckDuckGo(query, maxResults = 5) {
 }
 
 // Google CSE を使って、外部情報を取得する。検索結果のURLから情報を取得し、JSON形式で返す。
-async function searchGoogleCSE(query, maxResults = 5) {
+async function searchGoogleCSE(query, maxResults = 3) {
     // 改行でsplitして、trimして再結合する。
     query = query.split('\n').map((line) => line.trim()).join(' ');
     // \\nをスペースに置換する。
