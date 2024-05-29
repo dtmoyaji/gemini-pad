@@ -20,8 +20,6 @@ let promptTemplate = [
 
 let pastPrompt = [];
 
-
-
 // Create a renderer with a custom link function
 const renderer = new marked.Renderer();
 renderer.link = function (href, title, text) {
@@ -233,7 +231,6 @@ ipcMain.on('chat-message', async (event, arg) => {
     }
 });
 
-
 // マニュアルページを表示する。
 function showManual() {
     const readme = fs.readFileSync(join(__dirname, 'README.md'), 'utf8');
@@ -244,17 +241,40 @@ ipcMain.on('clip-response', async (event, arg) => {
     event.reply('clip-response', arg);
 });
 
-ipcMain.on('save-settings', async (event, arg) => {
+ipcMain.on('use-web', async (event, arg) => {
+    let params = {};
+    // initializer.envParamsの要素に一致する値をenvから取得する。
+    for (let key of Object.keys(initializer.envParams)) {
+        params[key] = process.env[key];
+    }
+    if (arg === 'selected') {
+        params[initializer.envParams.USE_SEARCH_RESULT] = 'true';
+        params[initializer.envParams.GEMINI_TEMPERATURE] = '0.3';
+    } else {
+        params[initializer.envParams.USE_SEARCH_RESULT] = 'false';
+        params[initializer.envParams.GEMINI_TEMPERATURE] = '0.1';
+    }
+    saveSettings(params);
+});
+
+function saveSettings(params) {
     let writeData = '';
-    for (const key in arg) {
-        process.env[key] = arg[key];
-        writeData += `${key} = ${arg[key]}\n`;
+    for (const key in params) {
+        process.env[key] = params[key];
+        let paramLine = `${key} = ${params[key]}`;
+        console.log(paramLine);
+        writeData += `${paramLine}\n`;
     }
     fs.writeFileSync('.env', writeData, 'utf8');
     dotenv.config();
+}
+
+ipcMain.on('save-settings', async (event, arg) => {
+    saveSettings(arg);
     event.reply('settings-saved', '保存しました.');
     // リブートする。
     app.relaunch();
+    app.quit();
 });
 
 ipcMain.on('talk-history-clicked', async (event, arg) => {

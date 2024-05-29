@@ -291,6 +291,33 @@ div[component='historyPanel'] {
 	overflow:hidden;
 }
 
+.button-use-web{
+    display: inline-block;
+    width: 24px;
+    height: 100%;
+    font-size: 0.9em;
+    vertical-align: top;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    cursor: pointer;
+    border: none;
+    background-color: var(--background-default);
+    text-indent:100%;
+    white-space:nowrap;
+    overflow:hidden;
+
+}
+
+.button-use-web[status="selected"]{
+    background-image: url('../assets/web.png');
+}
+
+.button-use-web[status="unselected"]{
+    background-image: url('../assets/web_gray.png');
+}
+
+
 #query-title {
     border-radius: 20px;
 }

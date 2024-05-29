@@ -6,6 +6,25 @@ const path = require('path');
 const file_utils = require('./file_utils.js');
 const database = require('./database.js');
 
+const envParams = {
+    USER_ORGAN: 'USER_ORGAN',
+    USER_NAME: 'USER_NAME',
+    GEMINI_API_KEY: 'GEMINI_API_KEY',
+    GEMINI_MODEL: 'GEMINI_MODEL',
+    GEMINI_TEMPERATURE: 'GEMINI_TEMPERATURE',
+    GEMINI_MAX_OUTPUT_TOKENS: 'GEMINI_MAX_OUTPUT_TOKENS',
+    GEMINI_TOP_P: 'GEMINI_TOP_P',
+    GEMINI_TOP_K: 'GEMINI_TOP_K',
+    USE_SEARCH_RESULT: 'USE_SEARCH_RESULT',
+    GOOGLE_API_KEY: 'GOOGLE_API_KEY',
+    GOOGLE_CSE_ID : 'GOOGLE_CSE_ID',
+    DEV_CONSOLE_MODE : 'DEV_CONSOLE_MODE',
+    HISTORY_DIR : 'HISTORY_DIR',
+    HISTORY_LIMIT : 'HISTORY_LIMIT',
+    DARK_MODE : 'DARK_MODE',
+    PERSONALITY : 'PERSONALITY'
+};
+
 /**
  * 環境変数を初期化する。
  */
@@ -99,5 +118,6 @@ module.exports = {
     initDirectories,
     initDatabase,
     initMenus,
-    initializePersonality
+    initializePersonality,
+    envParams
 };
