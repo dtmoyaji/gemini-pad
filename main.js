@@ -29,7 +29,9 @@ renderer.link = function (href, title, text) {
 // Set the renderer to marked
 marked.setOptions({ renderer });
 
+// 外部検索を設定を元に判別し実行する。
 async function getExternalInfo(query) {
+    // 環境変数が設定されていない場合、DuckDuckGoを使用する。
     if (process.env.GOOGLE_API_KEY === '' || process.env.GOOGLE_CSE_ID === '') {
         return await searchDuckDuckGo(query);
     } else {
@@ -93,6 +95,12 @@ app.whenReady().then(async () => {
         // ダークモードの設定を送信する。
         if (process.env.DARK_MODE === 'true') {
             mainWindow.webContents.send('set-dark-mode', process.env.DARK_MODE);
+        }
+        // 外部検索の設定を送信する。
+        if (process.env.USE_SEARCH_RESULT === 'true') {
+            mainWindow.webContents.send('use-web-reply', 'selected');
+        } else {
+            mainWindow.webContents.send('use-web-reply', 'unselected');
         }
     });
 });
@@ -158,7 +166,6 @@ ipcMain.on('chat-message', async (event, arg) => {
     arg = arg.replace(/\n/g, '\\n');
 
     const Gemini = await import('gemini-driver/geminiDriver.mjs');
-    console.log(arg); // prints "arg" in the console
 
     try {
         event.reply('show-loading-reply', 'loading');
@@ -262,7 +269,6 @@ function saveSettings(params) {
     for (const key in params) {
         process.env[key] = params[key];
         let paramLine = `${key} = ${params[key]}`;
-        console.log(paramLine);
         writeData += `${paramLine}\n`;
     }
     fs.writeFileSync('.env', writeData, 'utf8');
