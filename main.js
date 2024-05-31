@@ -8,9 +8,6 @@ const database = require('./database.js');
 const initializer = require('./initializer.js');
 const marked = require('marked');
 const file_utils = require('./file_utils.js');
-const { get } = require('http');
-const axios = require('axios');
-const cheerio = require('cheerio');
 const { searchDuckDuckGo, searchGoogleCSE } = require('./externalSearch.js');
 
 let mainWindow;
@@ -240,7 +237,12 @@ ipcMain.on('chat-message', async (event, arg) => {
 
 // マニュアルページを表示する。
 function showManual() {
-    const readme = fs.readFileSync(join(__dirname, 'README.md'), 'utf8');
+    let filename = join(__dirname, `README.${process.env.LANG}.md`);
+    if (!fs.existsSync(filename)) {
+        filename = join(__dirname, 'README.md');
+    }
+    console.log(filename);
+    const readme = fs.readFileSync(filename, 'utf8');
     changePage({ page: 'index', title: 'Hello, World!', data: { manual: readme } });
 }
 
@@ -310,7 +312,12 @@ ipcMain.on('markdown-to-html', async (event, arg) => {
 });
 
 ipcMain.on('manual-transfer', async (event, arg) => {
-    const readme = fs.readFileSync(join(__dirname, 'README.md'), 'utf8');
+    let filename = join(__dirname, `README.${process.env.LANG}.md`);
+    if (!fs.existsSync(filename)) {
+        filename = join(__dirname, 'README.md');
+    }
+    console.log(filename);
+    const readme = fs.readFileSync(filename, 'utf8');
     event.reply('manual-transfer-reply', readme);
 });
 
@@ -362,6 +369,11 @@ personalities.then((data) => {
         }
     }
 });
+
+// LANGが設定されている場合、プロンプトに追加する。
+if(process.env.LANG!==''){
+    promptTemplate.push({ role: 'system', content: `LANG=${process.env.LANG} で応答してください。` });
+}
 
 // USER_ORGANが設定されている場合、プロンプトに追加する。
 if (process.env.USER_ORGAN !== '') {

@@ -1,56 +1,63 @@
 # Gemini Pad
 
-このアプリケーションは、Google から提供されている AI モデルを API で利用しています。
+This application uses an AI model provided by Google as an API.
 
-規定値ではモデルは2024年4月現在、無料で利用可能な gemini-1.0-pro が設定されています。
+By default, the model is set to gemini-1.0-pro, which is available for free as of April 2024.
 
-## セットアップ
-1. Gemini API キーを取得します。
-   Gemini API キーは [ここ](https://aistudio.google.com/app/prompts/new_freeform) から入手します。
-   Google のアカウントが必要なので、所持していない場合は事前に作成してください。
+## Setup
 
-2. アプリを起動します。Gemini API キーがアプリに登録されていない場合は、設定画面が開きますので、GEMINI_API_KEY の項目に登録します。
-   登録ができたら、メニューのファイルから再起動を選んで、アプリを再起動します。
+1. Get a Gemini API key.
 
-3. ユーザー所属とユーザー名の登録は必須ではありませんが、メールの文面などを作らせるときに登録しておくと便利です。
+   You can get a Gemini API key from [here](https://aistudio.google.com/app/prompts/new_freeform).
 
-## 使い方
+   You will need a Google account, so please create one in advance if you do not have one.
 
-画面の下部のテキスト枠に質問を記入すると、上部に回答が表示されます。
+2. Start the application. If the Gemini API key is not registered in the application, the setting screen will open, so register it in the GEMINI_API_KEY item.
 
-画面右の通信履歴には、過去の会話のタイトルが表示されます。タイトルをクリックすると、質問と回答が画面に表示されます。
+   Once registered, select Restart from the File menu and restart the application.
 
-上のテキストを利用するにチェックをつけると、Geminiの回答を質問に含めることができます。
+3. Registering your user affiliation and user name is not required, but it is convenient when you want to create an email or something like that.
 
-クリップボードアイコンをクリックすると、クリップボードにHTMLの内容をコピーします。
+4. If you specify a language in LANG, the display language of the interface will change. Currently, Japanese and English are supported.
 
-ウェブアイコンをクリックすると、ウェブ検索する/しないを切り替えることができます。
+## How to use
 
-### ウェブ検索について
+If you enter a question in the text box at the bottom of the screen, the answer will be displayed at the top.
 
-ウェブ検索は規定ではDackDackGoを検索するようにしています。
+The communication history on the right of the screen displays the titles of past conversations. Clicking on a title will display the question and answer on the screen.
 
-GoogleよりGOOGLE_API_KEY と GOOGLE_CSE_ID を入手し、設定登録すると、Google検索を使用するようになります。ただし、Googleの定める費用を支払う必要があります。
+If you check Use above text, you can include Gemini's answer in your question.
 
-### キー操作
+Clicking the clipboard icon will copy the HTML content to the clipboard.
 
-テキスト入力時に、Shift + Enter で改行、Enter で質問の送信、Shift + Delete で質問内容の消去を行います。
-Alt で前回の回答の再利用を on/off します。
+Clicking the web icon will toggle whether or not to search the web.
 
-## 回答形式について
+### About web search
 
-Gemini からの回答は、特に指定をしない場合 Markdown 形式で行われます。
+Web search is set to search DackDackGo by default.
 
-## モデルパラメータについて
+If you obtain GOOGLE_API_KEY and GOOGLE_CSE_ID from Google and register them in the settings, Google search will be used. However, you will need to pay the fees set by Google.
 
-Gemini のモデルパラメータの詳細については、Google AI for Developers の [生成モデルについて](https://ai.google.dev/gemini-api/docs/models/generative-models?hl=ja&_gl=1*1fu959e*_up*MQ..*_ga*MTgyNTQxNDY0NC4xNzE0MDIxNDY3*_ga_P1DBVKWT6V*MTcxNDAyMTQ2Ny4xLjAuMTcxNDAyMTg1NC4wLjAuMA..) を参照してください。
+### Key operation
 
-## パーソナリティについて
+When entering text, press Shift + Enter to make a line break, Enter to send a question, and Shift + Delete to clear the question.
 
-設定画面のPERSONALITYの項目で以下の3つのパーソナリティを選ぶことができます。設定を変更すると、回答の傾向や会話の口調が変化します。
+Press Alt to turn on/off the reuse of the previous answer.
 
-* **default:** 既定のチャットボットパーソナリティ。
-* **kansai:** 関西の男性のパーソナリティ。
-* **rin:** お嬢様のパーソナリティ。
+## About the answer format
 
-変更した後に再起動が必要です。
+Answers from Gemini are in Markdown format unless otherwise specified.
+
+## About model parameters
+
+For details on Gemini's model parameters, see Google AI for Developers' [About Generative Models](https://ai.google.dev/gemini-api/docs/models/generative-models?hl=ja&_gl=1*1fu959e*_up*MQ..*_ga*MTgyNTQxNDY0NC4xNzE0MDIxNDY3*_ga_P1DBVKWT6V*MTcxNDAyMTQ2Ny4xLjAuMTcxNDAyMTg1NC4wLjAuMA..) .
+
+## About personality
+
+You can choose from the following three personalities in the PERSONALITY item of the setting screen. Changing the setting will change the tendency of the answer and the tone of the conversation.
+
+* **default:** Default chatbot personality.
+* **kansai:** Personality of a male from Kansai.
+* **rin:** Personality of a young lady.
+
+Restart is required after changing.

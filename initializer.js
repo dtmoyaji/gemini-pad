@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const file_utils = require('./file_utils.js');
 const database = require('./database.js');
+const l10n = require('./l10n.js');
 
 const envParams = {
     USER_ORGAN: 'USER_ORGAN',
@@ -92,7 +93,8 @@ async function initDatabase() {
  * メニューを初期化する。
  */
 async function initMenus() {
-    const menu = Menu.buildFromTemplate(menuItems);
+    let localizedMenuItems = menuItems.localizeMenuItems(menuItems.menuItems);
+    const menu = Menu.buildFromTemplate(localizedMenuItems);
     Menu.setApplicationMenu(menu);
 }
 

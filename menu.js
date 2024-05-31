@@ -1,16 +1,17 @@
 const { app } = require('electron');
 const dotenv = require('dotenv');
+const l10n = require('./l10n.js');
 
 dotenv.config();
 
 // Import necessary modules
-const menuItems = [
+let menuItems = [
     {
-        label: 'ファイル',
+        label: 'File',
         submenu: [
-            { role: 'quit', label: '終了' },
+            { role: 'quit', label: 'Quit' },
             {
-                label: '再起動', click: () => {
+                label: 'Reboot', click: () => {
                     app.relaunch();
                     app.exit();
                 }
@@ -18,17 +19,17 @@ const menuItems = [
         ]
     },
     {
-        label: '編集',
+        label: 'Edit',
         submenu: [
-            { role: 'undo', label: '元に戻す' },
-            { role: 'redo', label: 'やり直し' },
+            { role: 'undo', label: 'Undo' },
+            { role: 'redo', label: 'Redo' },
             { type: 'separator' },
-            { role: 'cut', label: '切り取り' },
-            { role: 'copy', label: 'コピー' },
-            { role: 'paste', label: '貼り付け' },
+            { role: 'cut', label: 'Cut' },
+            { role: 'copy', label: 'Copy' },
+            { role: 'paste', label: 'Paste' },
             { type: 'separator' },
             {
-                label: '設定', click: () => {
+                label: 'Settings', click: () => {
                     app.emit('change-page', {
                         page: 'settings',
                         title: 'Settings',
@@ -41,35 +42,35 @@ const menuItems = [
         ]
     },
     {
-        label: '表示',
+        label: 'View',
         submenu: [
-            { role: 'reload', label: 'リロード' },
-            { role: 'toggleDevTools', label: '開発者ツールの切り替え' },
+            { role: 'reload', label: 'Reload' },
+            { role: 'toggleDevTools', label: 'Toggle_Developer_Tools' },
             { type: 'separator' },
-            { role: 'resetZoom', label: 'ズームのリセット' },
-            { role: 'zoomIn', label: 'ズームイン' },
-            { role: 'zoomOut', label: 'ズームアウト' }
+            { role: 'resetZoom', label: 'Reset_Zoom' },
+            { role: 'zoomIn', label: 'Zoom_In' },
+            { role: 'zoomOut', label: 'Zoom_Out' },
         ]
     },
     {
-        label: 'ウィンドウ',
+        label: 'Window',
         submenu: [
-            { role: 'minimize', label: '最小化' },
-            { role: 'close', label: '閉じる' }
+            { role: 'minimize', label: 'Minimize' },
+            { role: 'close', label: 'Close' }
         ]
     },
     {
-        label: 'ヘルプ',
+        label: 'Help',
         submenu: [
             {
-                label: 'Learn More',
+                label: 'About_Electron',
                 click: async () => {
                     const { shell } = require('electron');
                     await shell.openExternal('https://electronjs.org');
                 }
             },
             {
-                label: 'Gemini AI Studio',
+                label: 'Gemini_AI_Studio',
                 click: async () => {
                     const { shell } = require('electron');
                     await shell.openExternal('https://aistudio.google.com/app/prompts/new_freeform');
@@ -80,4 +81,35 @@ const menuItems = [
 
 ];
 
-module.exports = menuItems;
+// menuItemsのラベルをローカライズする。
+function localizeMenuItems() {
+    l10n.loadLabels();
+    let localizedMenuItems = [];
+    for (let i = 0; i < menuItems.length; i++) {
+        let menu = menuItems[i];
+        let localizedMenu = {
+            label: l10n.localize(menu.label),
+            submenu: []
+        };
+        for (let j = 0; j < menu.submenu.length; j++) {
+            let item = menu.submenu[j];
+            if (item.type === 'separator') {
+                localizedMenu.submenu.push({ type: 'separator' });
+                continue;
+            } else {
+                localizedMenu.submenu.push({
+                    role: item.role,
+                    label: l10n.localize(item.label),
+                    click: item.click
+                });
+            }
+        }
+        localizedMenuItems.push(localizedMenu);
+    }
+    return localizedMenuItems;
+}
+
+module.exports = {
+    menuItems,
+    localizeMenuItems
+};

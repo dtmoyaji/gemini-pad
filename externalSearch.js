@@ -105,14 +105,6 @@ async function getPageContent(url, textLimit = 2048) {
 }
 
 
-test = async () => {
-    return await searchDuckDuckGo('node.js');
-}
-
-test().then((results) => {
-    console.log(results);
-});
-
 module.exports = {
     searchDuckDuckGo,
     searchGoogleCSE
