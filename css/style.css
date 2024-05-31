@@ -1,8 +1,9 @@
 :root {
     --talk-list-icon-size: 12px;
-    --background-default: #ebebeb;
+    --background-default: hsl(0, 0%, 89%);
     --dark-background-default: #303030af;
     --dark-color-default: white;
+    --font-base-size: 1rem;
 }
 
 * {
@@ -12,6 +13,9 @@
 }
 
 body {
+    font-size: 16px;
+    line-height: 1.5;
+    font-family: "Meiryo UI", Meiryo, "ＭＳ Ｐゴシック", "MS P Gothic", sans-serif; 
     position: absolute;
     top: 0;
     bottom: 1px;
@@ -191,13 +195,13 @@ div[component='historyPanel'] {
     bottom: 0;
 }
 
-.title.history_panel{
+.title.history_panel {
     height: 1.8em;
     vertical-align: middle;
     background-color: var(--background-default);
 }
 
-.search_panel{
+.search_panel {
     height: 1.8em;
     vertical-align: middle;
     background-color: var(--background-default);
@@ -273,7 +277,7 @@ div[component='historyPanel'] {
     border-width: 1px;
 }
 
-.button-navigator-clip{
+.button-navigator-clip {
     display: inline-block;
     width: 24px;
     height: 100%;
@@ -286,12 +290,12 @@ div[component='historyPanel'] {
     cursor: pointer;
     border: none;
     background-color: var(--background-default);
-    text-indent:100%;
-	white-space:nowrap;
-	overflow:hidden;
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
-.button-use-web{
+.button-use-web {
     display: inline-block;
     width: 24px;
     height: 100%;
@@ -303,17 +307,17 @@ div[component='historyPanel'] {
     cursor: pointer;
     border: none;
     background-color: var(--background-default);
-    text-indent:100%;
-    white-space:nowrap;
-    overflow:hidden;
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
 
 }
 
-.button-use-web[status="selected"]{
+.button-use-web[status="selected"] {
     background-image: url('../assets/web.png');
 }
 
-.button-use-web[status="unselected"]{
+.button-use-web[status="unselected"] {
     background-image: url('../assets/web_gray.png');
 }
 
@@ -417,9 +421,8 @@ div[component='historyPanel'] {
     border-radius: 6px;
 }
 
-.dark-mode body{
+.dark-mode body {
     background-color: var(--dark-background-default);
     color: whitesmoke;
     border-color: black;
 }
-
