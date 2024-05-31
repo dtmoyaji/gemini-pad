@@ -22,7 +22,8 @@ const envParams = {
     HISTORY_DIR : 'HISTORY_DIR',
     HISTORY_LIMIT : 'HISTORY_LIMIT',
     DARK_MODE : 'DARK_MODE',
-    PERSONALITY : 'PERSONALITY'
+    PERSONALITY : 'PERSONALITY',
+    LANG: 'LANG'
 };
 
 /**
@@ -57,6 +58,7 @@ function initEnv() {
         DARK_MODE = true
 
         PERSONALITY = default
+        LANG = ja
         `;
         // parametersの各行をトリムする。
         const parameters_array = parameters.split('\n');
@@ -78,8 +80,6 @@ function initDirectories() {
     file_utils.createDir(path.join(appDir, process.env.HISTORY_DIR)); //ここに会話履歴を保存する。
     file_utils.createEmptyFile(path.join(appDir, 'temp/currentView.html'));
 }
-
-
 
 /**
  * データベースを初期化する。
