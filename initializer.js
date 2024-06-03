@@ -24,7 +24,7 @@ const envParams = {
     HISTORY_LIMIT : 'HISTORY_LIMIT',
     DARK_MODE : 'DARK_MODE',
     PERSONALITY : 'PERSONALITY',
-    LANG: 'LANG'
+    APPLICATION_LANG: 'APPLICATION_LANG'
 };
 
 /**
@@ -59,7 +59,7 @@ function initEnv() {
         DARK_MODE = true
 
         PERSONALITY = default
-        LANG = ja
+        APPLICATION_LANG = ja
         `;
         // parametersの各行をトリムする。
         const parameters_array = parameters.split('\n');

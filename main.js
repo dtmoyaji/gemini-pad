@@ -10,6 +10,8 @@ const marked = require('marked');
 const file_utils = require('./file_utils.js');
 const { searchDuckDuckGo, searchGoogleCSE } = require('./externalSearch.js');
 
+dotenv.config();
+
 let mainWindow;
 
 let promptTemplate = [
@@ -237,7 +239,7 @@ ipcMain.on('chat-message', async (event, arg) => {
 
 // マニュアルページを表示する。
 function showManual() {
-    let filename = join(__dirname, `README.${process.env.LANG}.md`);
+    let filename = join(__dirname, `README.${process.env.APPLICATION_LANG}.md`);
     if (!fs.existsSync(filename)) {
         filename = join(__dirname, 'README.md');
     }
@@ -312,7 +314,7 @@ ipcMain.on('markdown-to-html', async (event, arg) => {
 });
 
 ipcMain.on('manual-transfer', async (event, arg) => {
-    let filename = join(__dirname, `README.${process.env.LANG}.md`);
+    let filename = join(__dirname, `README.${process.env.APPLICATION_LANG}.md`);
     if (!fs.existsSync(filename)) {
         filename = join(__dirname, 'README.md');
     }
@@ -371,8 +373,8 @@ personalities.then((data) => {
 });
 
 // LANGが設定されている場合、プロンプトに追加する。
-if(process.env.LANG!==''){
-    promptTemplate.push({ role: 'system', content: `LANG=${process.env.LANG} で応答してください。` });
+if(process.env.APPLICATION_LANG!==''){
+    promptTemplate.push({ role: 'system', content: `LANG=${process.env.APPLICATION_LANG} で応答してください。` });
 }
 
 // USER_ORGANが設定されている場合、プロンプトに追加する。

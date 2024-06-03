@@ -7,7 +7,7 @@ dotenv.config();
 let labels = [];
 
 function loadLabels() {
-    let lang = process.env.LANG;
+    let lang = process.env.APPLICATION_LANG;
     let filename = join(__dirname, `l10n/${lang}.json`);
     if(fs.existsSync(filename) === false) {
         filename = join(__dirname, `l10n/en.json`);
