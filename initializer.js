@@ -41,8 +41,8 @@ function initEnv() {
         USER_NAME = 
 
         GEMINI_API_KEY = 
-        GEMINI_MODEL = gemini-1.5-flash
-        GEMINI_TEMPERATURE = 0.5
+        GEMINI_MODEL = gemini-1.0-pro
+        GEMINI_TEMPERATURE = 0.2
         GEMINI_MAX_OUTPUT_TOKENS = 1024
         GEMINI_TOP_P = 1.0
         GEMINI_TOP_K = 1
