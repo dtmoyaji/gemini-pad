@@ -55,11 +55,16 @@ async function createWindow() {
         }
     });
 
-
     // Open DevTools (optional)
     if (process.env.DEV_CONSOLE_MODE === "true") {
         win.webContents.openDevTools();
     };
+
+    // Electron上の<a>タグをクリックしたときにデフォルトブラウザで開くようにする。
+    win.webContents.setWindowOpenHandler((details) => {
+        require("electron").shell.openExternal(details.url);
+        return { action: "deny" };
+    });
 
     // Load your HTML file
     mainWindow = win;
