@@ -9,8 +9,15 @@ const initializer = require('./initializer.js');
 const marked = require('marked');
 const file_utils = require('./file_utils.js');
 const { searchDuckDuckGo, searchGoogleCSE } = require('./externalSearch.js');
+const i18n = require('i18n');
 
 dotenv.config();
+
+i18n.configure({
+    locales: ['en', 'ja'],
+    defaultLocale: 'en',
+    directory: __dirname + '/l10n',
+});
 
 let mainWindow;
 
@@ -118,8 +125,10 @@ async function changePage(payload) {
     let srcFile = join(__dirname, `views/${payload.page}.ejs`);
     renderFile(srcFile,
         {
+            __: i18n.__,
             title: payload.title,
             data: payload.data,
+            locale: payload.locale,
             dirname: __dirname.replace(/\\/g, '/'),
         },
         {},
@@ -250,7 +259,15 @@ function showManual() {
     }
     console.log(filename);
     const readme = fs.readFileSync(filename, 'utf8');
-    changePage({ page: 'index', title: 'Hello, World!', data: { manual: readme } });
+    let pageInfo = {
+        page: 'index',
+        title: 'Hello, World!',
+        locale: process.env.APPLICATION_LANG,
+        data: {
+            manual: readme
+        }
+    }
+    changePage(pageInfo);
 }
 
 ipcMain.on('clip-response', async (event, arg) => {
@@ -378,7 +395,7 @@ personalities.then((data) => {
 });
 
 // LANGが設定されている場合、プロンプトに追加する。
-if(process.env.APPLICATION_LANG!==''){
+if (process.env.APPLICATION_LANG !== '') {
     promptTemplate.push({ role: 'system', content: `LANG=${process.env.APPLICATION_LANG} で応答してください。` });
 }
 

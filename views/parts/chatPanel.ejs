@@ -3,10 +3,10 @@
   <form id="message-form" action="">
     <div id="chat-options">
       <input type="checkbox" id="reuse-response" class="chat-toggle">
-      <label for="reuse-response">上のテキストを利用する。</label>
+      <label for="reuse-response"><%- __('Contain above text.') %></label>
     </div>
     <textarea id="user-query" type="" autocomplete="off"></textarea>
-    <button id="send-button">送信</button>
+    <button id="send-button"><%- __('Send') %></button>
   </form>
 
   <script>

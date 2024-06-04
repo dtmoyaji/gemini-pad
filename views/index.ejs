@@ -18,6 +18,7 @@
         document.body.classList.remove('dark-mode');
       }
     });
+    i18n.setLocale('<%= locale %>');
   </script>
 
 </head>
@@ -27,13 +28,14 @@
 
     <div class="right-panel">
       <%- include('parts/bookmarkPanel') %>
-        <%- include('parts/historyPanel') %>
+      
+      <%- include('parts/historyPanel') %>
     </div>
 
     <div class="center-panel">
       <div class="view-selector-panel">
-        <button id="html-view-button" class="view-selector" selected="true">HTML</button>
-        <button id="markdown-view-button" class="view-selector">エディタ</button>
+        <button id="html-view-button" class="view-selector" selected="true"><%- __('Html') %></button>
+        <button id="markdown-view-button" class="view-selector"><%- __('Editor') %></button>
       </div>
       <div class="component title-editor-panel">
         <%- include('parts/titleEditor') %>
