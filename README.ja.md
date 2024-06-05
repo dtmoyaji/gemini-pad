@@ -5,6 +5,7 @@
 規定値ではモデルは2024年4月現在、無料で利用可能な gemini-1.0-pro が設定されています。
 
 ## セットアップ
+
 1. Gemini API キーを取得します。
    Gemini API キーは [ここ](https://aistudio.google.com/app/prompts/new_freeform) から入手します。
    Google のアカウントが必要なので、所持していない場合は事前に作成してください。
