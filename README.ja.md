@@ -30,7 +30,7 @@
 
 ### ウェブ検索について
 
-ウェブ検索は規定ではDackDackGoを検索するようにしています。
+初期状態では、ウェブ検索にDackDackGoを用いるようにしています。
 
 GoogleよりGOOGLE_API_KEY と GOOGLE_CSE_ID を入手し、設定登録すると、Google検索を使用するようになります。ただし、Googleの定める費用を支払う必要があります。
 
