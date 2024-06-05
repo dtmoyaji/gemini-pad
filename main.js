@@ -12,6 +12,7 @@ const { searchDuckDuckGo, searchGoogleCSE } = require('./externalSearch.js');
 const i18n = require('i18n');
 
 dotenv.config();
+const GEMINI_MODEL_FOR_TITLING = 'gemini-1.0-pro'
 
 i18n.configure({
     locales: ['en', 'ja'],
@@ -219,7 +220,10 @@ ipcMain.on('chat-message', async (event, arg) => {
         titleQuery.push({ role: "user", content: arg });
         titleQuery.push({ role: "assistant", content: replyMessage });
         titleQuery.push({ role: "user", content: '会話内容にタイトルを生成してください。\nmarkdownは使わないでください。簡潔な内容にしてください。' });
-        let queryTitle = await Gemini.queryGemini(JSON.stringify(titleQuery));
+        let queryTitle = await Gemini.queryGemini(
+            JSON.stringify(titleQuery),
+            GEMINI_MODEL_FOR_TITLING
+        );
         event.reply('chat-title-reply', queryTitle);
 
         // キーワードを取得する。
