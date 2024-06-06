@@ -42,14 +42,17 @@
         event.preventDefault();
       }
       if (event.key === 'Alt') {
-        document.getElementById('reuse-response').checked = !document.getElementById('reuse-response').checked;
+        document.getElementById('reuse-response').checked
+          = !document.getElementById('reuse-response').checked;
         event.preventDefault();
       }
     });
 
     // 会話履歴を受信したとき
     electron.receive('one-history-reply', (message) => {
-      const query = message.query;
+      let query = message.query;
+      // \nを改行に変換
+      query = query.replace(/\\n/g, '\n');
       window.input_area.value = query;
     });
   </script>
