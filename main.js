@@ -236,7 +236,11 @@ ipcMain.on('chat-message', async (event, arg) => {
         let keywordQuery = [];
         keywordQuery = [...pastPrompt];
         keywordQuery.push({ role: "user", content: arg });
-        keywordQuery.push({ role: "assistant", content: '会話内容について、SEOに効果的なキーワードを考えてください。' });
+        keywordQuery.push({
+            role: "assistant",
+            content: '会話内容について、SEOに効果的なキーワードを考えてください。',
+            GEMINI_MODEL_FOR_TITLING
+        });
         let keywords = await Gemini.queryGemini(JSON.stringify(keywordQuery));
 
         // 会話履歴に追加する。
