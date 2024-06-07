@@ -5,6 +5,7 @@ const path = require('path');
 const fileUtils = require('./fileUtils.js');
 const database = require('./database.js');
 const l10n = require('./l10n.js');
+const { env } = require('process');
 
 const envParams = [
     { param_name: 'LABEL', param_value: '' },
@@ -44,19 +45,15 @@ function initEnv() {
         // .envファイルを作成する。
         fs.writeFileSync(fileUtils.getEnvFilePath(), '', 'utf8');
         // .envファイルにenvParamsを書き込む。
+        let envData = '';
         envParams.forEach((param) => {
             if (param.param_name === 'LABEL') {
-                fs.appendFileSync(
-                    fileUtils.getEnvFilePath(),
-                    `#`,
-                    'utf8');
+                envData += '#\n';
             } else {
-                fs.appendFileSync(
-                    fileUtils.getEnvFilePath(),
-                    `${param.param_name} = ${param.param_value}\n`,
-                    'utf8');
+                envData += `${param.param_name}=${param.param_value}\n`;
             }
         });
+        fs.writeFileSync(fileUtils.getEnvFilePath(), envData, 'utf8');
     }
     // Load .env file
     fileUtils.config();
