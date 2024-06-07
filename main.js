@@ -2,16 +2,16 @@ const { renderFile } = require('ejs');
 const { BrowserWindow, app, ipcMain, screen, nativeImage, nativeTheme, dialog } = require('electron');
 const { writeFileSync } = require('fs');
 const { join } = require('path');
-const dotenv = require('dotenv');
 const fs = require('fs');
 const database = require('./database.js');
 const initializer = require('./initializer.js');
 const marked = require('marked');
-const file_utils = require('./file_utils.js');
+const fileUtils = require('./fileUtils.js');
 const { searchDuckDuckGo, searchGoogleCSE } = require('./externalSearch.js');
 const i18n = require('i18n');
+const path = require('path');
 
-dotenv.config();
+initializer.initEnv();
 const GEMINI_MODEL_FOR_TITLING = 'gemini-1.0-pro'
 
 i18n.configure({
@@ -123,7 +123,7 @@ app.on('window-all-closed', function () {
 });
 
 async function changePage(payload) {
-    let srcFile = join(__dirname, `views/${payload.page}.ejs`);
+    let srcFile = join(fileUtils.getAppDir(), `views/${payload.page}.ejs`);
     renderFile(srcFile,
         {
             __: i18n.__,
@@ -134,7 +134,7 @@ async function changePage(payload) {
         },
         {},
         function (err, str) {
-            const tempFile = join(file_utils.getAppDir(), 'temp/currentView.html');
+            const tempFile = join(fileUtils.getAppDir(), 'temp/currentView.html');
             if (str === undefined) {
                 str = 'ページデータが生成できませんでした。';
             }
@@ -179,7 +179,12 @@ ipcMain.on('chat-message', async (event, arg) => {
     // argの改行コードを\\nに変換する。
     arg = arg.replace(/\n/g, '\\n');
 
-    const Gemini = await import('gemini-driver/geminiDriver.mjs');
+    let geminiPath = path.join(
+        'file://',
+        fileUtils.getAppDir(),
+        'node_modules/gemini-driver/geminiDriver.mjs'
+    );
+    const Gemini = await import(geminiPath);
 
     try {
         event.reply('show-loading-reply', 'loading');
@@ -237,7 +242,7 @@ ipcMain.on('chat-message', async (event, arg) => {
         keywordQuery = [...pastPrompt];
         keywordQuery.push({ role: "user", content: arg });
         keywordQuery.push({
-            role: "assistant",
+            role: "user",
             content: '会話内容について、SEOに効果的なキーワードを考えてください。',
             GEMINI_MODEL_FOR_TITLING
         });
@@ -291,14 +296,16 @@ ipcMain.on('use-web', async (event, arg) => {
     let params = {};
     // initializer.envParamsの要素に一致する値をenvから取得する。
     for (let key of Object.keys(initializer.envParams)) {
-        params[key] = process.env[key];
+        let paramValue = process.env[initializer.envParams[key].param_name];
+        params[initializer.envParams[key].param_name]
+            = paramValue !== undefined ? paramValue : '';
     }
     if (arg === 'selected') {
-        params[initializer.envParams.USE_SEARCH_RESULT] = 'true';
-        params[initializer.envParams.GEMINI_TEMPERATURE] = '0.3';
+        params['USE_SEARCH_RESULT'] = 'true';
+        params['GEMINI_TEMPERATURE'] = '0.3';
     } else {
-        params[initializer.envParams.USE_SEARCH_RESULT] = 'false';
-        params[initializer.envParams.GEMINI_TEMPERATURE] = '0.1';
+        params['USE_SEARCH_RESULT'] = 'false';
+        params['GEMINI_TEMPERATURE'] = '0.1';
     }
     saveSettings(params);
 });
@@ -306,12 +313,16 @@ ipcMain.on('use-web', async (event, arg) => {
 function saveSettings(params) {
     let writeData = '';
     for (const key in params) {
-        process.env[key] = params[key];
-        let paramLine = `${key} = ${params[key]}`;
-        writeData += `${paramLine}\n`;
+        if (key === 'LABEL') {
+            writeData += `#\n`;
+        } else {
+            process.env[key] = params[key];
+            let paramLine = `${key} = ${params[key]}`;
+            writeData += `${paramLine}\n`;
+        }
     }
-    fs.writeFileSync('.env', writeData, 'utf8');
-    dotenv.config();
+    fs.writeFileSync(fileUtils.getEnvFilePath(), writeData, 'utf8');
+    fileUtils.config();
 }
 
 ipcMain.on('save-settings', async (event, arg) => {
@@ -367,10 +378,6 @@ ipcMain.on('talk-history-delete-clicked', async (event, id) => {
     database.removeTalk(id);
     const talkList = await database.getTalkList(process.env.HISTORY_LIMIT);
     event.reply('chat-history-reply', talkList);
-});
-
-ipcMain.on('show-loading', async (event, arg) => {
-    event.reply('show-loading-reply', arg);
 });
 
 ipcMain.on('remove-chat-history', async (event, arg) => {

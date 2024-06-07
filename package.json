@@ -11,14 +11,23 @@
       "**/*",
       "**/node_modules/*",
       "!**/.env",
-      "!**/temp",
+      "!**/temp/currentView.html",
       "!**/talk_history",
       "!**/release-builds/*"
     ],
     "win": {
       "target": "nsis"
     },
-    "asar": false
+    "asar": true,
+    "asarUnpack": [
+      "assets/**/*",
+      "css/**/*",
+      "l10n/**/*",
+      "personality/**/*",
+      "views/**/*",
+      "temp/**/*",
+      "node_modules/gemini-driver/**/*"
+    ]
   },
   "scripts": {
     "start": "electron .",
@@ -28,7 +37,6 @@
   "author": "DtmOyaji",
   "license": "MIT",
   "devDependencies": {
-    "@electron/rebuild": "^3.6.0",
     "electron": "^30.0.1",
     "electron-builder": "^24.13.3"
   },

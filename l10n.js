@@ -1,8 +1,9 @@
 const dotenv = require('dotenv');
+const fileUtils = require('./fileUtils.js');
 const fs = require('fs');
 const { join } = require('path');
 
-dotenv.config();
+fileUtils.config();
 
 let labels = [];
 

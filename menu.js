@@ -1,8 +1,8 @@
 const { app } = require('electron');
-const dotenv = require('dotenv');
+const fileUtils = require('./fileUtils.js');
 const l10n = require('./l10n.js');
 
-dotenv.config();
+fileUtils.config();
 
 // Import necessary modules
 let menuItems = [

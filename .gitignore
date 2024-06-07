@@ -3,8 +3,8 @@
 node_modules
 release-builds
 dist
-temp
 talk_history
 package-lock.json
 yarn.lock
 test.bat
+temp/currentView.html

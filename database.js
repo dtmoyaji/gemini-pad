@@ -1,9 +1,9 @@
 const dotenv = require('dotenv');
 const path = require('path');
 const sqlite = require('sqlite3').verbose();
-const file_utils = require('./file_utils.js');
+const fileUtils = require('./fileUtils.js');
 
-dotenv.config();
+fileUtils.config();
 
 let data = null;
 let initialized = false;
@@ -13,7 +13,7 @@ let initialized = false;
  */
 async function initDatabase() {
     try {
-        const db_path = path.join(file_utils.getAppDir(), process.env.HISTORY_DIR, 'talk_history.db');
+        const db_path = path.join(fileUtils.getAppUserDir(), process.env.HISTORY_DIR, 'talk_history.db');
         const db = new sqlite.Database(db_path);
         data = db;
         await initTables();
