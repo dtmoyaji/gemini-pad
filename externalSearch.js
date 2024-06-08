@@ -1,10 +1,10 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const dotenv = require('dotenv');
+const fileUtils = require('./fileUtils');
 
-dotenv.config();
+fileUtils.config();
 
-async function searchDuckDuckGo(query, maxResults = 3) {
+async function searchDuckDuckGo(query, maxResults = 3, maxContentLength = 2048) {
     const url = `https://duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
     console.log(url);
     try {
@@ -28,7 +28,7 @@ async function searchDuckDuckGo(query, maxResults = 3) {
                         "role": "note",
                         "title": pageTitle,
                         "link": url,
-                        "content": await getPageContent(url)
+                        "content": await getPageContent(url, maxContentLength)
                     });
                 })());
             }
@@ -41,7 +41,7 @@ async function searchDuckDuckGo(query, maxResults = 3) {
 }
 
 // Google CSE を使って、外部情報を取得する。検索結果のURLから情報を取得し、JSON形式で返す。
-async function searchGoogleCSE(query, maxResults = 3) {
+async function searchGoogleCSE(query, maxResults = 3, maxContentLength = 2048) {
     // 改行でsplitして、trimして再結合する。
     query = query.split('\n').map((line) => line.trim()).join(' ');
     // \\nをスペースに置換する。
@@ -72,7 +72,7 @@ async function searchGoogleCSE(query, maxResults = 3) {
                             "role": "note",
                             "title": item.title,
                             "link": itemLink,
-                            "content": await getPageContent(itemLink)
+                            "content": await getPageContent(itemLink,maxContentLengthF)
                         });
                     } catch (error) {
                         console.error(error); // エラーメッセージをログに出力
@@ -86,7 +86,7 @@ async function searchGoogleCSE(query, maxResults = 3) {
     }
 }
 
-async function getPageContent(url, textLimit = 2048) {
+async function getPageContent(url, textLimit = 1536) {
     try {
         let itemResponse = await axios.get(url);
         let itemData = itemResponse.data;

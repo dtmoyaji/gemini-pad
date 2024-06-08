@@ -11,92 +11,86 @@
 </head>
 
 <body>
-  <H1>設定ページ</H1>
-  <a id='return' href="/">戻る</a>
+  <H1><%- __('Setting Page')%></H1>
+  <a id='return' href="/"><%- __('Back')%></a>
   <form>
     <div class="setting_line">
-      <label for="USER_ORGAN" class="label_setting">ユーザー所属</label>
+      <label for="USER_ORGAN" class="label_setting"><%- __('User Org.') %></label>
       <input name="USER_ORGAN" type="text" value="<%= data.env.USER_ORGAN %>" />
     </div class="setting_line">
     <div class="setting_line">
-      <label for="USER_NAME" class="label_setting">ユーザー名</label>
+      <label for="USER_NAME" class="label_setting"><%- __('User Name') %></label>
       <input name="USER_NAME" type="text" value="<%= data.env.USER_NAME %>" />
     </div class="setting_line">
     <br>
     <div class="setting_line">
-      <label for="GEMINI_API_KEY" class="label_setting">GEMINI_API_KEY</label>
+      <label for="GEMINI_API_KEY" class="label_setting"><%- __('Gemini API Key') %></label>
       <input name="GEMINI_API_KEY" type="text" value="<%= data.env.GEMINI_API_KEY %>" />
     </div>
     <div class="setting_line">
-      <label for="GEMINI_MODEL" class="label_setting">GEMINI_MODEL</label>
+      <label for="GEMINI_MODEL" class="label_setting"><%- __('Gemini Model') %></label>
       <input name="GEMINI_MODEL" type="text" value="<%= data.env.GEMINI_MODEL %>" />
     </div>
     <div class="setting_line">
-      <label for="GEMINI_TEMPERATURE" class="label_setting">GEMINI_TEMPERATURE</label>
+      <label for="GEMINI_TEMPERATURE" class="label_setting"><%- __('Gemini Temperature') %></label>
       <input name="GEMINI_TEMPERATURE" type="text" value="<%= data.env.GEMINI_TEMPERATURE %>" />
     </div>
     <div class="setting_line">
-      <label for="GEMINI_MAX_OUTPUT_TOKENS" class="label_setting">GEMINI_MAX_OUTPUT_TOKENS</label>
+      <label for="GEMINI_MAX_OUTPUT_TOKENS" class="label_setting"><%- __('Gemini Max Output Tokens') %></label>
       <input name="GEMINI_MAX_OUTPUT_TOKENS" type="text" value="<%= data.env.GEMINI_MAX_OUTPUT_TOKENS %>" />
     </div>
     <div class="setting_line">
-      <label for="GEMINI_TOP_P" class="label_setting">GEMINI_TOP_P</label>
+      <label for="GEMINI_TOP_P" class="label_setting"><%- __('Gemini Top P') %></label>
       <input name="GEMINI_TOP_P" type="text" value="<%= data.env.GEMINI_TOP_P %>" />
     </div>
     <div class="setting_line">
-      <label for="GEMINI_TOP_K" class="label_setting">GEMINI_TOP_K</label>
+      <label for="GEMINI_TOP_K" class="label_setting"><%- __('Gemini Top K') %></label>
       <input name="GEMINI_TOP_K" type="text" value="<%= data.env.GEMINI_TOP_K %>" />
     </div>
     <br>
     <div class="setting_line">
-      <label for="USE_SEARCH_RESULT" class="label_setting">USE_SEARCH_RESULT</label>
+      <label for="USE_SEARCH_RESULT" class="label_setting"><%- __('Use Search Result') %></label>
       <input name="USE_SEARCH_RESULT" type="text" value="<%= data.env.USE_SEARCH_RESULT %>" />
     </div>
     <div class="setting_line">
-      <label for="GOOGLE_API_KEY" class="label_setting">GOOGLE_API_KEY</label>
+      <label for="GOOGLE_API_KEY" class="label_setting"><%- __('Google API Key') %></label>
       <input name="GOOGLE_API_KEY" type="text" value="<%= data.env.GOOGLE_API_KEY %>" />
     </div>
     <div class="setting_line">
-      <label for="GOOGLE_CSE_ID" class="label_setting">GOOGLE_CSE_ID</label>
+      <label for="GOOGLE_CSE_ID" class="label_setting"><%- __('Google CSE ID') %></label>
       <input name="GOOGLE_CSE_ID" type="text" value="<%= data.env.GOOGLE_CSE_ID %>" />
     </div>
     <br>
     <div class="setting_line">
-      <label for="DEV_CONSOLE_MODE" class="label_setting">DEV_CONSOLE_MODE</label>
+      <label for="DEV_CONSOLE_MODE" class="label_setting"><%- __('Dev Console Mode') %></label>
       <input name="DEV_CONSOLE_MODE" type="text" value="<%= data.env.DEV_CONSOLE_MODE %>" />
     </div>
     <div class="setting_line">
-      <label for="HISTORY_DIR" class="label_setting">HISTORY_DIR</label>
+      <label for="HISTORY_DIR" class="label_setting"><%- __('History Dir') %></label>
       <input name="HISTORY_DIR" type="text" value="<%= data.env.HISTORY_DIR %>" />
     </div>
     <div class="setting_line">
-      <label for="HISTORY_LIMIT" class="label_setting">HISTORY_LIMIT</label>
+      <label for="HISTORY_LIMIT" class="label_setting"><%- __('History Limit') %></label>
       <input name="HISTORY_LIMIT" type="text" value="<%= data.env.HISTORY_LIMIT %>" />
     </div class="setting_line">
     <div class="setting_line">
-      <label for="DARK_MODE" class="label_setting">DARK_MODE</label>
+      <label for="DARK_MODE" class="label_setting"><%- __('Dark Mode') %></label>
       <input name="DARK_MODE" type="text" value="<%= data.env.DARK_MODE %>" />
     </div class="setting_line">
     <br>
     <div class="setting_line">
-      <label for="PERSONALITY" class="label_setting">PERSONALITY</label>
+      <label for="PERSONALITY" class="label_setting"><%- __('Personality') %></label>
       <input name="PERSONALITY" type="text" value="<%= data.env.PERSONALITY %>" />
     </div class="setting_line">
     <div class="setting_line">
-      <label for="APPLICATION_LANG" class="label_setting">APPLICATION_LANG</label>
+      <label for="APPLICATION_LANG" class="label_setting"><%- __('Application Language') %></label>
       <input name="APPLICATION_LANG" type="text" value="<%= data.env.APPLICATION_LANG %>" />
     </div class="setting_line">
     <div>
-      <button type="submit">保存</button>
+      <button type="submit"><%- __('Save') %></button>
     </div>
   </form>
-  <p style="display:block;padding: 1em 2em;">
-    GEMINI_API_KEYに、Gemini API キーを入力してください。<br>
-    Gemini API キーは <a href="https://aistudio.google.com/app/prompts/new_freeform" target="_blank">ここ</a> から取得します。<br>
-    取得に先立ってGoogle のアカウントが必要なので、アカウントがない場合は事前に作成してください。
-  </p>
-  <p style="display:block;padding: 1em 2em;">
-    各値を入力したら、保存をクリックした後、メニューのファイルから再起動してください。
+  <p style="display:block;padding: 1em 2em;"><%- __(`Please enter and save your Gemini API key to use the app. <br>You can get your Gemini API key <a href='https://aistudio.google.com/app/prompts/new_freeform' target='_blank'>here</a>. <br>You will need a Google account before you can get it, so please create one in advance if you don't have one.`) %>
   </p>
   <script>
     document.getElementById('return').addEventListener('click', (event) => {

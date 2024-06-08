@@ -15,7 +15,7 @@ initializer.initEnv();
 const GEMINI_MODEL_FOR_TITLING = 'gemini-1.0-pro'
 
 i18n.configure({
-    locales: ['en', 'ja'],
+    locales: ['en', 'ja', 'de', 'fr'],
     defaultLocale: 'en',
     directory: __dirname + '/l10n',
 });
@@ -37,12 +37,12 @@ renderer.link = function (href, title, text) {
 marked.setOptions({ renderer });
 
 // 外部検索を設定を元に判別し実行する。
-async function getExternalInfo(query) {
+async function getExternalInfo(query, maxResults = 3, maxContentLength = 2048) {
     // 環境変数が設定されていない場合、DuckDuckGoを使用する。
     if (process.env.GOOGLE_API_KEY === '' || process.env.GOOGLE_CSE_ID === '') {
-        return await searchDuckDuckGo(query);
+        return await searchDuckDuckGo(query, maxResults, maxContentLength);
     } else {
-        return await searchGoogleCSE(query);
+        return await searchGoogleCSE(query, maxResults, maxContentLength);
     }
 }
 
@@ -129,7 +129,7 @@ async function changePage(payload) {
             __: i18n.__,
             title: payload.title,
             data: payload.data,
-            locale: payload.locale,
+            locale: process.env.APPLICATION_LANG,
             dirname: __dirname.replace(/\\/g, '/'),
         },
         {},
@@ -196,7 +196,7 @@ ipcMain.on('chat-message', async (event, arg) => {
         // webの情報を取得する。
         let refinfo = "";
         if (process.env.USE_SEARCH_RESULT === 'true') {
-            let externalInfo = await getExternalInfo(arg);
+            let externalInfo = await getExternalInfo(arg, 4, 2048);
             if (externalInfo !== undefined && externalInfo.length > 0) {
                 let data = { "data": [] };
                 for (let item of externalInfo) {
