@@ -211,7 +211,8 @@ ipcMain.on('chat-message', async (event, arg) => {
         }
 
         console.log("回答を取得");
-        let replyMessage = (await replyGetter.invoke(arg)).content;
+        let argModified = join(arg,"\n"+ i18n.__("Answer in"));
+        let replyMessage = (await replyGetter.invoke(argModified)).content;
         if (refinfo !== '') {
             replyMessage += `\n\n**参考**\n${refinfo}`;
         }
@@ -228,8 +229,10 @@ ipcMain.on('chat-message', async (event, arg) => {
         let queryTitle = await titleGetter.invoke(`
             見出しを生成してください。
             markdownは使わず、textで出力してください。
+            見出しを ** ** で囲まないでください。
             30文字以内で簡潔な内容にしてください。
             見出しだけ出力してください
+            ${i18n.__("Answer in")}
         `);
         event.reply('chat-title-reply', queryTitle.content);
 
@@ -239,7 +242,10 @@ ipcMain.on('chat-message', async (event, arg) => {
         await injectPersonality(process.env.PERSONALITY, keywordGetter);
         await keywordGetter.pushLine(keywordGetter.ROLE_USER, arg);
         await keywordGetter.pushLine(keywordGetter.ROLE_ASSISTANT, replyMessage);
-        let keywords = await keywordGetter.invoke(`会話内容について、SEOに効果的なキーワードを考えてください。`);
+        let keywords = await keywordGetter.invoke(`
+            会話内容について、SEOに効果的なキーワードを考えてください。
+            ${i18n.__("Answer in")}
+            `);
 
         // 会話履歴に追加する。
         database.putTalk(queryTitle.content, arg, replyMessage, keywords.content);
