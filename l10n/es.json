@@ -50,5 +50,6 @@
     "Setting Page": "Página de configuración",
     "Back": "Atrás",
     "Application Language": "Idioma de la aplicación",
-    "Please enter and save your Gemini API key to use the app. <br>You can get your Gemini API key <a href='https://aistudio.google.com/app/prompts/new_freeform' target='_blank'>here</a>. <br>You will need a Google account before you can get it, so please create one in advance if you don't have one.": "Por favor, ingrese y guarde su clave de API de Gemini para usar la aplicación. <br>Puede obtener su clave de API de Gemini <a href='https://aistudio.google.com/app/prompts/new_freeform' target='_blank'>aquí</a>. <br>Necesitará una cuenta de Google antes de poder obtenerla, así que por favor cree una con anticipación si no tiene una."
+    "Please enter and save your Gemini API key to use the app. <br>You can get your Gemini API key <a href='https://aistudio.google.com/app/prompts/new_freeform' target='_blank'>here</a>. <br>You will need a Google account before you can get it, so please create one in advance if you don't have one.": "Por favor, ingrese y guarde su clave de API de Gemini para usar la aplicación. <br>Puede obtener su clave de API de Gemini <a href='https://aistudio.google.com/app/prompts/new_freeform' target='_blank'>aquí</a>. <br>Necesitará una cuenta de Google antes de poder obtenerla, así que por favor cree una con anticipación si no tiene una.",
+    "Answer in": "Responder en español!"
 }

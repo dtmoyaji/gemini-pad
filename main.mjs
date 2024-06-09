@@ -26,11 +26,6 @@ i18n.configure({
 
 let mainWindow;
 
-let promptTemplate = [
-];
-
-let pastPrompt = [];
-
 // Create a renderer with a custom link function
 const renderer = new marked.Renderer();
 renderer.link = function (href, title, text) {
@@ -184,11 +179,23 @@ ipcMain.on('chat-message', async (event, arg) => {
     arg = arg.replace(/\n/g, '\\n');
 
     try {
-        
-        event.reply('show-loading-reply', 'loading');
 
+        event.reply('show-loading-reply', 'loading');
         let replyGetter = await createAiModel(process.env.GEMINI_MODEL);
         await injectPersonality(process.env.PERSONALITY, replyGetter);
+        await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, "ユーザーから特に指定がないときは、必ずmarkdown記法を使って回答してください。");
+
+        // 応答言語を設定する。
+        if(process.env.APPLICATION_LANG !== ''){
+            await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, i18n.__("Answer in"));
+        }
+        // 所属とユーザーを追加する。
+        if (process.env.USER_ORGAN !== '') {
+            await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `ユーザーの所属は${process.env.USER_ORGAN}です。`);
+        }
+        if (process.env.USER_NAME !== '') {
+            await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `ユーザー名は${process.env.USER_NAME}です。`);
+        }
 
         // webの情報を取得する。
         let refinfo = "";
@@ -197,7 +204,7 @@ ipcMain.on('chat-message', async (event, arg) => {
             if (externalInfo !== undefined && externalInfo.length > 0) {
                 let data = { "data": [] };
                 for (let item of externalInfo) {
-                    replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, JSON.stringify(item));
+                    replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `${item.title}:\n${item.content}\n`);
                     refinfo += `\n\n[${item.title}](${item.link}) `;
                 }
             }
@@ -220,7 +227,7 @@ ipcMain.on('chat-message', async (event, arg) => {
         await titleGetter.pushLine(titleGetter.ROLE_ASSISTANT, replyMessage);
         let queryTitle = await titleGetter.invoke(`
             見出しを生成してください。
-            markdownは使わないでください。
+            markdownは使わず、textで出力してください。
             30文字以内で簡潔な内容にしてください。
             見出しだけ出力してください
         `);
@@ -388,28 +395,4 @@ ipcMain.on('remove-chat-history', async (event, arg) => {
 initializer.initEnv();
 initializer.initDirectories();
 initializer.initMenus();
-const personalities = initializer.initializePersonality();
 
-personalities.then((data) => {
-    for (const personality of data) {
-        if (personality.name === process.env.PERSONALITY) {
-            promptTemplate.push({ role: personality.role, content: personality.content });
-            break;
-        }
-    }
-});
-
-// LANGが設定されている場合、プロンプトに追加する。
-if (process.env.APPLICATION_LANG !== '') {
-    promptTemplate.push({ role: 'system', content: `LANG=${process.env.APPLICATION_LANG} で応答してください。` });
-}
-
-// USER_ORGANが設定されている場合、プロンプトに追加する。
-if (process.env.USER_ORGAN !== '') {
-    promptTemplate.push({ role: 'system', content: `ユーザーの所属は${process.env.USER_ORGAN}です。` });
-}
-
-// USER_NAMEが設定されている場合、プロンプトに追加する。
-if (process.env.USER_NAME !== '') {
-    promptTemplate.push({ role: 'system', content: `ユーザー名は${process.env.USER_NAME}です。` });
-}

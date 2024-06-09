@@ -4,8 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const fileUtils = require('./fileUtils.js');
 const database = require('./database.js');
-const l10n = require('./l10n.js');
-const { env } = require('process');
+const i18n = require('i18n');
 
 const envParams = [
     { param_name: 'LABEL', param_value: '' },
@@ -57,6 +56,8 @@ function initEnv() {
     }
     // Load .env file
     fileUtils.config();
+    i18n.setLocale(process.env.APPLICATION_LANG);
+
 }
 
 /**
