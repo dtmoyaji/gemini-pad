@@ -3,7 +3,7 @@
   "productName": "Gemini Pad",
   "version": "1.0.9",
   "description": "My Electron App",
-  "main": "main.js",
+  "main": "main.mjs",
   "build": {
     "appId": "club.tmworks.geminipad",
     "productName": "gemini-pad",
@@ -32,7 +32,8 @@
   "scripts": {
     "start": "electron .",
     "package": "node package.js",
-    "dist": "electron-builder --win"
+    "dist": "electron-builder --win",
+    "test": "node test.mjs"
   },
   "author": "DtmOyaji",
   "license": "MIT",
@@ -43,6 +44,8 @@
   "dependencies": {
     "7zip-bin": "^5.2.0",
     "@electron/packager": "^18.3.2",
+    "@langchain/community": "^0.2.9",
+    "@langchain/google-genai": "^0.0.17",
     "@npmcli/fs": "^3.1.1",
     "axios": "^1.7.2",
     "cheerio": "^1.0.0-rc.12",
@@ -55,6 +58,7 @@
     "marked": "^12.0.2",
     "mime": "^4.0.1",
     "monaco-editor": "^0.47.0",
+    "ollama": "^0.5.1",
     "prebuild": "^7.2.2",
     "prebuild-install": "^7.1.2",
     "sqlite3": "5.1.6"

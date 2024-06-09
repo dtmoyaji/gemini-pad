@@ -1,21 +1,25 @@
-const { renderFile } = require('ejs');
-const { BrowserWindow, app, ipcMain, screen, nativeImage, nativeTheme, dialog } = require('electron');
-const { writeFileSync } = require('fs');
-const { join } = require('path');
-const fs = require('fs');
-const database = require('./database.js');
-const initializer = require('./initializer.js');
-const marked = require('marked');
-const fileUtils = require('./fileUtils.js');
-const { searchDuckDuckGo, searchGoogleCSE } = require('./externalSearch.js');
-const i18n = require('i18n');
-const path = require('path');
+import { renderFile } from 'ejs';
+import { BrowserWindow, app, dialog, ipcMain, nativeTheme, screen, shell } from 'electron';
+import fs, { writeFileSync } from 'fs';
+import i18n from 'i18n';
+import * as marked from 'marked';
+import path, { join } from 'path';
+import { fileURLToPath } from 'url';
+import database from './database.js';
+import { searchDuckDuckGo, searchGoogleCSE } from './externalSearch.js';
+import fileUtils from './fileUtils.js';
+import initializer from './initializer.js';
+import { createAiModel, injectPersonality } from './models/modelController.mjs';
+
+// __dirnameを設定する。
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 initializer.initEnv();
 const GEMINI_MODEL_FOR_TITLING = 'gemini-1.0-pro'
 
 i18n.configure({
-    locales: ['en', 'ja', 'de', 'fr'],
+    locales: ['en', 'ja', 'de', 'fr', 'es'],
     defaultLocale: 'en',
     directory: __dirname + '/l10n',
 });
@@ -70,7 +74,7 @@ async function createWindow() {
 
     // Electron上の<a>タグをクリックしたときにデフォルトブラウザで開くようにする。
     win.webContents.setWindowOpenHandler((details) => {
-        require("electron").shell.openExternal(details.url);
+        shell.openExternal(details.url);
         return { action: "deny" };
     });
 
@@ -179,19 +183,12 @@ ipcMain.on('chat-message', async (event, arg) => {
     // argの改行コードを\\nに変換する。
     arg = arg.replace(/\n/g, '\\n');
 
-    let geminiPath = path.join(
-        'file://',
-        fileUtils.getAppDir(),
-        'node_modules/gemini-driver/geminiDriver.mjs'
-    );
-    const Gemini = await import(geminiPath);
-
     try {
+        
         event.reply('show-loading-reply', 'loading');
 
-        // 質問の回答を取得する。
-        pastPrompt = [];
-        pastPrompt = [...promptTemplate];
+        let replyGetter = await createAiModel(process.env.GEMINI_MODEL);
+        await injectPersonality(process.env.PERSONALITY, replyGetter);
 
         // webの情報を取得する。
         let refinfo = "";
@@ -200,17 +197,14 @@ ipcMain.on('chat-message', async (event, arg) => {
             if (externalInfo !== undefined && externalInfo.length > 0) {
                 let data = { "data": [] };
                 for (let item of externalInfo) {
-                    data.data.push(item);
+                    replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, JSON.stringify(item));
                     refinfo += `\n\n[${item.title}](${item.link}) `;
                 }
-                pastPrompt.push(data);
             }
         }
 
         console.log("回答を取得");
-        pastPrompt.push({ role: "user", content: arg });
-        let prompt = JSON.stringify(pastPrompt);
-        let replyMessage = await Gemini.queryGemini(prompt);
+        let replyMessage = (await replyGetter.invoke(arg)).content;
         if (refinfo !== '') {
             replyMessage += `\n\n**参考**\n${refinfo}`;
         }
@@ -220,36 +214,28 @@ ipcMain.on('chat-message', async (event, arg) => {
 
         // タイトルを取得する。
         console.log("タイトルを取得");
-        let titleQuery = [];
-        titleQuery = [...pastPrompt];
-        titleQuery.push({ role: "user", content: arg });
-        titleQuery.push({ role: "assistant", content: replyMessage });
-        titleQuery.push({
-            role: "user", content:
-                `会話内容にタイトルを生成してください。
-                markdownは使わないでください。
-                30文字以内で簡潔な内容にしてください。
-                `});
-        let queryTitle = await Gemini.queryGemini(
-            JSON.stringify(titleQuery),
-            GEMINI_MODEL_FOR_TITLING
-        );
-        event.reply('chat-title-reply', queryTitle);
+        let titleGetter = await createAiModel(GEMINI_MODEL_FOR_TITLING);
+        await injectPersonality(process.env.PERSONALITY, titleGetter);
+        await titleGetter.pushLine(titleGetter.ROLE_USER, arg);
+        await titleGetter.pushLine(titleGetter.ROLE_ASSISTANT, replyMessage);
+        let queryTitle = await titleGetter.invoke(`
+            見出しを生成してください。
+            markdownは使わないでください。
+            30文字以内で簡潔な内容にしてください。
+            見出しだけ出力してください
+        `);
+        event.reply('chat-title-reply', queryTitle.content);
 
         // キーワードを取得する。
         console.log("キーワードを取得");
-        let keywordQuery = [];
-        keywordQuery = [...pastPrompt];
-        keywordQuery.push({ role: "user", content: arg });
-        keywordQuery.push({
-            role: "user",
-            content: '会話内容について、SEOに効果的なキーワードを考えてください。',
-            GEMINI_MODEL_FOR_TITLING
-        });
-        let keywords = await Gemini.queryGemini(JSON.stringify(keywordQuery));
+        let keywordGetter = await createAiModel(GEMINI_MODEL_FOR_TITLING);
+        await injectPersonality(process.env.PERSONALITY, keywordGetter);
+        await keywordGetter.pushLine(keywordGetter.ROLE_USER, arg);
+        await keywordGetter.pushLine(keywordGetter.ROLE_ASSISTANT, replyMessage);
+        let keywords = await keywordGetter.invoke(`会話内容について、SEOに効果的なキーワードを考えてください。`);
 
         // 会話履歴に追加する。
-        database.putTalk(queryTitle, arg, replyMessage, keywords);
+        database.putTalk(queryTitle.content, arg, replyMessage, keywords.content);
         let talkList = await database.getTalkList(process.env.HISTORY_LIMIT);
         event.reply('chat-history-reply', talkList);
 
@@ -259,7 +245,6 @@ ipcMain.on('chat-message', async (event, arg) => {
 
     } catch (error) {
         // ダイアログを表示する。
-        const dialog = require('electron').dialog;
         if (error.message.includes('Candidate was blocked due to SAFETY')) {
             dialog.showErrorBox('エラー', '質問が不適切な回答を生成するか、危険であると判断されたため、回答がブロックされました。\n質問を変更してください。');
         } else {
