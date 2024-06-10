@@ -1,11 +1,14 @@
-const dotenv = require('dotenv');
-const os = require('os');
-const fs = require('fs');
-const path = require('path');
-const { __ } = require('i18n');
+import dotenv from 'dotenv';
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+
 
 function getAppDir() {
-    let appDir = __dirname;
+    const __filename = fileURLToPath(import.meta.url);
+    let appDir = path.dirname(__filename);
     if(appDir.endsWith('app.asar')){
         // app.asar.unpackedに置換
         appDir = appDir.replace('app.asar', 'app.asar.unpacked');
@@ -14,8 +17,6 @@ function getAppDir() {
 }
 
 function createDir(path) {
-    console.log(`CURRENT DIR: ${__dirname}`);
-    console.log(`CREATE DIR: ${path}`);
     if (!fs.existsSync(path)) {
         fs.mkdirSync(path, { recursive: true });
     }
@@ -47,12 +48,8 @@ function config(){
     dotenv.config({ path: getEnvFilePath() });
 }
 
-module.exports = {
-    getAppDir,
-    createDir,
-    createEmptyFile,
-    config,
-    getEnvFilePath,
-    getHomeDir: getHomedir,
-    getAppUserDir
+export {
+    config, createDir,
+    createEmptyFile, getAppDir, getAppUserDir, getEnvFilePath
 };
+

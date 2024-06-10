@@ -1,6 +1,5 @@
-// package.js
-const { execSync } = require('child_process');
-const fs = require('fs');
+import { execSync } from 'child_process';
+import fs from 'fs';
 
 const patterns = fs.readFileSync('.packageignore', 'utf-8').split('\n').filter(Boolean);
 const ignoreArgs = patterns.map(pattern => `--ignore=${pattern}`).join(' ');

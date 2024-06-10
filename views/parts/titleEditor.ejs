@@ -11,20 +11,20 @@
     window.queryTitle = document.getElementById('query-title');
 
     // タイトル受信時の処理
-    electron.receive('chat-title-reply', (title) => {
+    window.electron.receive('chat-title-reply', (title) => {
         if (window.queryTitle !== undefined) {
             window.queryTitle.value = title;
         }
     });
 
     // 会話履歴を受信したとき
-    electron.receive('one-history-reply', (message) => {
+    window.electron.receive('one-history-reply', (message) => {
         const title = message.title;
         window.queryTitle.value = title;
     });
 
     // ウェブ検索の有効無効を受信したとき
-    electron.receive('use-web-reply', (status) => {
+    window.electron.receive('use-web-reply', (status) => {
         if (status === 'selected') {
             document.getElementById('use-web').setAttribute('status', 'selected');
             document.getElementById('use-web').innerText = 'SELECT';
@@ -37,7 +37,7 @@
     // クリップボタンクリック時の処理
     document.getElementById('clip').addEventListener('click', () => {
         const title = window.queryTitle.value;
-        electron.send('clip-response', null);
+        window.electron.send('clip-response', null);
     });
 
     // クリップボタンクリック時の処理
@@ -53,6 +53,6 @@
             document.getElementById('use-web').innerText = 'SELECT';
             status = 'selected';
         }
-        electron.send('use-web', status);
+        window.electron.send('use-web', status);
     });
 </script>

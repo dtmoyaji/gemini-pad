@@ -18,7 +18,7 @@
 
     <script>
         // メッセージ受信時の処理
-        electron.receive('chat-history-reply', (message) => {
+        window.electron.receive('chat-history-reply', (message) => {
             // リストをクリア
             var talk_histories = document.getElementById('talk_histories');
             while (talk_histories.firstChild) {
@@ -50,19 +50,19 @@
                 // 新たに作成された要素に対してclickイベントリスナーを追加
                 innerSpan.addEventListener('click', function () {
                     var messageId = this.getAttribute('list_id');
-                    electron.send('talk-history-clicked', messageId);
+                    window.electron.send('talk-history-clicked', messageId);
                 });
 
                 // bookmark_buttonクリック時の処理
                 innerBookmarkTag.addEventListener('click', function () {
                     var messageId = this.getAttribute('list_id');
-                    electron.send('talk-history-bookmark-clicked', messageId);
+                    window.electron.send('talk-history-bookmark-clicked', messageId);
                 });
 
                 // delete_buttonクリック時の処理
                 innerDeleteTag.addEventListener('click', function () {
                     var messageId = this.getAttribute('list_id');
-                    electron.send('talk-history-delete-clicked', messageId);
+                    window.electron.send('talk-history-delete-clicked', messageId);
                 });
 
             }
@@ -71,20 +71,20 @@
         // 検索ボタンクリック時の処理
         document.getElementById('search_button').addEventListener('click', function () {
             var search = document.getElementById('search').value;
-            electron.send('search-chat-history', search);
+            window.electron.send('search-chat-history', search);
         });
 
         // search_fieldでEnterキーが押された時の処理
         document.getElementById('search').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 var search = document.getElementById('search').value;
-                electron.send('search-chat-history', search);
+                window.electron.send('search-chat-history', search);
             }
         });
 
         // remove_history_buttonクリック時の処理
         document.getElementById('remove_history_button').addEventListener('click', function () {
-            electron.send('remove-chat-history');
+            window.electron.send('remove-chat-history');
         });
 
     </script>

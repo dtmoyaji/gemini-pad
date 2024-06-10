@@ -1,6 +1,6 @@
-const { app } = require('electron');
-const fileUtils = require('./fileUtils.js');
-const l10n = require('./l10n.js');
+import { app } from 'electron';
+import * as fileUtils from './fileUtils.mjs';
+import * as l10n from './l10n.mjs';
 
 fileUtils.config();
 
@@ -109,7 +109,6 @@ function localizeMenuItems() {
     return localizedMenuItems;
 }
 
-module.exports = {
-    menuItems,
-    localizeMenuItems
+export {
+    localizeMenuItems, menuItems
 };

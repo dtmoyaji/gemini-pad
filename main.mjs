@@ -5,10 +5,10 @@ import i18n from 'i18n';
 import * as marked from 'marked';
 import path, { join } from 'path';
 import { fileURLToPath } from 'url';
-import database from './database.js';
-import { searchDuckDuckGo, searchGoogleCSE } from './externalSearch.js';
-import fileUtils from './fileUtils.js';
-import initializer from './initializer.js';
+import * as database from './database.mjs';
+import { searchDuckDuckGo, searchGoogleCSE } from './externalSearch.mjs';
+import * as fileUtils from './fileUtils.mjs';
+import * as initializer from './initializer.mjs';
 import { createAiModel, injectPersonality } from './models/modelController.mjs';
 
 // __dirnameを設定する。

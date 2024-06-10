@@ -1,7 +1,6 @@
-const dotenv = require('dotenv');
-const fileUtils = require('./fileUtils.js');
-const fs = require('fs');
-const { join } = require('path');
+import fs from 'fs';
+import { join } from 'path';
+import * as fileUtils from './fileUtils.mjs';
 
 fileUtils.config();
 
@@ -9,9 +8,9 @@ let labels = [];
 
 function loadLabels() {
     let lang = process.env.APPLICATION_LANG;
-    let filename = join(__dirname, `l10n/${lang}.json`);
+    let filename = join(fileUtils.getAppDir(), `l10n/${lang}.json`);
     if(fs.existsSync(filename) === false) {
-        filename = join(__dirname, `l10n/en.json`);
+        filename = join(fileUtils.getAppDir(), `l10n/en.json`);
     }
     let data = fs.readFileSync(filename, 'utf8');
     labels = JSON.parse(data);
@@ -26,7 +25,7 @@ function localize(key) {
     return result;
 }
 
-module.exports = {
+export {
     loadLabels,
     localize
 };

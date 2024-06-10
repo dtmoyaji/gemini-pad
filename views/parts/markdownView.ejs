@@ -5,7 +5,7 @@
 
     <script>
         // 内容をクリップボードにコピー
-        electron.receive('clip-response', (message) => {
+        window.electron.receive('clip-response', (message) => {
             const htmlContent = document.querySelector('.markdown-html-view');
             const selection = window.getSelection();
             const range = document.createRange();
@@ -19,14 +19,14 @@
             alert('クリップボードにコピーしました');
         });
 
-        electron.receive('markdown-to-html-reply', (html) => {
+        window.electron.receive('markdown-to-html-reply', (html) => {
             document.querySelector('.markdown-html-view').innerHTML = html;
         });
 
         // 会話履歴を受信したとき
-        electron.receive('one-history-reply', (message) => {
+        window.electron.receive('one-history-reply', (message) => {
             const answer = message.answer;
-            electron.send('markdown-to-html', answer);
+            window.electron.send('markdown-to-html', answer);
         });
     </script>
 

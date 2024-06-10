@@ -95,14 +95,14 @@
   <script>
     document.getElementById('return').addEventListener('click', (event) => {
       event.preventDefault();
-      electron.send('change-page', { page: 'index' });
+      window.electron.send('change-page', { page: 'index' });
     });
 
     document.querySelector('form').addEventListener('submit', async (event) => {
       event.preventDefault();
       const formData = new FormData(event.target);
       const formDataObject = Object.fromEntries(formData);
-      electron.send('save-settings', formDataObject);
+      window.electron.send('save-settings', formDataObject);
     });
   </script>
 </body>

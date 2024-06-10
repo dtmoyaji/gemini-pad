@@ -3,7 +3,7 @@
 
 <script>
 
-    electron.receive('show-loading-reply', (message) => {
+    window.electron.receive('show-loading-reply', (message) => {
         const loading = document.querySelector('.loading');
         if(message === 'loading') {
             loading.style.display = 'block';

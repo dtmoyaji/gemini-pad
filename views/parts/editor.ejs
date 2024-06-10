@@ -29,7 +29,7 @@
   <script class="receiver">
     // 受信部
     // メッセージ受信時の処理
-    electron.receive('chat-reply', (message) => {
+    window.electron.receive('chat-reply', (message) => {
       if (window.monaco_editor !== undefined) {
         window.monaco_editor.setValue(message);
         // エディタのカーソルを先頭に移動
@@ -43,7 +43,7 @@
     });
 
     // 会話履歴を受信したとき
-    electron.receive('one-history-reply', (message) => {
+    window.electron.receive('one-history-reply', (message) => {
       // メッセージを表示する
       const answer = message.answer;
       window.monaco_editor.setValue(answer);
@@ -68,7 +68,7 @@
       window.monaco_editor.onDidChangeModelContent(function (event) {
         // ここでエディタの値が変更されたときの処理を行う
         var currentValue = window.monaco_editor.getValue();
-        electron.send('markdown-to-html', currentValue);
+        window.electron.send('markdown-to-html', currentValue);
       });
     });
 

@@ -1,6 +1,6 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
-const fileUtils = require('./fileUtils');
+import axios from 'axios';
+import cheerio from 'cheerio';
+import * as fileUtils from './fileUtils.mjs';
 
 fileUtils.config();
 
@@ -105,7 +105,7 @@ async function getPageContent(url, textLimit = 1536) {
 }
 
 
-module.exports = {
+export {
     searchDuckDuckGo,
     searchGoogleCSE
 };

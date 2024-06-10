@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import fileUtils from '../fileUtils.js';
+import * as fileUtils from '../fileUtils.mjs';
 import ModelGemini from './model-gemini.mjs';
 import ModelOllama from './model-ollama.mjs';
 

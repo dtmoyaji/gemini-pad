@@ -1,11 +1,12 @@
-const { Menu } = require('electron');
-const menuItems = require('./menu.js');
-const fs = require('fs');
-const path = require('path');
-const fileUtils = require('./fileUtils.js');
-const database = require('./database.js');
-const i18n = require('i18n');
+import { Menu } from 'electron';
+import fs from 'fs';
+import i18n from 'i18n';
+import path from 'path';
+import * as database from './database.mjs';
+import * as fileUtils from './fileUtils.mjs';
+import * as menuItems from './menu.mjs';
 
+// 環境変数の初期値
 const envParams = [
     { param_name: 'LABEL', param_value: '' },
     { param_name: 'USER_ORGAN', param_value: '', },
@@ -104,11 +105,8 @@ async function initializePersonality() {
     return personalityList;
 }
 
-module.exports = {
-    initEnv,
-    initDirectories,
-    initDatabase,
-    initMenus,
-    initializePersonality,
-    envParams
+export {
+    envParams, initDatabase, initDirectories, initEnv, initMenus,
+    initializePersonality
 };
+

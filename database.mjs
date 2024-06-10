@@ -1,7 +1,6 @@
-const dotenv = require('dotenv');
-const path = require('path');
-const sqlite = require('sqlite3').verbose();
-const fileUtils = require('./fileUtils.js');
+import path from 'path';
+import sqlite from 'sqlite3';
+import * as fileUtils from './fileUtils.mjs';
 
 fileUtils.config();
 
@@ -171,17 +170,10 @@ async function removeAllNotBookmarkedTalks() {
     });
 }
 
-module.exports = {
-    initDatabase,
-    isInitialized,
-    getTalk,
-    putTalk,
-    getTalkList,
+export {
     findTalk,
-    getBookmarkedTalkList,
-    setBookmarkedTalk,
-    removeTalk,
-    removeAllNotBookmarkedTalks
+    getBookmarkedTalkList, getTalk, getTalkList, initDatabase,
+    isInitialized, putTalk, removeAllNotBookmarkedTalks, removeTalk, setBookmarkedTalk
 };
 
 

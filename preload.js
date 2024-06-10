@@ -1,5 +1,5 @@
 // preload.js
-const { contextBridge, ipcRenderer, nativeTheme } = require('electron');
+const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld(
   'electron',
@@ -8,6 +8,4 @@ contextBridge.exposeInMainWorld(
     receive: (channel, func) => ipcRenderer.on(channel, (event, ...args) => func(...args))
   }
 );
-
-window.require = require;
 

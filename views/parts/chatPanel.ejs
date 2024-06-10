@@ -18,7 +18,7 @@
       if (document.getElementById('reuse-response').checked) {
         message = window.monaco_editor.getValue() + '\n\n\n' + message;
       }
-      electron.send('chat-message', message);
+      window.electron.send('chat-message', message);
     }
 
     // 送信ボタンクリック時の処理
@@ -49,7 +49,7 @@
     });
 
     // 会話履歴を受信したとき
-    electron.receive('one-history-reply', (message) => {
+    window.electron.receive('one-history-reply', (message) => {
       let query = message.query;
       // \nを改行に変換
       query = query.replace(/\\n/g, '\n');

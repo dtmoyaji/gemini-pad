@@ -82,11 +82,11 @@
     <script>
       electron.receive('manual-transfer-reply', (manual) => {
         window.monaco_editor.setValue(manual);
-        electron.send('markdown-to-html', manual);
+        window.electron.send('markdown-to-html', manual);
       });
 
       window.addEventListener('load', function () {
-        electron.send('manual-transfer', '');
+        window.electron.send('manual-transfer', '');
         window.input_area.focus();
       });
 

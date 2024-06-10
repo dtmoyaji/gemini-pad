@@ -16,7 +16,7 @@
 
     <script>
         // メッセージ受信時の処理
-        electron.receive('bookmarked-talks-reply', (message) => {
+        window.electron.receive('bookmarked-talks-reply', (message) => {
             // リストをクリア
             var talk_histories = document.getElementById('bookmarks');
             while (talk_histories.firstChild) {
@@ -45,13 +45,13 @@
                 // 新たに作成された要素に対してclickイベントリスナーを追加
                 innerSpan.addEventListener('click', function () {
                     var messageId = this.getAttribute('list_id');
-                    electron.send('talk-history-clicked', messageId);
+                    window.electron.send('talk-history-clicked', messageId);
                 });
 
                 // bookmark_garbage_buttonクリック時の処理
                 innerBookmarkTag.addEventListener('click', function () {
                     var messageId = this.getAttribute('list_id');
-                    electron.send('bookmark-garbage-clicked', messageId);
+                    window.electron.send('bookmark-garbage-clicked', messageId);
                 });
             }
         });
@@ -59,14 +59,14 @@
         // 検索ボタンクリック時の処理
         document.getElementById('bookmark_search_button').addEventListener('click', function () {
             var search = document.getElementById('search').value;
-            electron.send('search-bookmark', search);
+            window.electron.send('search-bookmark', search);
         });
 
         // search_fieldでEnterキーが押された時の処理
         document.getElementById('bookmark_search').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 var search = document.getElementById('search').value;
-                electron.send('search-bookmark', search);
+                window.electron.send('search-bookmark', search);
             }
         });
 
