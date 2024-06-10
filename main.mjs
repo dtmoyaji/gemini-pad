@@ -25,6 +25,8 @@ i18n.configure({
 });
 
 let mainWindow;
+let currentMarkdown = '';
+let currentTitle = '';
 
 // Create a renderer with a custom link function
 const renderer = new marked.Renderer();
@@ -186,7 +188,7 @@ ipcMain.on('chat-message', async (event, arg) => {
         await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, "ユーザーから特に指定がないときは、必ずmarkdown記法を使って回答してください。");
 
         // 応答言語を設定する。
-        if(process.env.APPLICATION_LANG !== ''){
+        if (process.env.APPLICATION_LANG !== '') {
             await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, i18n.__("Answer in"));
         }
         // 所属とユーザーを追加する。
@@ -211,7 +213,7 @@ ipcMain.on('chat-message', async (event, arg) => {
         }
 
         console.log("回答を取得");
-        let argModified = join(arg,"\n"+ i18n.__("Answer in"));
+        let argModified = join(arg, "\n" + i18n.__("Answer in"));
         let replyMessage = (await replyGetter.invoke(argModified)).content;
         if (refinfo !== '') {
             replyMessage += `\n\n**参考**\n${refinfo}`;
@@ -234,6 +236,7 @@ ipcMain.on('chat-message', async (event, arg) => {
             見出しだけ出力してください
             ${i18n.__("Answer in")}
         `);
+        currentTitle = queryTitle.content;
         event.reply('chat-title-reply', queryTitle.content);
 
         // キーワードを取得する。
@@ -333,6 +336,8 @@ ipcMain.on('save-settings', async (event, arg) => {
 
 ipcMain.on('talk-history-clicked', async (event, arg) => {
     const talk = await database.getTalk(arg);
+    currentTitle = talk.title;
+    currentMarkdown = talk.answer;
     event.reply('one-history-reply', talk);
 });
 
@@ -353,6 +358,7 @@ ipcMain.on('bookmark-garbage-clicked', async (event, id) => {
 });
 
 ipcMain.on('markdown-to-html', async (event, arg) => {
+    currentMarkdown = arg;
     const html = marked.marked(arg);
     event.reply('markdown-to-html-reply', html);
 });
@@ -396,6 +402,40 @@ ipcMain.on('remove-chat-history', async (event, arg) => {
             });
         }
     });
+});
+
+// Open a file dialog to select a markdown file
+app.on('open-mdfile', async (event, arg) => {
+    try {
+        const result = await dialog.showOpenDialog(mainWindow, {
+            properties: ['openFile'],
+            filters: [{ name: 'Markdown', extensions: ['md'] }]
+        });
+
+        if (!result.canceled) {
+            const mdfile = result.filePaths[0];
+            const mdcontent = fs.readFileSync(mdfile, 'utf8');
+            mainWindow.webContents.send('open-mdfile-reply', mdcontent);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+app.on('save-mdfile-as', async (event, arg) => {
+    try {
+        dialog.showSaveDialog(mainWindow, {
+            title: 'Save Markdown File',
+            defaultPath: `${currentTitle}.md`,
+            filters: [{ name: 'Markdown', extensions: ['md'] }]
+        }).then((result) => {
+            if (!result.canceled) {
+                fs.writeFileSync(result.filePath, currentMarkdown, 'utf8');
+            }
+        });
+    } catch (error) {
+        console.error(error);
+    }
 });
 
 initializer.initEnv();

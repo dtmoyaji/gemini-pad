@@ -72,6 +72,10 @@
       });
     });
 
+    window.electron.receive('open-mdfile-reply', (message) => {
+      window.monaco_editor.setValue(message);
+    });
+
     // イベントリスナーの追加
     window.addEventListener('resize', resizeEditor);
     window.addEventListener('mouseup', resizeEditor);

@@ -137,7 +137,6 @@ async function getTalk(id) {
     });
 }
 
-
 /**
  * 会話を削除する。
  * @param {*} id

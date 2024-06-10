@@ -10,6 +10,15 @@ let menuItems = [
         label: 'File',
         submenu: [
             { role: 'quit', label: 'Quit' },
+            { label: 'Open MDFile', click: ()=>{
+                    app.emit('open-mdfile', {});
+                } 
+            },
+            {
+              label: 'Save MDFile as', click: () => {
+                    app.emit('save-mdfile-as', {});
+                }
+            },
             {
                 label: 'Reboot', click: () => {
                     app.relaunch();
