@@ -415,7 +415,13 @@ app.on('open-mdfile', async (event, arg) => {
         if (!result.canceled) {
             const mdfile = result.filePaths[0];
             const mdcontent = fs.readFileSync(mdfile, 'utf8');
-            mainWindow.webContents.send('open-mdfile-reply', mdcontent);
+            // 親ディレクトリと拡張子を除いたファイル名を取得する。
+            currentTitle = path.basename(mdfile, '.md');
+            const message = {
+                title: currentTitle,
+                content: mdcontent
+            }
+            mainWindow.webContents.send('open-mdfile-reply', message);
         }
     } catch (error) {
         console.error(error);

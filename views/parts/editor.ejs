@@ -73,7 +73,7 @@
     });
 
     window.electron.receive('open-mdfile-reply', (message) => {
-      window.monaco_editor.setValue(message);
+      window.monaco_editor.setValue(message.content);
     });
 
     // イベントリスナーの追加

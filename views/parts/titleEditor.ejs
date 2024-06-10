@@ -1,58 +1,63 @@
 <form id="titleEditor">
-    <div class="inline-inputs">
-        <label for="title" class="inline-input-label" id="title-editor-label"><%- __('Title') %>:</label>
-        <input type="text" class="inline-input-field" id="query-title" name="title" value="">
-        <a class="button-navigator-clip" id="clip">CLIP</a>
-        <a class="button-use-web" id="use-web" status="selected">SELECTED</a>
-    </div>
+  <div class="inline-inputs">
+    <label for="title" class="inline-input-label" id="title-editor-label"><%- __('Title') %>:</label>
+    <input type="text" class="inline-input-field" id="query-title" name="title" value="">
+    <a class="button-navigator-clip" id="clip">CLIP</a>
+    <a class="button-use-web" id="use-web" status="selected">SELECTED</a>
+  </div>
 </form>
 
 <script>
-    window.queryTitle = document.getElementById('query-title');
+  window.queryTitle = document.getElementById('query-title');
 
-    // タイトル受信時の処理
-    window.electron.receive('chat-title-reply', (title) => {
-        if (window.queryTitle !== undefined) {
-            window.queryTitle.value = title;
-        }
-    });
+  // タイトル受信時の処理
+  window.electron.receive('chat-title-reply', (title) => {
+    if (window.queryTitle !== undefined) {
+      window.queryTitle.value = title;
+    }
+  });
 
-    // 会話履歴を受信したとき
-    window.electron.receive('one-history-reply', (message) => {
-        const title = message.title;
-        window.queryTitle.value = title;
-    });
+  // 会話履歴を受信したとき
+  window.electron.receive('one-history-reply', (message) => {
+    const title = message.title;
+    window.queryTitle.value = title;
+  });
 
-    // ウェブ検索の有効無効を受信したとき
-    window.electron.receive('use-web-reply', (status) => {
-        if (status === 'selected') {
-            document.getElementById('use-web').setAttribute('status', 'selected');
-            document.getElementById('use-web').innerText = 'SELECT';
-        } else {
-            document.getElementById('use-web').setAttribute('status', 'unselected');
-            document.getElementById('use-web').innerText = 'UNSELECT';
-        }
-    });
+  // ウェブ検索の有効無効を受信したとき
+  window.electron.receive('use-web-reply', (status) => {
+    if (status === 'selected') {
+      document.getElementById('use-web').setAttribute('status', 'selected');
+      document.getElementById('use-web').innerText = 'SELECT';
+    } else {
+      document.getElementById('use-web').setAttribute('status', 'unselected');
+      document.getElementById('use-web').innerText = 'UNSELECT';
+    }
+  });
 
-    // クリップボタンクリック時の処理
-    document.getElementById('clip').addEventListener('click', () => {
-        const title = window.queryTitle.value;
-        window.electron.send('clip-response', null);
-    });
+  window.electron.receive('open-mdfile-reply', (message) => {
+    window.queryTitle.value = message.title;
+  });
 
-    // クリップボタンクリック時の処理
-    document.getElementById('use-web').addEventListener('click', () => {
-        const title = window.queryTitle.value;
-        let status = document.getElementById('use-web').getAttribute('status');
-        if (status === 'selected') {
-            document.getElementById('use-web').setAttribute('status', 'unselected');
-            document.getElementById('use-web').innerText = 'UNSELECT';
-            status = 'unselected';
-        } else {
-            document.getElementById('use-web').setAttribute('status', 'selected');
-            document.getElementById('use-web').innerText = 'SELECT';
-            status = 'selected';
-        }
-        window.electron.send('use-web', status);
-    });
+
+  // クリップボタンクリック時の処理
+  document.getElementById('clip').addEventListener('click', () => {
+    const title = window.queryTitle.value;
+    window.electron.send('clip-response', null);
+  });
+
+  // クリップボタンクリック時の処理
+  document.getElementById('use-web').addEventListener('click', () => {
+    const title = window.queryTitle.value;
+    let status = document.getElementById('use-web').getAttribute('status');
+    if (status === 'selected') {
+      document.getElementById('use-web').setAttribute('status', 'unselected');
+      document.getElementById('use-web').innerText = 'UNSELECT';
+      status = 'unselected';
+    } else {
+      document.getElementById('use-web').setAttribute('status', 'selected');
+      document.getElementById('use-web').innerText = 'SELECT';
+      status = 'selected';
+    }
+    window.electron.send('use-web', status);
+  });
 </script>
