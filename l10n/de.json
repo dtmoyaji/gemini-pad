@@ -51,6 +51,7 @@
 	"Application Language": "Anwendungssprache",
 	"Save": "Speichern",
 	"Please enter and save your Gemini API key to use the app. <br>You can get your Gemini API key <a href='https://aistudio.google.com/app/prompts/new_freeform' target='_blank'>here</a>. <br>You will need a Google account before you can get it, so please create one in advance if you don't have one.": "Bitte geben Sie Ihren Gemini-API-Schlüssel ein und speichern Sie ihn, um die App zu verwenden. <br>Sie können Ihren Gemini-API-Schlüssel <a href='https://aistudio.google.com/app/prompts/new_freeform' target='_blank'>hier</a> erhalten. <br>Sie benötigen ein Google-Konto, bevor Sie es erhalten können, also erstellen Sie bitte eines im Voraus, wenn Sie keines haben.",
-	"Answer in": "Deutschsprachig antworten!"
-
+	"Answer in": "Deutschsprachig antworten!",
+	"Open MDFile": "MDFile öffnen",
+	"Save MDFile as": "MDFile speichern als"
 }
