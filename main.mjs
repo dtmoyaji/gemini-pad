@@ -198,6 +198,8 @@ ipcMain.on('chat-message', async (event, arg) => {
         if (process.env.USER_NAME !== '') {
             await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `ユーザー名は${process.env.USER_NAME}です。`);
         }
+        // 今日の日付を追加する。
+        await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `今日は${new Date().toLocaleDateString()}です。`);
 
         // webの情報を取得する。
         let refinfo = "";
@@ -236,7 +238,10 @@ ipcMain.on('chat-message', async (event, arg) => {
             見出しだけ出力してください
             ${i18n.__("Answer in")}
         `);
-        currentTitle = queryTitle.content;
+        // タイトルの先頭に日付をYYYYMMDD_として追加する。日付は0埋めする。
+        let date = new Date();
+        let dateStr = date.getFullYear() + ('00' + (date.getMonth() + 1)).slice(-2) + ('00' + date.getDate()).slice(-2) + '_';
+        queryTitle.content = dateStr + queryTitle.content;
         event.reply('chat-title-reply', queryTitle.content);
 
         // キーワードを取得する。
