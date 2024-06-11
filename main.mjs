@@ -15,7 +15,7 @@ import { createAiModel, injectPersonality } from './models/modelController.mjs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-initializer.initEnv();
+let appEnv = initializer.initEnv();
 const GEMINI_MODEL_FOR_TITLING = 'gemini-1.0-pro'
 
 i18n.configure({
@@ -132,6 +132,7 @@ async function changePage(payload) {
             data: payload.data,
             locale: process.env.APPLICATION_LANG,
             dirname: __dirname.replace(/\\/g, '/'),
+            envParams: appEnv
         },
         {},
         function (err, str) {
@@ -243,6 +244,7 @@ ipcMain.on('chat-message', async (event, arg) => {
         let dateStr = date.getFullYear() + ('00' + (date.getMonth() + 1)).slice(-2) + ('00' + date.getDate()).slice(-2) + '_';
         queryTitle.content = dateStr + queryTitle.content;
         event.reply('chat-title-reply', queryTitle.content);
+        currentTitle = queryTitle.content;
 
         // キーワードを取得する。
         console.log("キーワードを取得");
@@ -449,7 +451,6 @@ app.on('save-mdfile-as', async (event, arg) => {
     }
 });
 
-initializer.initEnv();
 initializer.initDirectories();
 initializer.initMenus();
 

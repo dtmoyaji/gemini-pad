@@ -3,13 +3,12 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
-
+import * as initializer from './initializer.mjs';
 
 function getAppDir() {
     const __filename = fileURLToPath(import.meta.url);
     let appDir = path.dirname(__filename);
-    if(appDir.endsWith('app.asar')){
+    if (appDir.endsWith('app.asar')) {
         // app.asar.unpackedに置換
         appDir = appDir.replace('app.asar', 'app.asar.unpacked');
     }
@@ -44,8 +43,25 @@ function getEnvFilePath() {
     return envFilePath;
 }
 
-function config(){
+function config() {
+    // .envファイルを読み込んで、envParamsとprocess.envに格納する。
+    let envParams = initializer.getEnvParams();
+    let envFileData = fs.readFileSync(getEnvFilePath(), 'utf8');
+    for (let line of envFileData.split('\n')) {
+        let [key, value] = line.split('=');
+        if (key !== undefined && value !== undefined) {
+            key = key.trim();
+            value = value.trim();
+            // envParamsのparam_name===keyのparam_valueをvalueに変更する。
+            for (let envParam of envParams) {
+                if (envParam.param_name === key) {
+                    envParam.param_value = value;
+                }
+            }
+        }
+    }
     dotenv.config({ path: getEnvFilePath() });
+    return envParams;
 }
 
 export {

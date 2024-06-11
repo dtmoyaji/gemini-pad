@@ -40,7 +40,7 @@
 	"Use Search Result": "検索結果を使用",
 	"Google API Key": "Google APIキー",
 	"Google CSE ID": "Google CSE ID",
-	"Dev Console Mode": "開発者コンソールモード",
+	"Developer Console Mode": "開発者コンソールモード",
 	"History Dir": "履歴ディレクトリ",
 	"History Limit": "履歴表示上限",
 	"Dark Mode": "ダークモード",
@@ -52,6 +52,15 @@
 	"Please enter and save your Gemini API key to use the app. <br>You can get your Gemini API key <a href='https://aistudio.google.com/app/prompts/new_freeform' target='_blank'>here</a>. <br>You will need a Google account before you can get it, so please create one in advance if you don't have one.": "アプリの利用にあたり、Gemini API キーを入力し保存してください。<br> Gemini API キーは <a href='https://aistudio.google.com/app/prompts/new_freeform' target='_blank'>ここ</a> から取得します。<br>取得に先立ってGoogle のアカウントが必要なので、アカウントがない場合は事前に作成してください。",
 	"Answer in": "日本語で回答してください。",
 	"Open MDFile": ".mdファイルを開く",
-	"Save MDFile as": ".mdファイルとして保存"
-
+	"Save MDFile as": ".mdファイルとして保存",
+	"User Info": "ユーザー情報",
+	"Mode Parameters": "モードパラメータ",
+	"Use Search Engine": "検索エンジンの使用",
+	"Google Search Engine ID": "Google 検索エンジン ID",
+	"History Settings": "履歴設定",
+	"History Directory": "履歴ディレクトリ",
+	"Other Settings": "その他の設定",
+	"Dev Console Mode": "開発コンソールモード",
+	"Gemini API info": "Gemini API情報",
+	"Search Engine": "検索エンジン"
 }
