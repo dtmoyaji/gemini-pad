@@ -15,14 +15,16 @@ import { createAiModel, injectPersonality } from './models/modelController.mjs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-let appEnv = initializer.initEnv();
 const GEMINI_MODEL_FOR_TITLING = 'gemini-1.0-pro'
+
+let appEnv = initializer.initEnv();
 
 i18n.configure({
     locales: ['en', 'ja', 'de', 'fr', 'es'],
     defaultLocale: 'en',
     directory: __dirname + '/l10n',
 });
+i18n.setLocale(process.env.APPLICATION_LANG);
 
 let mainWindow;
 let currentMarkdown = '';
@@ -188,10 +190,6 @@ ipcMain.on('chat-message', async (event, arg) => {
         await injectPersonality(process.env.PERSONALITY, replyGetter);
         await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, "ユーザーから特に指定がないときは、必ずmarkdown記法を使って回答してください。");
 
-        // 応答言語を設定する。
-        if (process.env.APPLICATION_LANG !== '') {
-            await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, i18n.__("Answer in"));
-        }
         // 所属とユーザーを追加する。
         if (process.env.USER_ORGAN !== '') {
             await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `ユーザーの所属は${process.env.USER_ORGAN}です。`);
@@ -201,6 +199,11 @@ ipcMain.on('chat-message', async (event, arg) => {
         }
         // 今日の日付を追加する。
         await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `今日は${new Date().toLocaleDateString()}です。`);
+
+        // 応答言語を設定する。
+        if (process.env.APPLICATION_LANG !== '') {
+            await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, i18n.__("Answer in"));
+        }
 
         // webの情報を取得する。
         let refinfo = "";
