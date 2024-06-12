@@ -242,11 +242,11 @@ ipcMain.on('chat-message', async (event, arg) => {
         await titleGetter.pushLine(titleGetter.ROLE_USER, arg);
         await titleGetter.pushLine(titleGetter.ROLE_ASSISTANT, replyMessage);
         let queryTitle = await titleGetter.invoke(`
-            見出しを生成してください。
+            タイトルを考えて書き出してください。
             markdownは使わず、textで出力してください。
-            見出しを ** ** で囲まないでください。
+            タイトル ** ** で囲まないでください。
             30文字以内で簡潔な内容にしてください。
-            見出しだけ出力してください
+            タイトルだけ出力してください
             ${i18n.__("Answer in")}
         `);
         // タイトルの先頭に日付をYYYYMMDD_として追加する。日付は0埋めする。
