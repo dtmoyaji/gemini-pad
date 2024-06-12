@@ -8,10 +8,13 @@ import * as menuItems from './menu.mjs';
 
 // 環境変数の初期値
 function getEnvParams() {
+    // このパラメータを調整すると、.envファイルの項目と設定の画面が変わる。
     let envParams = [
         { param_name: 'LABEL', param_value: '', label: 'User Info' },
         { param_name: 'USER_ORGAN', param_value: '', label: 'User Org.' },
         { param_name: 'USER_NAME', param_value: '', label: 'User Name' },
+        { param_name: 'USER_PHONE', param_value: '', label: 'User Phone' },
+        { param_name: 'USER_MAIL', param_value: '', label: 'User Mail' },
         { param_name: 'LABEL01', param_value: '', label: 'Mode Parameters' },
         { param_name: 'PERSONALITY', param_value: 'default', label: 'Personality' },
         { param_name: 'APPLICATION_LANG', param_value: 'ja', label: 'Application Language' },
@@ -32,6 +35,9 @@ function getEnvParams() {
         { param_name: 'LABEL05', param_value: '', label: 'Other Settings' },
         { param_name: 'DARK_MODE', param_value: 'true', label: 'Dark Mode' },
         { param_name: 'DEV_CONSOLE_MODE', param_value: 'false', label: 'Developer Console Mode' },
+        { param_name: 'LABEL06', param_value: '', label: 'Solr(Examin)' },
+        { param_name: 'USE_SOLR', param_value: 'false', label: 'Use Solr(Examin)' },
+        { param_name: 'SOLR_DATA_DIR', param_value: 'solrdata', label: 'Solr data Directory' },
     ];
     return envParams;
 }

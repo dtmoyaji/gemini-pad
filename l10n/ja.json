@@ -62,5 +62,10 @@
 	"Other Settings": "その他の設定",
 	"Dev Console Mode": "開発コンソールモード",
 	"Gemini API info": "Gemini API情報",
-	"Search Engine": "検索エンジン"
+	"Search Engine": "検索エンジン",
+	"Use Solr(Examin)": "Use Solr(Examin)",
+	"Solr(Examin)": "Solr(Examin)",
+	"Solr data Directory": "Solr data Directory",
+	"User Phone": "ユーザ電話番号",
+	"User Mail": "ユーザーe-mail"
 }

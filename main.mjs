@@ -190,13 +190,20 @@ ipcMain.on('chat-message', async (event, arg) => {
         await injectPersonality(process.env.PERSONALITY, replyGetter);
         await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, "ユーザーから特に指定がないときは、必ずmarkdown記法を使って回答してください。");
 
-        // 所属とユーザーを追加する。
+        // ユーザーの連絡先を追加する。
         if (process.env.USER_ORGAN !== '') {
             await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `ユーザーの所属は${process.env.USER_ORGAN}です。`);
         }
         if (process.env.USER_NAME !== '') {
-            await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `ユーザー名は${process.env.USER_NAME}です。`);
+            await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `ユーザーの名前は${process.env.USER_NAME}です。`);
         }
+        if (process.env.USER_MAIL !== '') {
+            await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `ユーザーのメールアドレスは${process.env.USER_MAIL}です。`);
+        }
+        if(process.env.USER_PHONE !== '') {
+            await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `ユーザーの電話番号は${process.env.USER_PHONE}です。`);
+        }
+
         // 今日の日付を追加する。
         await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `今日は${new Date().toLocaleDateString()}です。`);
 
