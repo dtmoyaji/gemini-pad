@@ -15,21 +15,21 @@ function getEnvParams() {
         { param_name: 'LABEL01', param_value: '', label: 'Mode Parameters' },
         { param_name: 'PERSONALITY', param_value: 'default', label: 'Personality' },
         { param_name: 'APPLICATION_LANG', param_value: 'ja', label: 'Application Language' },
-        { param_name: 'LABEL', param_value: '', label: 'Gemini API info' },
+        { param_name: 'LABEL02', param_value: '', label: 'Gemini API info' },
         { param_name: 'GEMINI_API_KEY', param_value: '', label: 'Gemini API Key' },
         { param_name: 'GEMINI_MODEL', param_value: 'gemini-1.0-pro', label: 'Gemini Model' },
         { param_name: 'GEMINI_TEMPERATURE', param_value: '0.2', label: 'Gemini Temperature' },
         { param_name: 'GEMINI_MAX_OUTPUT_TOKENS', param_value: '1024', label: 'Gemini Max Output Tokens' },
         { param_name: 'GEMINI_TOP_P', param_value: '1.0', label: 'Gemini Top P' },
         { param_name: 'GEMINI_TOP_K', param_value: '1', label: 'Gemini Top K' },
-        { param_name: 'LABEL', param_value: '', label: 'Search Engine' },
+        { param_name: 'LABEL03', param_value: '', label: 'Search Engine' },
         { param_name: 'USE_SEARCH_RESULT', param_value: 'true', label: 'Use Search Result' },
         { param_name: 'GOOGLE_API_KEY', param_value: '', label: 'Google API Key' },
         { param_name: 'GOOGLE_SEARCH_ENGINE_ID', param_value: '', label: 'Google Search Engine ID' },
-        { param_name: 'LABEL', param_value: '', label: 'History Settings' },
+        { param_name: 'LABEL04', param_value: '', label: 'History Settings' },
         { param_name: 'HISTORY_DIR', param_value: 'talk_history', label: 'History Directory' },
         { param_name: 'HISTORY_LIMIT', param_value: '100', label: 'History Limit' },
-        { param_name: 'LABEL', param_value: '', label: 'Other Settings' },
+        { param_name: 'LABEL05', param_value: '', label: 'Other Settings' },
         { param_name: 'DARK_MODE', param_value: 'true', label: 'Dark Mode' },
         { param_name: 'DEV_CONSOLE_MODE', param_value: 'false', label: 'Developer Console Mode' },
     ];
@@ -40,6 +40,7 @@ function getEnvParams() {
  * 環境変数を初期化する。
  */
 function initEnv() {
+    let envParams = getEnvParams();
     // .envファイルがなければ生成してパラメータを中に書き込む。
     if (!fs.existsSync(fileUtils.getEnvFilePath())) {
         initDirectories();
@@ -47,20 +48,25 @@ function initEnv() {
         // .envファイルを作成する。
         fs.writeFileSync(fileUtils.getEnvFilePath(), '', 'utf8');
         // .envファイルにenvParamsを書き込む。順番が大事。
-        let envData = '';
-        for (let i = 0; i < envParams.length; i++) {
-            if (envParams[i].param_name === 'LABEL') {
-                envData += `#${envParams[i].label}\n`;
-            } else {
-                envData += `${envParams[i].param_name}=${envParams[i].param_value}\n`;
-            }
-        }
-        fs.writeFileSync(fileUtils.getEnvFilePath(), envData, 'utf8');
+        saveEnv(envParams);
     }
     // Load .env file
-    let envParams = fileUtils.config();
+    envParams = fileUtils.config();
     i18n.setLocale(process.env.APPLICATION_LANG);
     return envParams;
+}
+
+// envParamsを.envファイルに保存する。
+function saveEnv(envParams) {
+    let envData = '';
+    for (let i = 0; i < envParams.length; i++) {
+        if (envParams[i].param_name === 'LABEL') {
+            envData += `#${envParams[i].label}\n`;
+        } else {
+            envData += `${envParams[i].param_name}=${envParams[i].param_value}\n`;
+        }
+    }
+    fs.writeFileSync(fileUtils.getEnvFilePath(), envData, 'utf8');
 }
 
 /**
@@ -108,7 +114,12 @@ async function initializePersonality() {
 }
 
 export {
-    getEnvParams, initDatabase, initDirectories, initEnv, initMenus,
-    initializePersonality
+    getEnvParams,
+    initDatabase,
+    initDirectories,
+    initEnv,
+    initMenus,
+    initializePersonality,
+    saveEnv
 };
 

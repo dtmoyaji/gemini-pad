@@ -231,7 +231,7 @@ ipcMain.on('chat-message', async (event, arg) => {
         // タイトルを取得する。
         console.log("タイトルを取得");
         let titleGetter = await createAiModel(GEMINI_MODEL_FOR_TITLING);
-        await injectPersonality(process.env.PERSONALITY, titleGetter);
+        await injectPersonality("titleMaker", titleGetter);
         await titleGetter.pushLine(titleGetter.ROLE_USER, arg);
         await titleGetter.pushLine(titleGetter.ROLE_ASSISTANT, replyMessage);
         let queryTitle = await titleGetter.invoke(`
@@ -304,40 +304,21 @@ ipcMain.on('clip-response', async (event, arg) => {
 });
 
 ipcMain.on('use-web', async (event, arg) => {
-    let params = {};
-    // initializer.envParamsの要素に一致する値をenvから取得する。
-    for (let key of Object.keys(initializer.envParams)) {
-        let paramValue = process.env[initializer.envParams[key].param_name];
-        params[initializer.envParams[key].param_name]
-            = paramValue !== undefined ? paramValue : '';
-    }
+    let paramEntry = appEnv.find((entry) => entry.param_name === 'USE_SEARCH_RESULT');
     if (arg === 'selected') {
-        params['USE_SEARCH_RESULT'] = 'true';
-        params['GEMINI_TEMPERATURE'] = '0.3';
+        paramEntry.param_value = 'true';
     } else {
-        params['USE_SEARCH_RESULT'] = 'false';
-        params['GEMINI_TEMPERATURE'] = '0.1';
+        paramEntry.param_value = 'false';
     }
-    saveSettings(params);
+    initializer.saveEnv(appEnv);
+    appEnv = fileUtils.config();
 });
 
-function saveSettings(params) {
-    let writeData = '';
-    for (const key in params) {
-        if (key === 'LABEL') {
-            writeData += `#\n`;
-        } else {
-            process.env[key] = params[key];
-            let paramLine = `${key} = ${params[key]}`;
-            writeData += `${paramLine}\n`;
-        }
-    }
-    fs.writeFileSync(fileUtils.getEnvFilePath(), writeData, 'utf8');
-    fileUtils.config();
-}
-
 ipcMain.on('save-settings', async (event, arg) => {
-    saveSettings(arg);
+    for(const key in arg) {
+        appEnv.find((entry) => entry.param_name === key).param_value = arg[key];
+    }
+    initializer.saveEnv(appEnv);
     event.reply('settings-saved', '保存しました.');
     // リブートする。
     app.relaunch();
