@@ -44,6 +44,7 @@ function getEnvFilePath() {
 }
 
 function config() {
+    dotenv.config({ path: getEnvFilePath() });
     // .envファイルを読み込んで、envParamsとprocess.envに格納する。
     let envParams = initializer.getEnvParams();
     let envFileData = fs.readFileSync(getEnvFilePath(), 'utf8');
@@ -52,6 +53,8 @@ function config() {
         if (key !== undefined && value !== undefined) {
             key = key.trim();
             value = value.trim();
+            // process.envにkeyとvalueを設定する。
+            process.env[key] = value;
             // envParamsのparam_name===keyのparam_valueをvalueに変更する。
             for (let envParam of envParams) {
                 if (envParam.param_name === key) {
@@ -60,7 +63,6 @@ function config() {
             }
         }
     }
-    dotenv.config({ path: getEnvFilePath() });
     return envParams;
 }
 
