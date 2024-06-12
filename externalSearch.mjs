@@ -34,6 +34,8 @@ async function searchDuckDuckGo(query, maxResults = 3, maxContentLength = 2048) 
             }
         });
         await Promise.all(promises);
+        // resultを逆順にする。
+        results.reverse();
         return results;
     } catch (error) {
         console.error(error);
@@ -80,6 +82,8 @@ async function searchGoogleCSE(query, maxResults = 3, maxContentLength = 2048) {
                 }
             }
         }
+        // returnDataを逆順にする。
+        returnData.reverse();
         return returnData;
     } catch (error) {
         console.error(error.response.data); // エラーメッセージをログに出力
