@@ -6,7 +6,6 @@ import * as marked from 'marked';
 import path, { join } from 'path';
 import { fileURLToPath } from 'url';
 import * as database from './database.mjs';
-import { searchDuckDuckGo, searchGoogleCSE } from './externalSearch.mjs';
 import * as fileUtils from './fileUtils.mjs';
 import * as initializer from './initializer.mjs';
 import { createAiModel, injectPersonality } from './models/modelController.mjs';
@@ -39,15 +38,6 @@ renderer.link = function (href, title, text) {
 // Set the renderer to marked
 marked.setOptions({ renderer });
 
-// 外部検索を設定を元に判別し実行する。
-async function getExternalInfo(query, maxResults = 3, maxContentLength = 2048) {
-    // 環境変数が設定されていない場合、DuckDuckGoを使用する。
-    if (process.env.GOOGLE_API_KEY === '' || process.env.GOOGLE_CSE_ID === '') {
-        return await searchDuckDuckGo(query, maxResults, maxContentLength);
-    } else {
-        return await searchGoogleCSE(query, maxResults, maxContentLength);
-    }
-}
 
 // Create a new Electron window
 async function createWindow() {
@@ -186,51 +176,11 @@ ipcMain.on('chat-message', async (event, arg) => {
     try {
 
         event.reply('show-loading-reply', 'loading');
+
+        // チャットメッセージを生成する。
         let replyGetter = await createAiModel(process.env.GEMINI_MODEL);
         await injectPersonality(process.env.PERSONALITY, replyGetter);
-        await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, "ユーザーから特に指定がないときは、必ずmarkdown記法を使って回答してください。");
-
-        // ユーザーの連絡先を追加する。
-        if (process.env.USER_ORGAN !== '') {
-            await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `ユーザーの所属は${process.env.USER_ORGAN}です。`);
-        }
-        if (process.env.USER_NAME !== '') {
-            await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `ユーザーの名前は${process.env.USER_NAME}です。`);
-        }
-        if (process.env.USER_MAIL !== '') {
-            await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `ユーザーのメールアドレスは${process.env.USER_MAIL}です。`);
-        }
-        if(process.env.USER_PHONE !== '') {
-            await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `ユーザーの電話番号は${process.env.USER_PHONE}です。`);
-        }
-
-        // 今日の日付を追加する。
-        await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `今日は${new Date().toLocaleDateString()}です。`);
-
-        // 応答言語を設定する。
-        if (process.env.APPLICATION_LANG !== '') {
-            await replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, i18n.__("Answer in"));
-        }
-
-        // webの情報を取得する。
-        let refinfo = "";
-        if (process.env.USE_SEARCH_RESULT === 'true') {
-            let externalInfo = await getExternalInfo(arg, 4, 2048);
-            if (externalInfo !== undefined && externalInfo.length > 0) {
-                let data = { "data": [] };
-                for (let item of externalInfo) {
-                    replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `${item.title}:\n${item.content}\n`);
-                    refinfo += `\n\n[${item.title}](${item.link}) `;
-                }
-            }
-        }
-
-        console.log("回答を取得");
-        let argModified = join(arg, "\n" + i18n.__("Answer in"));
-        let replyMessage = (await replyGetter.invoke(argModified)).content;
-        if (refinfo !== '') {
-            replyMessage += `\n\n**参考**\n${refinfo}`;
-        }
+        let replyMessage = await replyGetter.invokeWebRAG(arg);
         event.reply('chat-reply', replyMessage);
 
         event.reply('show-loading-reply', 'loaded');
@@ -277,6 +227,7 @@ ipcMain.on('chat-message', async (event, arg) => {
         event.reply('bookmarked-talks-reply', bookmarkedTalks);
 
     } catch (error) {
+        console.log(error.message);
         // ダイアログを表示する。
         if (error.message.includes('Candidate was blocked due to SAFETY')) {
             dialog.showErrorBox('エラー', '質問が不適切な回答を生成するか、危険であると判断されたため、回答がブロックされました。\n質問を変更してください。');

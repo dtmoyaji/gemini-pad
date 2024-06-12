@@ -62,5 +62,11 @@
 	"History Settings": "History Settings",
 	"History Directory": "History Directory",
 	"Other Settings": "Other Settings",
-	"Developer Console Mode": "Developer Console Mode"
+	"Developer Console Mode": "Developer Console Mode",
+	"Reference:": "Reference:",
+	"User Phone": "User Phone",
+	"User Mail": "User Mail",
+	"Solr(Examin)": "Solr(Examin)",
+	"Use Solr(Examin)": "Use Solr(Examin)",
+	"Solr data Directory": "Solr data Directory"
 }

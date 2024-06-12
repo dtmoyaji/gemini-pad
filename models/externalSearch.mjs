@@ -1,6 +1,6 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
-import * as fileUtils from './fileUtils.mjs';
+import * as fileUtils from '../fileUtils.mjs';
 
 fileUtils.config();
 
@@ -74,7 +74,7 @@ async function searchGoogleCSE(query, maxResults = 3, maxContentLength = 2048) {
                             "role": "note",
                             "title": item.title,
                             "link": itemLink,
-                            "content": await getPageContent(itemLink,maxContentLengthF)
+                            "content": await getPageContent(itemLink, maxContentLengthF)
                         });
                     } catch (error) {
                         console.error(error); // エラーメッセージをログに出力
@@ -108,8 +108,18 @@ async function getPageContent(url, textLimit = 1536) {
     }
 }
 
+// 外部検索を設定を元に判別し実行する。
+async function getExternalInfo(query, maxResults = 3, maxContentLength = 2048) {
+    // 環境変数が設定されていない場合、DuckDuckGoを使用する。
+    if (process.env.GOOGLE_API_KEY === '' || process.env.GOOGLE_CSE_ID === '') {
+        return await searchDuckDuckGo(query, maxResults, maxContentLength);
+    } else {
+        return await searchGoogleCSE(query, maxResults, maxContentLength);
+    }
+}
 
 export {
+    getExternalInfo,
     searchDuckDuckGo,
     searchGoogleCSE
 };
