@@ -1,57 +1,62 @@
+<!-- 2024-06-13 -->
 # Gemini Pad
 
-Cette application utilise des modèles d'IA fournis par Google via API.
+Cette application utilise les modèles d'IA de Google via une API.
+Elle est également compatible avec Ollama pour une utilisation locale des LLM.
 
-Par défaut, le modèle de dialogue est défini sur gemini-1.5-pro, qui est actuellement disponible gratuitement à partir de juin 2024 (sous réserve de modifications). Le modèle de génération de titre et de mot-clé est défini sur gemini-1.0-pro (fixe).
+Par défaut, le modèle de dialogue est gemini-1.5-flash, disponible gratuitement en juin 2024 (modifiable).
+
+Vous pouvez basculer entre les différents modèles de Gemini et d'Ollama en remplaçant le modèle indiqué dans le champ GEMINI_API_KEY dans les paramètres.
 
 ## Configuration
 
-1. Obtenir une clé API Gemini.
-Vous pouvez obtenir une clé API Gemini à partir de [ici](https://aistudio.google.com/app/prompts/new_freeform).
-Vous aurez besoin d'un compte Google, veuillez donc en créer un si vous n'en avez pas.
+1. Obtenez une clé API Gemini.
+   Vous pouvez obtenir une clé API Gemini [ici](https://aistudio.google.com/app/prompts/new_freeform).
+   Vous aurez besoin d'un compte Google. Créez-en un si vous n'en avez pas.
 
-2. Lancez l'application. Si une clé API Gemini n'est pas enregistrée dans l'application, l'écran des paramètres s'ouvrira, veuillez donc enregistrer la clé obtenue.
-Une fois enregistré, sélectionnez Redémarrer dans le menu Fichier et redémarrez l'application.
+2. Lancez l'application. Si aucune clé API Gemini n'est enregistrée dans l'application, l'écran des paramètres s'ouvrira. Saisissez la clé que vous avez obtenue.
+   Une fois la clé enregistrée, sélectionnez Redémarrer dans le menu Fichier pour redémarrer l'application.
 
-3. L'affiliation utilisateur et l'enregistrement du nom d'utilisateur ne sont pas obligatoires, mais il est pratique de s'inscrire lors de la création d'un texte d'e-mail, etc.
+3. L'enregistrement de l'appartenance et du nom d'utilisateur n'est pas obligatoire, mais il est utile pour générer des e-mails et d'autres documents.
 
-4. Si vous spécifiez la langue d'affichage, la langue d'affichage de l'interface changera. Actuellement, le japonais, l'anglais, le français et l'allemand sont pris en charge.
+4. La langue d'affichage modifie la langue de l'interface. Les langues actuellement prises en charge sont l'anglais, le japonais, le français, l'allemand et l'espagnol.
 
 ## Utilisation
 
-Si vous entrez une question dans la zone de texte en bas de l'écran, la réponse s'affichera en haut.
+Saisissez votre question dans la zone de texte en bas de l'écran. La réponse s'affichera dans la partie supérieure.
 
-L'historique des communications sur le côté droit de l'écran affiche les titres des conversations passées. Cliquer sur un titre affichera la question et la réponse à l'écran.
+L'historique des communications à droite de l'écran affiche les titres des conversations précédentes. Cliquez sur un titre pour afficher la question et la réponse correspondantes.
 
-Si vous cochez Utiliser le texte ci-dessus, vous pouvez inclure la réponse de Gemini dans votre question.
+Cochez la case Utiliser le texte ci-dessus pour inclure la réponse de Gemini dans votre question.
 
-Cliquer sur l'icône du presse-papiers copiera le contenu HTML dans le presse-papiers.
+Cliquez sur l'icône Presse-papiers pour copier le contenu HTML dans le presse-papiers.
 
-Cliquer sur l'icône Web activera/désactivera la recherche Web.
+Cliquez sur l'icône Web pour activer ou désactiver la recherche Web.
 
-### À propos de la recherche sur le Web
+### À propos de la recherche Web
 
-Initialement, DackDackGo est utilisé pour la recherche sur le Web.
+Par défaut, l'application utilise DuckDuckGo pour la recherche Web.
 
-Si vous obtenez une clé API Google et un identifiant Google CSE auprès de Google et que vous les enregistrez dans les paramètres, la recherche Google sera utilisée. Cependant, vous devrez payer les frais fixés par Google.
+Si vous obtenez une clé API Google et un ID Google CSE, vous pouvez les enregistrer dans les paramètres pour utiliser la recherche Google. Toutefois, vous devrez payer les frais définis par Google.
 
-### Opération clé
+### Raccourcis clavier
 
-Lorsque vous entrez du texte, appuyez sur Maj + Entrée pour créer une nouvelle ligne, Entrée pour envoyer une question et Maj + Suppr pour supprimer le contenu de la question.
-Appuyez sur Alt pour activer/désactiver la réutilisation de la réponse précédente.
+Lorsque vous saisissez du texte, utilisez Maj + Entrée pour créer un saut de ligne, Entrée pour envoyer la question et Maj + Suppr pour effacer le contenu de la question.
+Utilisez Alt pour activer ou désactiver la réutilisation de la réponse précédente.
 
-## À propos du format de réponse
+## Format de réponse
 
 Les réponses de Gemini sont au format Markdown, sauf indication contraire.
 
-## À propos des paramètres du modèle
+## Paramètres du modèle
 
-Pour plus de détails sur les paramètres du modèle de Gemini, veuillez vous référer à Google AI for Developers' [À propos des modèles génératifs](https://ai.google.dev/gemini-api/docs/models/generative-models?hl=ja&_gl=1*1fu959e*_up*MQ..*_ga*MTgyNTQxNDY0NC4xNzE0MDIxNDY3*_ga_P1DBVKWT6V*MTcxNDAyMTQ2Ny4xLjAuMTcxNDAyMTg1NC4wLjAuMA..).
+Pour plus d'informations sur les paramètres du modèle Gemini, consultez la page [Modèles génératifs](https://ai.google.dev/gemini-api/docs/models/generative-models?hl=ja&_gl=1*1fu959e*_up*MQ..*_ga*MTgyNTQxNDY0NC4xNzE0MDIxNDY3*_ga_P1DBVKWT6V*MTcxNDAyMTQ2Ny4xLjAuMTcxNDAyMTg1NC4wLjAuMA..) de Google AI for Developers.
 
-## À propos de la personnalité
+## Personnalité
 
-Vous pouvez choisir parmi les trois personnalités suivantes dans l'élément **Personnalité** dans l'écran des paramètres. La modification du paramètre modifiera la tendance de la réponse et le ton de la conversation.
+Dans les paramètres, sous **Personnalité**, vous pouvez choisir parmi les 3 personnalités suivantes. La modification de ce paramètre modifie le ton et le style des réponses.
 
-* **par défaut:** Personnalité de chatbot par défaut.
-* **kansai:** Personnalité d'un homme du Kansai.
-* **rin:** Personnalité d'une jeune femme.
+* **default :** Personnalité de chatbot par défaut.
+* **kansai :** Personnalité d'un homme de la région du Kansai.
+* **rin :** Personnalité d'une jeune fille de bonne famille.
+<!-- gemini-1.0-pro -->
