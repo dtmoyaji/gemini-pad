@@ -36,8 +36,11 @@ function getEnvParams() {
         { param_name: 'DARK_MODE', param_value: 'true', label: 'Dark Mode' },
         { param_name: 'DEV_CONSOLE_MODE', param_value: 'false', label: 'Developer Console Mode' },
         { param_name: 'LABEL06', param_value: '', label: 'Solr(Examin)' },
-        { param_name: 'USE_SOLR', param_value: 'false', label: 'Use Solr(Examin)' },
-        { param_name: 'SOLR_DATA_DIR', param_value: 'solrdata', label: 'Solr data Directory' },
+        { param_name: 'USE_SOLR', param_value: 'false', label: 'Use Solr' },
+        { param_name: 'SOLR_PROTOCOL', param_value: 'http', label: 'Solr protocol http/https' },
+        { param_name: 'SOLR_HOST', param_value: '127.0.0.1', label: 'Solr protocol http/https' },
+        { param_name: 'SOLR_PORT', param_value: '8983', label: 'Solr port' },
+        { param_name: 'SOLR_CORE', param_value: 'gemini_pad', label: 'Solr core name' },
     ];
     return envParams;
 }

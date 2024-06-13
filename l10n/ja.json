@@ -68,5 +68,9 @@
 	"Solr data Directory": "Solr data Directory",
 	"User Phone": "ユーザ電話番号",
 	"User Mail": "ユーザーe-mail",
-	"Reference:": "参考:"
+	"Reference:": "参考:",
+	"Solr protocol http/https": "Solr protocol http/https",
+	"Solr port": "Solr port",
+	"Solr core name": "Solr core name",
+	"Use Solr": "Use Solr"
 }
