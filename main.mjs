@@ -9,6 +9,7 @@ import * as database from './database.mjs';
 import * as fileUtils from './fileUtils.mjs';
 import * as initializer from './initializer.mjs';
 import { createAiModel, injectPersonality } from './models/modelController.mjs';
+import packageInfo from './package.json' with { type: "json" };
 
 // __dirnameを設定する。
 const __filename = fileURLToPath(import.meta.url);
@@ -120,6 +121,7 @@ async function changePage(payload) {
     renderFile(srcFile,
         {
             __: i18n.__,
+            version: packageInfo.version,
             title: payload.title,
             data: payload.data,
             locale: process.env.APPLICATION_LANG,

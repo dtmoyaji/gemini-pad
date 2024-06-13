@@ -95,9 +95,11 @@ async function getPageContent(url, textLimit = 1536) {
         let itemResponse = await axios.get(url);
         let itemData = itemResponse.data;
         const $ = cheerio.load(itemData);
+        $('head').remove();
+        $('script').remove();
         itemData = $('body').text();
         // 改行でsplitして、trimして再結合する。
-        itemData = itemData.split('\n').map((line) => line.trim()).join(' ');
+        itemData = itemData.split('\n').map((line) => line.trim()).join('\n');
         // 連続する空白を削除する。
         itemData = itemData.replace(/\s+/g, ' ');
         // 先頭から2k文字までで切り取る。
