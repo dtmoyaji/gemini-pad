@@ -1,8 +1,8 @@
 import i18n from 'i18n';
 import ollama from 'ollama';
 import * as fileUtils from "../fileUtils.mjs";
-import { SolrDriver } from "../solrDriver.mjs";
 import { getExternalInfo } from "./externalSearch.mjs";
+import * as SolrSearch from "./solrSearch.mjs";
 
 // 環境変数設定
 fileUtils.config();
@@ -92,14 +92,13 @@ export default class ModelOllama {
         }
 
         // Solrの情報を取得する。
-        if(process.env.USE_SOLR === 'true') {
-            let solrDriver = new SolrDriver();
-            let searchResult = await solrDriver.searchDocument(arg);
-            if (searchResult !== undefined && searchResult.length > 0) {
-                for (let item of searchResult) {
-                    this.pushLine(this.ROLE_ASSISTANT, `${item.title}:\n${item.content}\n`);
-                    referencesInfo += `\n\n[${item.title}](file://${item.link}) - ${item.score} `;
+        if (process.env.USE_SOLR === 'true') {
+            let searchResult = await SolrSearch.searchSolr(arg);
+            if (searchResult.references !== undefined) {
+                for (let item of searchResult.references) {
+                    this.pushLine(this.ROLE_ASSISTANT, item[0]);
                 }
+                referencesInfo += searchResult.referencesInfo;
             }
         }
 
