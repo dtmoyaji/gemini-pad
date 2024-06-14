@@ -1,18 +1,6 @@
-import dotenv from 'dotenv';
-import { createAiModel, injectPersonality } from './models/modelController.mjs';
+import { SolrDriver } from './solrDriver.mjs';
 
-dotenv.config();
+let solr = new SolrDriver();
 
-async function test(modelName = 'gemini-1.5-flash') {
-    let AIModel = await createAiModel(modelName);
-    await injectPersonality('default', AIModel);
-    AIModel.pushLine(AIModel.ROLE_ASSISTANT, "日本語で会話してください。");
-    let initLines = AIModel.getLines();
-    const res = await AIModel.invoke("あなたの名前は何ですか？");
-    let content = res.content;
-    console.log(content);
+await solr.syncDocuments('D:\\owncloud.date-yakkyoku.net\\ノート');
 
-    console.log('initLines:', initLines);
-}
-
-test('llama3');
