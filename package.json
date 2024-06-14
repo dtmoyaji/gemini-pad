@@ -49,6 +49,7 @@
     "@npmcli/fs": "^3.1.1",
     "axios": "^1.7.2",
     "cheerio": "^1.0.0-rc.12",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "electron-i18n": "^1.3136.0",
@@ -59,6 +60,7 @@
     "ollama": "^0.5.1",
     "prebuild": "^13.0.1",
     "prebuild-install": "^7.1.2",
+    "solr-node": "^1.2.1",
     "sqlite3": "5.1.6"
   },
   "resolutions": {

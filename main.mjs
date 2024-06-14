@@ -183,6 +183,8 @@ ipcMain.on('chat-message', async (event, arg) => {
         let replyGetter = await createAiModel(process.env.GEMINI_MODEL);
         await injectPersonality(process.env.PERSONALITY, replyGetter);
         let replyMessage = await replyGetter.invokeWebRAG(arg);
+        // \\nを改行コードに変換する。
+        replyMessage = replyMessage.replace(/\\n/g, '\n');
         event.reply('chat-reply', replyMessage);
 
         event.reply('show-loading-reply', 'loaded');

@@ -97,6 +97,10 @@ async function getPageContent(url, textLimit = 1536) {
         const $ = cheerio.load(itemData);
         $('head').remove();
         $('script').remove();
+        $('style').remove();
+        $('noscript').remove();
+        $('aside').remove();
+        $('footer').remove();
         itemData = $('body').text();
         // 改行でsplitして、trimして再結合する。
         itemData = itemData.split('\n').map((line) => line.trim()).join('\n');

@@ -1,10 +1,12 @@
-import { Menu } from 'electron';
+import electronPackage from 'electron';
 import fs from 'fs';
 import i18n from 'i18n';
 import path from 'path';
 import * as database from './database.mjs';
 import * as fileUtils from './fileUtils.mjs';
 import * as menuItems from './menu.mjs';
+
+const { Menu } = electronPackage;
 
 // 環境変数の初期値
 function getEnvParams() {
@@ -40,7 +42,7 @@ function getEnvParams() {
         { param_name: 'SOLR_PROTOCOL', param_value: 'http', label: 'Solr protocol http/https' },
         { param_name: 'SOLR_HOST', param_value: '127.0.0.1', label: 'Solr protocol http/https' },
         { param_name: 'SOLR_PORT', param_value: '8983', label: 'Solr port' },
-        { param_name: 'SOLR_CORE', param_value: 'gemini_pad', label: 'Solr core name' },
+        { param_name: 'SOLR_CORE', param_value: 'geminipad', label: 'Solr core name' },
     ];
     return envParams;
 }

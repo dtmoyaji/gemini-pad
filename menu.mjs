@@ -1,6 +1,8 @@
-import { app } from 'electron';
+import electronPackage from 'electron';
 import * as fileUtils from './fileUtils.mjs';
 import * as l10n from './l10n.mjs';
+
+const { app } = electronPackage;
 
 fileUtils.config();
 
@@ -10,12 +12,13 @@ let menuItems = [
         label: 'File',
         submenu: [
             { role: 'quit', label: 'Quit' },
-            { label: 'Open MDFile', click: ()=>{
+            {
+                label: 'Open MDFile', click: () => {
                     app.emit('open-mdfile', {});
-                } 
+                }
             },
             {
-              label: 'Save MDFile as', click: () => {
+                label: 'Save MDFile as', click: () => {
                     app.emit('save-mdfile-as', {});
                 }
             },
