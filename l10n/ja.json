@@ -72,5 +72,8 @@
 	"Solr protocol http/https": "Solr protocol http/https",
 	"Solr port": "Solr port",
 	"Solr core name": "Solr core name",
-	"Use Solr": "Use Solr"
+	"Use Solr": "Use Solr",
+	"LLM Model gemini/ollama": "LLM Model gemini/ollama",
+	"LLM Model": "LLM モデル",
+	"LLM Model of gemini/ollama": "gemini/ollamaのモデル名"
 }

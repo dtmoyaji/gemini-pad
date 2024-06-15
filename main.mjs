@@ -233,7 +233,9 @@ ipcMain.on('chat-message', async (event, arg) => {
     } catch (error) {
         console.log(error.message);
         // ダイアログを表示する。
-        if (error.message.includes('Candidate was blocked due to SAFETY')) {
+        if (error.message === undefined) {
+            dialog.showErrorBox('エラー', error);
+        } else if (error.message.includes('Candidate was blocked due to SAFETY')) {
             dialog.showErrorBox('エラー', '質問が不適切な回答を生成するか、危険であると判断されたため、回答がブロックされました。\n質問を変更してください。');
         } else {
             dialog.showErrorBox('エラー', error.message);
@@ -277,7 +279,7 @@ ipcMain.on('use-web', async (event, arg) => {
 });
 
 ipcMain.on('save-settings', async (event, arg) => {
-    for(const key in arg) {
+    for (const key in arg) {
         appEnv.find((entry) => entry.param_name === key).param_value = arg[key];
     }
     initializer.saveEnv(appEnv);

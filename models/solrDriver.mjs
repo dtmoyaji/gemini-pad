@@ -1,9 +1,9 @@
-// solr-node ライブラリをインポート
 import crypto from 'crypto';
 import fs from 'fs';
+import fetch from 'node-fetch';
 import path from 'path';
 import SolrNode from 'solr-node';
-import * as fileUtils from './fileUtils.mjs';
+import * as fileUtils from '../fileUtils.mjs';
 
 export class SolrDriver {
     constructor() {
@@ -15,6 +15,18 @@ export class SolrDriver {
             protocol: process.env.SOLR_PROTOCOL
         };
         this.client = new SolrNode(this.solrConfig);
+    }
+
+    async isSolrActive() {
+        let url = `${this.solrConfig.protocol}://${this.solrConfig.host}:${this.solrConfig.port}/solr/${this.solrConfig.core}/admin/ping`;
+        try {
+            let response = await fetch(url);
+            let json = await response.json();
+            return json.status === 'OK';
+        } catch (error) {
+            console.log('error: solr is not active. skip getting solr data.');
+            return false;
+        }
     }
 
     async syncDocuments(dir) {
@@ -57,6 +69,7 @@ export class SolrDriver {
             });
         });
         let docsCount = queryResult.response.docs.length;
+        // document filtering cut off down below from half of score amounts.
         // docs.scrore から平均値を計算する。
         let sum = 0;
         queryResult.response.docs.forEach(doc => {
