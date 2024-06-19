@@ -82,7 +82,7 @@ export default class ModelOllama {
         // webの情報を取得する。
         let referencesInfo = "";
         if (process.env.USE_SEARCH_RESULT === 'true') {
-            let externalInfo = await getExternalInfo(arg, 4, 2048);
+            let externalInfo = await getExternalInfo(arg, process.env.SEARCH_DOC_LIMIT, 2048);
             if (externalInfo !== undefined && externalInfo.length > 0) {
                 for (let item of externalInfo) {
                     this.pushLine(this.ROLE_ASSISTANT, `${item.title}:\n${item.content}\n`);

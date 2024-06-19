@@ -75,5 +75,7 @@
 	"Use Solr": "Use Solr",
 	"LLM Model gemini/ollama": "LLM Model gemini/ollama",
 	"LLM Model": "LLM モデル",
-	"LLM Model of gemini/ollama": "gemini/ollamaのモデル名"
+	"LLM Model of gemini/ollama": "gemini/ollamaのモデル名",
+	"Search Document Limit": "検索ドキュメントの上限",
+	"Solr host IP or URL": "Solr host IP or URL"
 }
