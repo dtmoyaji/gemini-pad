@@ -112,7 +112,7 @@ export default class ModelOllama {
         // replyMessageの先頭に YYYY-MM-DDを追加する。日付は0詰めする。
         let date = new Date();
         let dateString = `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
-        replyMessage = `<!-- ${dateString} -->\n${replyMessage}\n<!-- ${process.env.GEMINI_MODEL} -->`;
+        replyMessage = `<!-- ${dateString} -->\n${replyMessage}\n<!-- ${process.env.GEMINI_MODEL} - Gemini Pad -->`;
         return replyMessage;
     }
 
