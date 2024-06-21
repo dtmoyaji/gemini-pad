@@ -61,7 +61,8 @@
     "prebuild": "^13.0.1",
     "prebuild-install": "^7.1.2",
     "solr-node": "^1.2.1",
-    "sqlite3": "5.1.6"
+    "sqlite3": "5.1.6",
+    "tar": "^7.2.0"
   },
   "resolutions": {
     "sqlite3": "5.1.6",

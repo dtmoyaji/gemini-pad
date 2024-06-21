@@ -44,6 +44,11 @@ function getEnvFilePath() {
 }
 
 function config() {
+    let envFilePath = getEnvFilePath();
+    // .envファイルがなければ生成してパラメータを中に書き込む。
+    if (!fs.existsSync(envFilePath)) {
+        initializer.initEnv();
+    }
     dotenv.config({ path: getEnvFilePath() });
     // .envファイルを読み込んで、envParamsとprocess.envに格納する。
     let envParams = initializer.getEnvParams();

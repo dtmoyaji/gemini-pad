@@ -49,7 +49,7 @@
 	"Save": "保存",
 	"Setting Page": "設定ページ",
 	"Back": "戻る",
-	"Please enter and save your Gemini API key to use the app. <br>You can get your Gemini API key <a href='https://aistudio.google.com/app/prompts/new_freeform' target='_blank'>here</a>. <br>You will need a Google account before you can get it, so please create one in advance if you don't have one.": "アプリの利用にあたり、Gemini API キーを入力し保存してください。<br> Gemini API キーは <a href='https://aistudio.google.com/app/prompts/new_freeform' target='_blank'>ここ</a> から取得します。<br>取得に先立ってGoogle のアカウントが必要なので、アカウントがない場合は事前に作成してください。",
+	"Please enter and save your Gemini API key to use the app. <br>You can get your Gemini API key <a href='https://aistudio.google.com/app/prompts/new_freeform' target='_blank'>here</a>. <br>You will need a Google account before you can get it, so please create one in advance if you don't have one.": "アプリの利用にあたり、Gemini API キーを入力し保存してください。<br> Gemini API キーは <a href='https://aistudio.google.com/app/prompts/new_freeform' target='_blank'>ここ</a> から取得します。<br>取得に先立ってGoogle のアカウントが必要なので、アカウントがない場合は事前に作成してください。<br>保存ボタンは画面の一番下にあるので、スクロールしてください。",
 	"Answer in": "日本語で回答してください。",
 	"Open MDFile": ".mdファイルを開く",
 	"Save MDFile as": ".mdファイルとして保存",
