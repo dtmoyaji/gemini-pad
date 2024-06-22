@@ -78,10 +78,15 @@
 	"LLM Model of gemini/ollama": "gemini/ollamaのモデル名",
 	"Search Document Limit": "検索ドキュメントの上限",
 	"Solr host IP or URL": "Solr host IP or URL",
-	"Elasticsearch(Examin)": "Elasticsearch(Examin)",
-	"Use Elasticsearch": "Use Elasticsearch",
-	"Elasticsearch protocol http/https": "Elasticsearch protocol http/https",
-	"Elasticsearch host IP or URL": "Elasticsearch host IP or URL",
-	"Elasticsearch port": "Elasticsearch port",
-	"Elasticsearch index name": "Elasticsearch index name"
+	"Elasticsearch": "Elasticsearch",
+	"Use Elasticsearch": "Elasticsearchを使用する",
+	"protocol http/https": "プロトコル http/https",
+	"host IP or URL": "ホスト IP or URL",
+	"port": "ポート番号",
+	"index name": "インデックス名",
+	"API Key": "APIキー",
+	"URL Prefix": "URLプレフィックス",
+	"cut off score": "切捨スコア",
+	"use document limit": "使用ドキュメント数",
+	"core name": "core name"
 }

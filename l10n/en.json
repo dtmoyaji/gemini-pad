@@ -68,5 +68,20 @@
 	"User Mail": "User Mail",
 	"Solr(Examin)": "Solr(Examin)",
 	"Use Solr(Examin)": "Use Solr(Examin)",
-	"Solr data Directory": "Solr data Directory"
+	"Solr data Directory": "Solr data Directory",
+	"LLM Model": "LLM Model",
+	"LLM Model of gemini/ollama": "LLM Model of gemini/ollama",
+	"Search Document Limit": "Search Document Limit",
+	"Elasticsearch": "Elasticsearch",
+	"Use Elasticsearch": "Use Elasticsearch",
+	"protocol http/https": "protocol http/https",
+	"host IP or URL": "host IP or URL",
+	"port": "port",
+	"index name": "index name",
+	"API Key": "API Key",
+	"URL Prefix": "URL Prefix",
+	"cut off score": "cut off score",
+	"use document limit": "use document limit",
+	"Use Solr": "Use Solr",
+	"core name": "core name"
 }

@@ -2,7 +2,7 @@ import i18n from 'i18n';
 import ollama from 'ollama';
 import * as fileUtils from "../fileUtils.mjs";
 import { getExternalInfo } from "./externalSearch.mjs";
-import * as SolrSearch from "./solrSearch.mjs";
+import * as LocalSearch from "./localSearch.mjs";
 
 // 環境変数設定
 fileUtils.config();
@@ -91,9 +91,9 @@ export default class ModelOllama {
             }
         }
 
-        // Solrの情報を取得する。
-        if (process.env.USE_SOLR === 'true') {
-            let searchResult = await SolrSearch.searchSolr(arg);
+        // 内部資料を取得する。
+        if (process.env.USE_SOLR === 'true' || process.env.USE_ELASTICSEARCH === 'true') {
+            let searchResult = await LocalSearch.search(arg);
             if (searchResult.references !== undefined) {
                 for (let item of searchResult.references) {
                     this.pushLine(this.ROLE_ASSISTANT, item[0]);

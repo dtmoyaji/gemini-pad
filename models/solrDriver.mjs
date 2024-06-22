@@ -17,7 +17,7 @@ export class SolrDriver {
         this.client = new SolrNode(this.solrConfig);
     }
 
-    async isSolrActive() {
+    async isActive() {
         let url = `${this.solrConfig.protocol}://${this.solrConfig.host}:${this.solrConfig.port}/solr/${this.solrConfig.core}/admin/ping`;
         try {
             let response = await fetch(url);

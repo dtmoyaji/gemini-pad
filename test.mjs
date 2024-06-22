@@ -1,6 +1,7 @@
-import { SolrDriver } from './solrDriver.mjs';
+import { ElasticDriver } from "./models/elasticDriver.mjs";
 
-let solr = new SolrDriver();
+let elasticDriver = new ElasticDriver();
 
-await solr.syncDocuments('D:\\owncloud.date-yakkyoku.net\\ノート');
+let response = await elasticDriver.searchDocument("家事援助サービスについてアイディア出して");
 
+console.log(JSON.stringify(response, null, 2));
