@@ -42,12 +42,15 @@ export class ElasticDriver {
             }
         };
         try {
+            let headers = {
+                'Content-Type': 'application/json'
+            };
+            if (process.env.ELASTICSEARCH_APIKEY !== '') {
+                headers['apikey'] = process.env.ELASTICSEARCH_APIKEY;
+            }
             const response = await fetch(this.elasticConfig.url, {
                 method: 'POST', // Elasticsearchの検索にはPOSTを使用
-                headers: {
-                    'apikey': process.env.ELASTICSEARCH_APIKEY, // APIキーをヘッダに含める
-                    'Content-Type': 'application/json'
-                },
+                headers: headers,
                 body: JSON.stringify(query) // 検索クエリ
             });
 
