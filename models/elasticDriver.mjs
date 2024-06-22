@@ -27,9 +27,7 @@ export class ElasticDriver {
                 "bool": {
                     "should": [
                         {
-                            "match": {
-                                "owner": "takahiro"
-                            }
+                            "match_all": {}
                         }
                     ],
                     "minimum_should_match": 1,
