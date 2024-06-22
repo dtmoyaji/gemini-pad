@@ -39,6 +39,13 @@ Inicialmente, DuckDuckGo se utiliza para la búsqueda web.
 
 Si obtiene la clave de API de Google y la ID de Google CSE y las registra en la configuración, utilizará la búsqueda de Google. Sin embargo, deberá pagar los costos establecidos por Google.
 
+### Sobre la búsqueda de documentos internos
+
+Es compatible con la búsqueda de texto completo utilizando Elasticsearch.
+Además, se espera que se utilice Nextcloud como servidor de archivos, por lo que al utilizar el complemento de búsqueda de texto completo de Nextcloud y vincularlo con Elasticsearch, la experiencia de uso será muy buena.
+
+La visualización de enlaces de documentos internos abrirá la página correspondiente en Nextcloud, por lo que ajuste el valor del prefijo de URL para abrir la página adecuada.
+
 ### Operación de teclas
 
 Cuando ingresa texto, presione Shift + Enter para un salto de línea, Enter para enviar una pregunta y Shift + Delete para borrar el contenido de la pregunta.

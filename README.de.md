@@ -30,6 +30,13 @@ Wenn Sie auf das Websymbol klicken, können Sie die Websuche ein- und ausschalte
 In der Standardeinstellung wird DackDackGo für die Websuche verwendet.
 Wenn Sie von Google einen Google API-Schlüssel und eine Google CSE-ID erhalten und diese registrieren, wird die Google-Suche verwendet. Sie müssen jedoch die von Google festgelegten Kosten bezahlen.
 
+### Über die interne Dokumentensuche
+
+Es wird eine Volltextsuche mit Elasticsearch unterstützt.
+Darüber hinaus wird davon ausgegangen, dass Nextcloud als Dateiserver verwendet wird. Wenn Sie das fulltextsearch-Plugin von Nextcloud verwenden und Nextcloud mit Elasticsearch integrieren, wird die Benutzerfreundlichkeit erheblich verbessert.
+
+Die Anzeige von internen Dokumentenlinks öffnet die entsprechende Seite in Nextcloud. Bitte passen Sie den Wert des URL-Präfixes an, um die gewünschte Seite zu öffnen.
+
 ### Tastenbedienung
 
 Bei der Texteingabe können Sie mit Umschalt + Eingabetaste einen Zeilenumbruch einfügen, mit Eingabetaste die Frage senden und mit Umschalt + Entf den Frageninhalt löschen.

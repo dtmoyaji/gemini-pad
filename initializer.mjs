@@ -39,7 +39,7 @@ function getEnvParams() {
         { param_name: 'LABEL050', param_value: '', label: 'Other Settings' },
         { param_name: 'DARK_MODE', param_value: 'true', label: 'Dark Mode' },
         { param_name: 'DEV_CONSOLE_MODE', param_value: 'false', label: 'Developer Console Mode' },
-        { param_name: 'LABEL06', param_value: '', label: 'Elasticsearch'},
+        { param_name: 'LABEL06', param_value: '', label: 'Elasticsearch + Nextcloud'},
         { param_name: 'USE_ELASTICSEARCH', param_value: 'false', label: 'Use Elasticsearch' },
         { param_name: 'ELASTICSEARCH_PROTOCOL', param_value: 'http', label: 'protocol http/https' },
         { param_name: 'ELASTICSEARCH_HOST', param_value: 'localhost', label: 'host IP or URL' },

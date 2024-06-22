@@ -39,6 +39,13 @@ Par défaut, l'application utilise DuckDuckGo pour la recherche Web.
 
 Si vous obtenez une clé API Google et un ID Google CSE, vous pouvez les enregistrer dans les paramètres pour utiliser la recherche Google. Toutefois, vous devrez payer les frais définis par Google.
 
+### À propos de la recherche de documents internes
+
+Il prend en charge la recherche en texte intégral utilisant Elasticsearch.
+De plus, il est prévu d'utiliser Nextcloud en tant que serveur de fichiers, donc en utilisant le plugin fulltextsearch de Nextcloud et en le connectant à Elasticsearch, l'expérience utilisateur sera considérablement améliorée.
+
+L'affichage des liens vers les documents internes ouvrira la page correspondante sur Nextcloud, donc veuillez ajuster la valeur du préfixe d'URL pour ouvrir la page appropriée.
+
 ### Raccourcis clavier
 
 Lorsque vous saisissez du texte, utilisez Maj + Entrée pour créer un saut de ligne, Entrée pour envoyer la question et Maj + Suppr pour effacer le contenu de la question.

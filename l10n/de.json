@@ -80,5 +80,6 @@
 	"use document limit": "Dokumentlimit verwenden",
 	"Solr(Examin)": "Solr(Examin)",
 	"Use Solr": "Solr verwenden",
-	"core name": "Kernname"
+	"core name": "Kernname",
+	"Elasticsearch + Nextcloud": "Elasticsearch + Nextcloud"
 }

@@ -88,5 +88,6 @@
 	"URL Prefix": "URLプレフィックス",
 	"cut off score": "切捨スコア",
 	"use document limit": "使用ドキュメント数",
-	"core name": "core name"
+	"core name": "core name",
+	"Elasticsearch + Nextcloud": "Elasticsearch + Nextcloud"
 }

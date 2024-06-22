@@ -39,6 +39,13 @@ Initially, DackDackGo is used for web search.
 
 If you obtain a Google API Key and Google CSE ID from Google and register them in the settings, Google search will be used. However, you will need to pay the fees set by Google.
 
+### About Internal Data Search
+
+We support full-text search using Elasticsearch.
+In addition, we assume the use of Nextcloud as a file server, so it would be very convenient to integrate Nextcloud with Elasticsearch using the fulltextsearch plugin.
+
+The link display for internal documents opens the corresponding page on Nextcloud, so please adjust the value of the URL prefix to open the desired page.
+
 ### Key operation
 
 When entering text, press Shift + Enter to create a new line, Enter to send a question, and Shift + Delete to delete the question content.

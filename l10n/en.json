@@ -83,5 +83,6 @@
 	"cut off score": "cut off score",
 	"use document limit": "use document limit",
 	"Use Solr": "Use Solr",
-	"core name": "core name"
+	"core name": "core name",
+	"Elasticsearch + Nextcloud": "Elasticsearch + Nextcloud"
 }

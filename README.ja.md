@@ -39,6 +39,13 @@
 
 Googleより Google API Key と Google CSE ID を入手し、設定登録すると、Google検索を使用するようになります。ただし、Googleの定める費用を支払う必要があります。
 
+### 内部資料検索について
+
+Elasticsearch を使用した全文検索に対応しています。
+また、ファイルサーバとして Nextcloud を使用することを想定しておりますので、Nextcloud の fulltextsearch プラグインを使い、Nextcloud と Elasticsarchと連携させると、非常に使い心地が良くなります。
+
+内部資料のリンク表示はNextcloude上の該当ページを開きますので、ちょうどよいページを開かせるために、URLのプレフィックスの値を調整して使用してください。
+
 ### キー操作
 
 テキスト入力時に、Shift + Enter で改行、Enter で質問の送信、Shift + Delete で質問内容の消去を行います。
