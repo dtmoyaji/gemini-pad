@@ -37,6 +37,8 @@ Darüber hinaus wird davon ausgegangen, dass Nextcloud als Dateiserver verwendet
 
 Die Anzeige von internen Dokumentenlinks öffnet die entsprechende Seite in Nextcloud. Bitte passen Sie den Wert des URL-Präfixes an, um die gewünschte Seite zu öffnen.
 
+Bitte beachten Sie [hier](https://github.com/dtmoyaji/gemini-pad/wiki/Setting-for-Nextcloud---Elasticsearch-(gemini%E2%80%90pad%E2%80%90filesrv)) ein Beispiel für die Einstellungen zur Elasticsearch-Integration.
+
 #### Über gemini-pad-filesrv
 
 Um einen einfachen Dokumentenserver für die lokale Suche bereitzustellen, habe ich das gemini-pad-filesrv-System unter [hier](https://github.com/dtmoyaji/gemini-pad-filesrv) entwickelt.

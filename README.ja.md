@@ -46,6 +46,8 @@ Elasticsearch を使用した全文検索に対応しています。
 
 内部資料のリンク表示はNextcloude上の該当ページを開きますので、ちょうどよいページを開かせるために、URLのプレフィックスの値を調整して使用してください。
 
+Elasticsearch連携の設定例は [こちら](https://github.com/dtmoyaji/gemini-pad/wiki/Setting-for-Nextcloud---Elasticsearch-(gemini%E2%80%90pad%E2%80%90filesrv)) を参照してください。
+
 #### gemini-pad-filesrv について
 
 ローカル検索用のドキュメントサーバを簡単に用意できるようにするため、gemini-pad-filesrvという仕組みを [ここ](https://github.com/dtmoyaji/gemini-pad-filesrv) に用意しました。

@@ -46,6 +46,9 @@ In addition, we assume the use of Nextcloud as a file server, so it would be ver
 
 The link display for internal documents opens the corresponding page on Nextcloud, so please adjust the value of the URL prefix to open the desired page.
 
+Please refer to [here](https://github.com/dtmoyaji/gemini-pad/wiki/Setting-for-Nextcloud---Elasticsearch-(gemini%E2%80%90pad%E2%80%90filesrv)) for an example of Elasticsearch integration settings. 
+
+
 #### About gemini-pad-filesrv
 
 To easily set up a document server for local search, we have prepared a mechanism called gemini-pad-filesrv, which can be found [here](https://github.com/dtmoyaji/gemini-pad-filesrv).
