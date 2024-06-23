@@ -46,6 +46,12 @@ Además, se espera que se utilice Nextcloud como servidor de archivos, por lo qu
 
 La visualización de enlaces de documentos internos abrirá la página correspondiente en Nextcloud, por lo que ajuste el valor del prefijo de URL para abrir la página adecuada.
 
+#### Acerca de gemini-pad-filesrv
+
+Para facilitar la preparación de un servidor de documentos para búsquedas locales, se ha creado el mecanismo llamado gemini-pad-filesrv, el cual se encuentra disponible en [este enlace](https://github.com/dtmoyaji/gemini-pad-filesrv).
+Es una secuencia de construcción de contenedores para nextcloud + fulltextsearch Plugin + elasticsearch.
+Por favor, utilícelo conjuntamente.
+
 ### Operación de teclas
 
 Cuando ingresa texto, presione Shift + Enter para un salto de línea, Enter para enviar una pregunta y Shift + Delete para borrar el contenido de la pregunta.

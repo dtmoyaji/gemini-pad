@@ -46,6 +46,12 @@ In addition, we assume the use of Nextcloud as a file server, so it would be ver
 
 The link display for internal documents opens the corresponding page on Nextcloud, so please adjust the value of the URL prefix to open the desired page.
 
+#### About gemini-pad-filesrv
+
+To easily set up a document server for local search, we have prepared a mechanism called gemini-pad-filesrv, which can be found [here](https://github.com/dtmoyaji/gemini-pad-filesrv).
+It is a container build sequence for nextcloud + fulltextsearch Plugin + elasticsearch.
+Please use it together.
+
 ### Key operation
 
 When entering text, press Shift + Enter to create a new line, Enter to send a question, and Shift + Delete to delete the question content.

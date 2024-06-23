@@ -46,6 +46,12 @@ Elasticsearch を使用した全文検索に対応しています。
 
 内部資料のリンク表示はNextcloude上の該当ページを開きますので、ちょうどよいページを開かせるために、URLのプレフィックスの値を調整して使用してください。
 
+#### gemini-pad-filesrv について
+
+ローカル検索用のドキュメントサーバを簡単に用意できるようにするため、gemini-pad-filesrvという仕組みを [ここ](https://github.com/dtmoyaji/gemini-pad-filesrv) に用意しました。
+nextcloud + fulltextsearch Plugin + elasticsearch のコンテナビルドシーケンスです。
+併せてご利用ください。
+
 ### キー操作
 
 テキスト入力時に、Shift + Enter で改行、Enter で質問の送信、Shift + Delete で質問内容の消去を行います。

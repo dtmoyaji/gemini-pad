@@ -37,6 +37,12 @@ Darüber hinaus wird davon ausgegangen, dass Nextcloud als Dateiserver verwendet
 
 Die Anzeige von internen Dokumentenlinks öffnet die entsprechende Seite in Nextcloud. Bitte passen Sie den Wert des URL-Präfixes an, um die gewünschte Seite zu öffnen.
 
+#### Über gemini-pad-filesrv
+
+Um einen einfachen Dokumentenserver für die lokale Suche bereitzustellen, habe ich das gemini-pad-filesrv-System unter [hier](https://github.com/dtmoyaji/gemini-pad-filesrv) entwickelt.
+Es handelt sich um eine Container-Build-Sequenz für nextcloud + fulltextsearch Plugin + elasticsearch.
+Bitte nutzen Sie es zusammen.
+
 ### Tastenbedienung
 
 Bei der Texteingabe können Sie mit Umschalt + Eingabetaste einen Zeilenumbruch einfügen, mit Eingabetaste die Frage senden und mit Umschalt + Entf den Frageninhalt löschen.
