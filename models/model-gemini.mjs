@@ -18,6 +18,8 @@ export default class ModelGemini {
 
     lines = [];
 
+    inputTokenCount = 0;
+
     constructor(modelName = "gemini-1.0-pro") {
         this.model = new ChatGoogleGenerativeAI({
             modelName: modelName,
@@ -64,6 +66,7 @@ export default class ModelGemini {
 
     async invoke(text) {
         this.pushLine("human", text);
+        this.inputTokenCount = await this.model.getNumTokens(JSON.stringify(this.lines));
         return await this.model.invoke(this.lines);
     }
 
@@ -124,9 +127,15 @@ export default class ModelGemini {
             }
         }
 
+        let outTokenCount = 0;
+        
         console.log("回答を取得");
         let argModified = `${arg}\n${i18n.__("Answer in")}`;
-        let replyMessage = (await this.invoke(argModified)).content;
+        let reply = await this.invoke(argModified);
+        let replyMessage = reply.content;
+        outTokenCount = await this.model.getNumTokens(reply.content);
+        
+        replyMessage += `\n<!-- Token Count - in:${this.inputTokenCount} out:${outTokenCount} -->`;
         if (referencesInfo !== '') {
             replyMessage += `\n\n**${i18n.__("Reference:")}**\n${referencesInfo}`;
         }
