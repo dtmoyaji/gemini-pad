@@ -89,5 +89,6 @@
 	"cut off score": "切捨スコア",
 	"use document limit": "使用ドキュメント数",
 	"core name": "core name",
-	"Elasticsearch + Nextcloud": "Elasticsearch + Nextcloud"
+	"Elasticsearch + Nextcloud": "Elasticsearch + Nextcloud",
+	"document owner as(comma separated)": "document owner as(comma separated)"
 }

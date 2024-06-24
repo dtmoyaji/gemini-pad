@@ -21,15 +21,22 @@ export class ElasticDriver {
     }
 
     async searchDocument(prompt) {
+        // 所有者に該当するドキュメントのみ検索する
+        let ownerLimit = [{ "match_all": {} }];
+        let owners = process.env.ELASTICSEARCH_OWNERS_LIMIT;
+        if (owners !== '') {
+            let ownerList = owners.split(',');
+            let ownerQuery = [];
+            for (let owner of ownerList) {
+                ownerQuery.push({ "match": { "owner": owner.trim() } });
+            }
+            ownerLimit = ownerQuery;
+        }
         let query = {
             "size": parseInt(process.env.ELASTICSEARCH_USE_DOCUMENT_LIMIT),
             "query": {
                 "bool": {
-                    "should": [
-                        {
-                            "match_all": {}
-                        }
-                    ],
+                    "should": ownerLimit,
                     "minimum_should_match": 1,
                     "must": [
                         { "match": { "content": prompt } },
@@ -53,6 +60,7 @@ export class ElasticDriver {
             });
 
             if (!response.ok) {
+                console.log(JSON.stringify(query,null,2));
                 throw new Error(`Elasticsearchからの応答がありません: ${response.statusText}`);
             }
 

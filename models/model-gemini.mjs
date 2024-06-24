@@ -66,7 +66,8 @@ export default class ModelGemini {
 
     async invoke(text) {
         this.pushLine("human", text);
-        this.inputTokenCount = await this.model.getNumTokens(JSON.stringify(this.lines));
+        let forTokenCount =JSON.stringify(this.lines);
+        this.inputTokenCount = forTokenCount.length / 4; // 推定値
         return await this.model.invoke(this.lines);
     }
 
@@ -133,7 +134,7 @@ export default class ModelGemini {
         let argModified = `${arg}\n${i18n.__("Answer in")}`;
         let reply = await this.invoke(argModified);
         let replyMessage = reply.content;
-        outTokenCount = await this.model.getNumTokens(reply.content);
+        outTokenCount = reply.content.length / 4; // 推定値
         
         replyMessage += `\n<!-- Token Count - in:${this.inputTokenCount} out:${outTokenCount} -->`;
         if (referencesInfo !== '') {
