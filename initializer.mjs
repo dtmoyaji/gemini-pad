@@ -49,6 +49,7 @@ function getEnvParams() {
         { param_name: 'ELASTICSEARCH_URL_PREFIX', param_value: '', label: 'URL Prefix' },
         { param_name: 'ELASTICSEARCH_CUT_OFF_SCORE', param_value: '85', label: 'cut off score' },
         { param_name: 'ELASTICSEARCH_USE_DOCUMENT_LIMIT', param_value: '3', label: 'use document limit' },
+        { param_name: 'ELASTICSEARCH_OWNERS_LIMIT', param_value: '', label: 'document owner as(comma separated)' },
         { param_name: 'LABEL07', param_value: '', label: 'Solr(Examin)' },
         { param_name: 'USE_SOLR', param_value: 'false', label: 'Use Solr' },
         { param_name: 'SOLR_PROTOCOL', param_value: 'http', label: 'protocol http/https' },
