@@ -75,5 +75,6 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
-  }
+  },
+  "repository": "https://github.com/dtmoyaji/gemini-pad.git"
 }
