@@ -90,5 +90,7 @@
 	"use document limit": "使用ドキュメント数",
 	"core name": "core name",
 	"Elasticsearch + Nextcloud": "Elasticsearch + Nextcloud",
-	"document owner as(comma separated)": "document owner as(comma separated)"
+	"document owner as(comma separated)": "document owner as(comma separated)",
+	"Deep RAG(Examin)": "Deep RAG(Examin)",
+	"use Deep RAG mode (Ollama only)": "use Deep RAG mode (Ollama only)"
 }

@@ -39,7 +39,7 @@ function getEnvParams() {
         { param_name: 'LABEL050', param_value: '', label: 'Other Settings' },
         { param_name: 'DARK_MODE', param_value: 'true', label: 'Dark Mode' },
         { param_name: 'DEV_CONSOLE_MODE', param_value: 'false', label: 'Developer Console Mode' },
-        { param_name: 'LABEL06', param_value: '', label: 'Elasticsearch + Nextcloud'},
+        { param_name: 'LABEL060', param_value: '', label: 'Elasticsearch + Nextcloud'},
         { param_name: 'USE_ELASTICSEARCH', param_value: 'false', label: 'Use Elasticsearch' },
         { param_name: 'ELASTICSEARCH_PROTOCOL', param_value: 'http', label: 'protocol http/https' },
         { param_name: 'ELASTICSEARCH_HOST', param_value: 'localhost', label: 'host IP or URL' },
@@ -50,12 +50,14 @@ function getEnvParams() {
         { param_name: 'ELASTICSEARCH_CUT_OFF_SCORE', param_value: '85', label: 'cut off score' },
         { param_name: 'ELASTICSEARCH_USE_DOCUMENT_LIMIT', param_value: '3', label: 'use document limit' },
         { param_name: 'ELASTICSEARCH_OWNERS_LIMIT', param_value: '', label: 'document owner as(comma separated)' },
-        { param_name: 'LABEL07', param_value: '', label: 'Solr(Examin)' },
+        { param_name: 'LABEL070', param_value: '', label: 'Solr(Examin)' },
         { param_name: 'USE_SOLR', param_value: 'false', label: 'Use Solr' },
         { param_name: 'SOLR_PROTOCOL', param_value: 'http', label: 'protocol http/https' },
         { param_name: 'SOLR_HOST', param_value: '127.0.0.1', label: 'host IP or URL' },
         { param_name: 'SOLR_PORT', param_value: '8983', label: 'port' },
         { param_name: 'SOLR_CORE', param_value: 'geminipad', label: 'core name' },
+        { param_name: 'LABEL080', param_value: '', label: 'Deep RAG(Examin)' },
+        { param_name: 'DEEP_RAG_MODE', param_value: 'false', label: 'use Deep RAG mode (Ollama only)' },
     ];
     return envParams;
 }
