@@ -124,7 +124,10 @@ export default class ModelOllama {
     }
 
     async invokeDeepRAG(arg) {
-        // promptに事前情報を追加する。
+        this.deepreferences = [];
+        this.originalQuery = arg;
+        this.prompt.messages = [];
+        injectPersonality(process.env.PERSONALITY, this);
         this.pushPreModifcateInfo();
 
         // 命題の分割処理
@@ -134,40 +137,36 @@ export default class ModelOllama {
         this.promptStack = {};
 
         this.promptStack = await this.splitPrompt(arg);
-
-        // deepMessagesを逆順にする。
-        this.deepMessages = this.deepMessages.reverse();
-
-        for(let message of this.deepMessages){
-            this.pushLine(message.role, message.content);
+        if (this.promptStack === '') {
+            process.env.DEEP_RAG_MODE = 'false';
+            let response = await this.invokeWebRAG(arg);
+            process.env.DEEP_RAG_MODE = 'true';
+            return response;
         }
 
-        this.pushLine(this.ROLE_ASSISTANT, `今日の日付は${new Date().toLocaleDateString()}です。`);
+        // this.deepReferencesの重複を削除する。
+        this.deepReferences = this.deepReferences.filter((x, i, self) =>
+            self.findIndex((t) => t.title === x.title && t.link === x.link) === i
+        );
 
-        let reply = (await this.invoke(arg)).content;
-
-        let refs = "";
-
-        /// deepReferencesの重複を削除する。
-        let deefReferences = this.deepReferences.filter((x, i, self) => self.findIndex((t) => t.title === x.title) === i);
-        this.deepReferences = deefReferences;
-
-        // deefReferencesを追加する。
+        let referencesInfo = "\n\n**参考文献**";
+        console.log(JSON.stringify(this.deepReferences, null, 2));
         for (let reference of this.deepReferences) {
-            refs += `\n\n[${reference.title}](${reference.link}) `;
+            referencesInfo += `\n\n[${reference.title}](${reference.link}) `;
         }
-        reply += `\n\n**${i18n.__("Reference:")}**\n${refs}`;
 
-        console.log(reply);
-        return reply;
+        console.log(JSON.stringify(this.promptStack, null, 2));
+        let replyMessage = this.promptStack.content + referencesInfo;
+        return replyMessage;
     }
 
     deepReferences = [];
     deepMessages = [];
     depth = 0;
-    depthlimit = 3;
+    depthlimit = 2;
+    originalQuery = '';
     async splitPrompt(arg) {
-        if(this.depth > this.depthlimit){
+        if (this.depth > this.depthlimit) {
             return "";
         }
         let prompt = this.promptTemplate.replace(/{{arg}}/g, arg);
@@ -175,14 +174,17 @@ export default class ModelOllama {
         console.log(arg);
         console.log("命題を分割");
         let argModified = `${prompt}\n${i18n.__("Answer in")}`;
+        this.prompt.messages.push({ role: "assistant", content: `元の命題: ${this.originalQuery}` });
         let response = (await this.invoke(argModified)).content;
-        // ```jsonを削除する。
-        response = response.replace(/```json/g, '');
-        // ```を削除する。
-        response = response.replace(/```/g, '');
+        // responseを ```jsonから```の間の文字列に変換する。
+        if (response.includes('```json') === true && response.includes('```') === true) {
+            response = response.split('```json')[1];
+            response = response.split('```')[0];
+        }
         try {
             if (response !== undefined && response !== '') {
                 response = JSON.parse(response);
+                response.references = [];
             } else {
                 console.log(arg);
             }
@@ -213,11 +215,7 @@ export default class ModelOllama {
                         if (externalInfo !== undefined && externalInfo.length > 0) {
                             for (let item of externalInfo) {
                                 this.pushLine(this.ROLE_ASSISTANT, `${item.title}:\n${item.content}\n`);
-                                this.deepReferences.push(
-                                    {
-                                        "title": item.title,
-                                        "link": item.link
-                                    });
+                                this.deepReferences.push({ "title": item.title, "link": item.link });
                             }
                         }
                     }
@@ -227,14 +225,30 @@ export default class ModelOllama {
                     let argModified = `${subqueryArg}\n${i18n.__("Answer in")}`;
                     let replyMessage = (await this.invoke(argModified)).content;
                     console.log(`reply: ${replyMessage}`);
-                    // 改行で分割して、￥nで結合する。
-                    this.deepMessages.push({role: "user", content: subqueryArg});
-                    this.deepMessages.push({role: "assistant", content: replyMessage});
-                    replyMessage = replyMessage.split("\n").map((line) => line.trim()).join("￥n");
-                    //subquery.content=replyMessage;
-                    //subquery.references=referencesInfo;
-                    this.depth --;
+                    subquery.content = replyMessage;
+                    subquery.references = referencesInfo;
+                    this.depth--;
                 }
+            }
+            if (subqueries.length > 0) {
+                this.prompt.messages = [];
+                await injectPersonality(process.env.PERSONALITY, this);
+                this.pushPreModifcateInfo();
+                if (process.env.USE_SEARCH_RESULT === 'true') {
+                    console.log(response.original_query);
+                    let externalInfo = await getExternalInfo(response.original_query, process.env.SEARCH_DOC_LIMIT, 2048);
+                    if (externalInfo !== undefined && externalInfo.length > 0) {
+                        for (let item of externalInfo) {
+                            this.pushLine(this.ROLE_ASSISTANT, `${item.title}:\n${item.content}\n`);
+                            this.deepReferences.push({ "title": item.title, "link": item.link });
+                        }
+                    }
+                }
+                for (let subquery of subqueries) {
+                    this.prompt.messages.push({ role: "user", content: subquery.query });
+                    this.prompt.messages.push({ role: "assistant", content: subquery.content });
+                }
+                response.content = (await this.invoke(response.original_query)).content;
             }
         }
 

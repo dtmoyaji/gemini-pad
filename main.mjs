@@ -181,7 +181,11 @@ ipcMain.on('chat-message', async (event, arg) => {
 
         // チャットメッセージを生成する。
         let replyGetter = await createAiModel(process.env.GEMINI_MODEL);
-        await injectPersonality(process.env.PERSONALITY, replyGetter);
+        if (process.env.DEEP_RAG_MODE === 'true') {
+            await injectPersonality('deeprag', replyGetter);
+        } else {
+            await injectPersonality(process.env.PERSONALITY, replyGetter);
+        }
         let replyMessage = await replyGetter.invokeWebRAG(arg);
         // \\nを改行コードに変換する。
         replyMessage = replyMessage.replace(/\\n/g, '\n');

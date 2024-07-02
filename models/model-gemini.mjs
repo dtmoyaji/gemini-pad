@@ -20,7 +20,7 @@ export default class ModelGemini {
 
     inputTokenCount = 0;
 
-    constructor(modelName = "gemini-1.0-pro") {
+    constructor(modelName = "gemini-1.5-flash") {
         this.model = new ChatGoogleGenerativeAI({
             modelName: modelName,
             apiKey: process.env.GEMINI_API_KEY,
