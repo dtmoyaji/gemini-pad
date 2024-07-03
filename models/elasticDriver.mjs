@@ -77,7 +77,8 @@ export class ElasticDriver {
                         // doc._source.titleを最後に出現する/で分割する
                         let fileName = doc._source.title.split('/').pop();
                         let paerntDir = doc._source.title.substring(0, doc._source.title.lastIndexOf('/'));
-                        link = `${process.env.ELASTICSEARCH_URL_PREFIX}?dir=/${paerntDir}/&scrollto=${fileName}`;
+                        let fileId = doc._id.split(':')[1]; // files:xxxxxのxxxxx部分
+                        link = `${process.env.ELASTICSEARCH_URL_PREFIX}/${fileId}?dir=/${paerntDir}/&openfile=true`;
                     } else {
                         link = `${doc._source.owner}/${doc._source.title}`;
                     }
