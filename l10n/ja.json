@@ -92,5 +92,7 @@
 	"Elasticsearch + Nextcloud": "Elasticsearch + Nextcloud",
 	"document owner as(comma separated)": "document owner as(comma separated)",
 	"Deep RAG(Examin)": "Deep RAG(Examin)",
-	"use Deep RAG mode (Ollama only)": "use Deep RAG mode (Ollama only)"
+	"use Deep RAG mode (Ollama only)": "use Deep RAG mode (Ollama only)",
+	"use Deep RAG mode (gemma2 only)": "use Deep RAG mode (gemma2 only)",
+	"Depth of RAG mode": "Depth of RAG mode"
 }

@@ -57,7 +57,8 @@ function getEnvParams() {
         { param_name: 'SOLR_PORT', param_value: '8983', label: 'port' },
         { param_name: 'SOLR_CORE', param_value: 'geminipad', label: 'core name' },
         { param_name: 'LABEL080', param_value: '', label: 'Deep RAG(Examin)' },
-        { param_name: 'DEEP_RAG_MODE', param_value: 'false', label: 'use Deep RAG mode (Ollama only)' },
+        { param_name: 'DEEP_RAG_MODE', param_value: 'false', label: 'use Deep RAG mode (gemma2 only)' },
+        { param_name: 'DEEP_RAG_DEPTH', param_value: '1', label: 'Depth of RAG mode' },
     ];
     return envParams;
 }

@@ -163,7 +163,7 @@ export default class ModelOllama {
     deepReferences = [];
     deepMessages = [];
     depth = 0;
-    depthlimit = 2;
+    depthlimit = process.env.DEEP_RAG_DEPTH;
     originalQuery = '';
     async splitPrompt(arg) {
         if (this.depth > this.depthlimit) {

@@ -27,7 +27,8 @@
       "personality/**/*",
       "views/**/*",
       "temp/README.md",
-      "node_modules/@google/generative-ai/**/*"
+      "node_modules/@google/generative-ai/**/*",
+      "splitPrompt.txt"
     ]
   },
   "scripts": {
