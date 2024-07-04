@@ -6,20 +6,19 @@
 規定値では対話モデルは2024年6月現在、無料で利用可能な gemini-1.5-flash が設定されています(変更可能)。
 
 設定画面よりGEMINI_API_KEYの項目に記載のモデルを書き換えることで、geminiおよびOllamaの各モデルを切り替えることが可能です。
-<!-- タイトルとキーワードの生成モデルには、gemini-1.0-proが設定されています(固定)。 -->
 
 ## セットアップ
 
 1. Gemini API キーを取得します。
    Gemini API キーは [ここ](https://aistudio.google.com/app/prompts/new_freeform) から入手します。
    Google のアカウントが必要なので、所持していない場合は事前に作成してください。
-
 2. アプリを起動します。Gemini API キーがアプリに登録されていない場合は、設定画面が開きますので、取得したキーを登録します。
    登録ができたら、メニューのファイルから再起動を選んで、アプリを再起動します。
-
 3. ユーザー所属とユーザー名の登録は必須ではありませんが、メールの文面などを作らせるときに登録しておくと便利です。
-
 4. 表示言語を指定すると、インターフェイスの表示言語が変更されます。現在、英語、日本語、フランス語、ドイツ語、スペイン語に対応しています。
+
+インストール直後の初回起動時は自動的に設定画面が表示されます。  
+設定を再度変更したい場合は、メニューの編集から、設定を選択し、設定画面を表示してください。
 
 ## 使い方
 
@@ -46,7 +45,7 @@ Elasticsearch を使用した全文検索に対応しています。
 
 内部資料のリンク表示はNextcloude上の該当ページを開きますので、ちょうどよいページを開かせるために、URLのプレフィックスの値を調整して使用してください。
 
-Elasticsearch連携の設定例は [こちら](https://github.com/dtmoyaji/gemini-pad/wiki/Setting-for-Nextcloud---Elasticsearch-(gemini%E2%80%90pad%E2%80%90filesrv)) を参照してください。
+Elasticsearch連携の設定例は [こちら](https://github.com/dtmoyaji/gemini-pad/wiki/Setting-for-Nextcloud---Elasticsearch-\(gemini%E2%80%90pad%E2%80%90filesrv\)) を参照してください。
 
 #### gemini-pad-filesrv について
 
@@ -74,4 +73,3 @@ Gemini のモデルパラメータの詳細については、Google AI for Devel
 * **default:** 既定のチャットボットパーソナリティ。
 * **kansai:** 関西の男性のパーソナリティ。
 * **rin:** お嬢様のパーソナリティ。
-
