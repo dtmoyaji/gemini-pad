@@ -56,7 +56,6 @@ export default class ModelGemini {
     pushLine(role, text) {
         // textを改行で分割してトリムした後、\\nで結合する.
         if (text !== undefined) {
-            console.log("MAP: " + text);
             text = text.split("\n").map((line) => line.trim()).join("\\n");
             this.lines.push([role, text]);
         } else {
@@ -64,9 +63,6 @@ export default class ModelGemini {
         }
         // 2番目の変数がundefinedのlinesの要素を削除する。
         this.lines = this.lines.filter((line) => line[1] !== undefined);
-        if (text === '現在のウクライナ戦争の戦況が知りたい') {
-            console.log("text is 1");
-        }
     }
 
     setLines(lines) {
@@ -118,7 +114,7 @@ export default class ModelGemini {
 
     // Webの情報を利用して回答を生成する。
     async invokeWebRAG(arg, event = undefined) {
-        if(event !== undefined) {
+        if (event !== undefined) {
             this.event = event;
         }
 
@@ -265,20 +261,25 @@ export default class ModelGemini {
                             for (let item of externalInfo) {
                                 this.pushLine(this.ROLE_ASSISTANT, `${item.title}:\n${item.content}\n`);
                                 this.deepReferences.push({ "title": item.title, "link": item.link });
+                                console.log(`external link ${item.link}`);
                             }
+                            console.log("回答を取得");
+                            console.log(this.depth);
+                            console.log(subqueryArg);
+                            let argModified = `${subqueryArg}\n${i18n.__("Answer in")}`;
+                            let replyMessage = (await this.invoke(argModified)).content;
+                            if (this.event !== undefined) {
+                                this.event.reply('chat-reply', replyMessage);
+                            }
+                            console.log(`reply: ${replyMessage}`);
+                            subquery.content = replyMessage;
+                            subquery.references = referencesInfo;
+        
+                        } else {
+                            console.log(`external link undefiend`);
+                            subquery.content = '';
                         }
                     }
-                    console.log("回答を取得");
-                    console.log(this.depth);
-                    console.log(subqueryArg);
-                    let argModified = `${subqueryArg}\n${i18n.__("Answer in")}`;
-                    let replyMessage = (await this.invoke(argModified)).content;
-                    if(this.event!==undefined) {
-                        this.event.reply('chat-reply', replyMessage);
-                    }
-                    console.log(`reply: ${replyMessage}`);
-                    subquery.content = replyMessage;
-                    subquery.references = referencesInfo;
                     this.depth--;
                 }
             }
@@ -286,6 +287,7 @@ export default class ModelGemini {
                 this.lines = [];
                 await injectPersonality(process.env.PERSONALITY, this);
                 this.pushPreModifcateInfo();
+                /*
                 if (process.env.USE_SEARCH_RESULT === 'true') {
                     console.log(response.original_query);
                     let externalInfo = await getExternalInfo(response.original_query, process.env.SEARCH_DOC_LIMIT, 2048);
@@ -295,7 +297,7 @@ export default class ModelGemini {
                             this.deepReferences.push({ "title": item.title, "link": item.link });
                         }
                     }
-                }
+                }*/
                 for (let subquery of subqueries) {
                     this.lines.push(["user", subquery.query]);
                     this.lines.push(["assistant", subquery.content]);
@@ -307,9 +309,6 @@ export default class ModelGemini {
         return response;
     }
 
-    async delay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
     async isUnsplittable(json) {
         if (json === undefined) {
             return true;

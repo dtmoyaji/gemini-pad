@@ -1,14 +1,27 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
+import open from 'open';
 import * as fileUtils from '../fileUtils.mjs';
 
 fileUtils.config();
 
+let previousSearchTime = 0;
+let searchDelay = 5000;
+
 async function searchDuckDuckGo(query, maxResults = 3, maxContentLength = 2048) {
     const url = `https://duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
+    open(url);
     console.log(url);
     try {
+        let delayTime = searchDelay - (Date.now() - previousSearchTime);
+        if (delayTime > 0) {
+            console.log(`waiting ${delayTime}ms`);
+            await delay(delayTime);
+        }
+
         const response = await axios.get(url);
+        previousSearchTime = Date.now();
+
         const $ = cheerio.load(response.data);
         const results = [];
         const promises = [];
@@ -36,7 +49,6 @@ async function searchDuckDuckGo(query, maxResults = 3, maxContentLength = 2048) 
         await Promise.all(promises);
         // resultを逆順にする。
         results.reverse();
-        delay(3000);
         return results;
     } catch (error) {
         console.error(error);
@@ -115,7 +127,7 @@ async function getPageContent(url, textLimit = 1536) {
         itemData = itemData.substring(0, textLimit);
         return itemData;
     } catch (error) {
-        console.error(error); // エラーメッセージをログに出力
+        console.error(`GetPageContent Error: ${url}`);
     }
 }
 
