@@ -76,11 +76,16 @@ export default class ModelOllama {
         }
     }
 
+    event = undefined;
+
     // Webの情報を利用して回答を生成する。
-    async invokeWebRAG(arg) {
+    async invokeWebRAG(arg, event = undefined) {
+        if(event !== undefined) {
+            this.event = event;
+        }
 
         if (process.env.DEEP_RAG_MODE === 'true') {
-            return this.invokeDeepRAG(arg);
+            return this.invokeDeepRAG(arg, event);
         }
 
         // promptに事前情報を追加する。
@@ -123,11 +128,11 @@ export default class ModelOllama {
         return replyMessage;
     }
 
-    async invokeDeepRAG(arg) {
+    async invokeDeepRAG(arg, event = undefined) {
         this.deepreferences = [];
         this.originalQuery = arg;
         this.prompt.messages = [];
-        injectPersonality(process.env.PERSONALITY, this);
+        await injectPersonality(process.env.PERSONALITY, this);
         this.pushPreModifcateInfo();
 
         // 命題の分割処理
@@ -136,7 +141,7 @@ export default class ModelOllama {
 
         this.promptStack = {};
 
-        this.promptStack = await this.splitPrompt(arg);
+        this.promptStack = await this.splitPrompt(arg, event);
         if (this.promptStack === '') {
             process.env.DEEP_RAG_MODE = 'false';
             let response = await this.invokeWebRAG(arg);
@@ -165,7 +170,7 @@ export default class ModelOllama {
     depth = 0;
     depthlimit = process.env.DEEP_RAG_DEPTH;
     originalQuery = '';
-    async splitPrompt(arg) {
+    async splitPrompt(arg, event = undefined) {
         if (this.depth > this.depthlimit) {
             return "";
         }
@@ -174,7 +179,7 @@ export default class ModelOllama {
         console.log(arg);
         console.log("命題を分割");
         let argModified = `${prompt}\n${i18n.__("Answer in")}`;
-        this.prompt.messages.push({ role: "assistant", content: `元の命題: ${this.originalQuery}` });
+        this.prompt.messages.push({ role: "assistant", content: `あなたは、最終的に次の命題を解くために、この命題のサブセットを推論しているところです。\n命題: ${this.originalQuery}` });
         let response = (await this.invoke(argModified)).content;
         // responseを ```jsonから```の間の文字列に変換する。
         if (response.includes('```json') === true && response.includes('```') === true) {
@@ -201,7 +206,7 @@ export default class ModelOllama {
                 console.log("分割できる");
                 let subqueryArg = subquery.query;
                 this.depth++;
-                let subqueryResponse = await this.splitPrompt(subqueryArg);
+                let subqueryResponse = await this.splitPrompt(subqueryArg, event);
                 if (subqueryResponse !== '') {
                     subquery.subqueries = subqueryResponse;
                 } else {  //命題が分割できないのでRAGを行い、結果を格納する。

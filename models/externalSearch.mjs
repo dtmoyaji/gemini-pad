@@ -36,10 +36,15 @@ async function searchDuckDuckGo(query, maxResults = 3, maxContentLength = 2048) 
         await Promise.all(promises);
         // resultを逆順にする。
         results.reverse();
+        delay(3000);
         return results;
     } catch (error) {
         console.error(error);
     }
+}
+
+async function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 // Google CSE を使って、外部情報を取得する。検索結果のURLから情報を取得し、JSON形式で返す。

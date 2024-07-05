@@ -186,7 +186,7 @@ ipcMain.on('chat-message', async (event, arg) => {
         } else {
             await injectPersonality(process.env.PERSONALITY, replyGetter);
         }
-        let replyMessage = await replyGetter.invokeWebRAG(arg);
+        let replyMessage = await replyGetter.invokeWebRAG(arg, event);
         // \\nを改行コードに変換する。
         replyMessage = replyMessage.replace(/\\n/g, '\n');
         event.reply('chat-reply', replyMessage);
