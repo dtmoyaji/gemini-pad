@@ -30,12 +30,16 @@ let mainWindow;
 let currentMarkdown = '';
 let currentTitle = '';
 
-// Create a renderer with a custom link function
+// マークダウンをHTMLに変換する処理の拡張
 const renderer = new marked.Renderer();
+const originalLinkRenderer = renderer.link.bind(renderer);
 renderer.link = function (linkinfo) {
-    return `<a target="_blank" href="${linkinfo.href}" title="${linkinfo.href}">${linkinfo.text}</a>`;
+    if (linkinfo.href.startsWith('http')) {
+        return `<a target="_blank" href="${linkinfo.href}" title="${linkinfo.href}">${linkinfo.text}</a>`;
+    } else {
+        return originalLinkRenderer(linkinfo);
+    }
 };
-// Set the renderer to marked
 marked.setOptions({ renderer });
 
 // Create a new Electron window
