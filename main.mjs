@@ -2,7 +2,7 @@ import { renderFile } from 'ejs';
 import { BrowserWindow, app, dialog, ipcMain, nativeTheme, screen, shell } from 'electron';
 import fs, { writeFileSync } from 'fs';
 import i18n from 'i18n';
-import * as marked from 'marked';
+import { marked } from 'marked';
 import path, { join } from 'path';
 import { fileURLToPath } from 'url';
 import * as database from './database.mjs';
@@ -32,13 +32,11 @@ let currentTitle = '';
 
 // Create a renderer with a custom link function
 const renderer = new marked.Renderer();
-renderer.link = function (href, title, text) {
-    return `<a target="_blank" href="${href}" title="${title}">${text}</a>`;
+renderer.link = function (linkinfo) {
+    return `<a target="_blank" href="${linkinfo.href}" title="${linkinfo.href}">${linkinfo.text}</a>`;
 };
-
 // Set the renderer to marked
 marked.setOptions({ renderer });
-
 
 // Create a new Electron window
 async function createWindow() {
@@ -318,7 +316,7 @@ ipcMain.on('bookmark-garbage-clicked', async (event, id) => {
 
 ipcMain.on('markdown-to-html', async (event, arg) => {
     currentMarkdown = arg;
-    const html = marked.marked(arg);
+    const html = marked(arg);
     event.reply('markdown-to-html-reply', html);
 });
 

@@ -5,6 +5,7 @@
   "description": "My Electron App",
   "main": "main.mjs",
   "build": {
+    "npmRebuild": false,
     "appId": "club.tmworks.geminipad",
     "productName": "gemini-pad",
     "files": [
@@ -35,20 +36,22 @@
     "start": "electron .",
     "package": "node package.js",
     "dist": "electron-builder --win",
-    "test": "node test.mjs"
+    "test": "node test.mjs",
+    "rebuild": "electron-rebuild"
   },
   "author": "DtmOyaji",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^30.1.0",
-    "electron-builder": "^24.13.3"
+    "electron": "^31.2.0",
+    "electron-builder": "^24.13.3",
+    "electron-rebuild": "^3.2.9"
   },
   "dependencies": {
     "7zip-bin": "^5.2.0",
     "@elastic/elasticsearch": "^8.14.0",
     "@electron/packager": "^18.3.2",
     "@langchain/community": "^0.2.9",
-    "@langchain/google-genai": "^0.0.17",
+    "@langchain/google-genai": "^0.0.21",
     "@npmcli/fs": "^3.1.1",
     "axios": "^1.7.2",
     "cheerio": "^1.0.0-rc.12",
@@ -57,15 +60,15 @@
     "ejs": "^3.1.10",
     "electron-i18n": "^1.3136.0",
     "i18n": "^0.15.1",
-    "marked": "^12.0.2",
+    "marked": "^13.0.2",
     "mime": "^4.0.1",
-    "monaco-editor": "^0.49.0",
+    "monaco-editor": "^0.50.0",
     "ollama": "^0.5.1",
     "open": "^10.1.0",
     "prebuild": "^13.0.1",
     "prebuild-install": "^7.1.2",
     "solr-node": "^1.2.1",
-    "sqlite3": "5.1.6",
+    "sqlite3": "5.1.7",
     "tar": "^7.2.0"
   },
   "resolutions": {
