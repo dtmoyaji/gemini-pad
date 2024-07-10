@@ -1,6 +1,6 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
-import open from 'open';
+import { BrowserWindow } from 'electron';
 import * as fileUtils from '../fileUtils.mjs';
 
 fileUtils.config();
@@ -8,9 +8,16 @@ fileUtils.config();
 let previousSearchTime = 0;
 let searchDelay = 5000;
 
+let subwindow = undefined;
+
 async function searchDuckDuckGo(query, maxResults = 3, maxContentLength = 2048) {
+    if(subwindow===undefined){
+        subwindow = await new BrowserWindow({ show: true });
+    }else{
+        subwindow.show();
+    }
     const url = `https://duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
-    open(url);
+    await subwindow.loadURL(url);
     console.log(url);
     try {
         let delayTime = searchDelay - (Date.now() - previousSearchTime);
@@ -49,6 +56,7 @@ async function searchDuckDuckGo(query, maxResults = 3, maxContentLength = 2048) 
         await Promise.all(promises);
         // resultを逆順にする。
         results.reverse();
+        subwindow.hide();
         return results;
     } catch (error) {
         console.error(error);

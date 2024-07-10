@@ -13,7 +13,8 @@ export default class ModelOllama {
 
     ROLE_SYSTEM = 'system';
     ROLE_BOT = "bot";
-    ROLE_USER = 'human';
+    ROLE_HUMAN = 'human';
+    ROLE_USER = 'user';
     ROLE_ASSISTANT = 'assistant';
 
     prompt = {
@@ -21,18 +22,24 @@ export default class ModelOllama {
         messages: []
     };
 
+    event = undefined;
+
     constructor(modelName = "llama2") {
         this.prompt.model = modelName;
     }
 
     pushLine(role, content) {
         // contentを改行で分割してトリムした後、\\nで結合する.
-        content = content.split("\n").map((line) => line.trim()).join("\\n");
-        this.prompt.messages.push({ role: role, content: content });
+        if (content !== undefined) {
+            content = content.split("\n").map((line) => line.trim()).join("\\n");
+            this.prompt.messages.push({ role: role, content: content });
+        } else {
+            console.log("content is undefined");
+        }
     }
 
-    setLines(lines) {
-        this.prompt.messages = lines;
+    setLines(messages) {
+        this.prompt.messages = messages;
     }
 
     getLines() {
@@ -41,7 +48,7 @@ export default class ModelOllama {
     }
 
     async invoke(content) {
-        this.pushLine('user', content);
+        this.pushLine(this.ROLE_USER, content);
         // messagesを結合する
         const response = await ollama.chat(this.prompt);
         return response.message;
@@ -76,11 +83,9 @@ export default class ModelOllama {
         }
     }
 
-    event = undefined;
-
     // Webの情報を利用して回答を生成する。
     async invokeWebRAG(arg, event = undefined) {
-        if(event !== undefined) {
+        if (event !== undefined) {
             this.event = event;
         }
 
@@ -179,7 +184,7 @@ export default class ModelOllama {
         console.log(arg);
         console.log("命題を分割");
         let argModified = `${prompt}\n${i18n.__("Answer in")}`;
-        this.prompt.messages.push({ role: "assistant", content: `あなたは、最終的に次の命題を解くために、この命題のサブセットを推論しているところです。\n命題: ${this.originalQuery}` });
+        this.prompt.messages.push({ role: this.ROLE_ASSISTANT, content: `あなたは、最終的に次の命題を解くために、この命題のサブセットを推論しているところです。\n命題: ${this.originalQuery}` });
         let response = (await this.invoke(argModified)).content;
         // responseを ```jsonから```の間の文字列に変換する。
         if (response.includes('```json') === true && response.includes('```') === true) {
@@ -222,16 +227,19 @@ export default class ModelOllama {
                                 this.pushLine(this.ROLE_ASSISTANT, `${item.title}:\n${item.content}\n`);
                                 this.deepReferences.push({ "title": item.title, "link": item.link });
                             }
+                            console.log("回答を取得");
+                            console.log(this.depth);
+                            console.log(subqueryArg);
+                            let argModified = `${subqueryArg}\n${i18n.__("Answer in")}`;
+                            let replyMessage = (await this.invoke(argModified)).content;
+                            console.log(`reply: ${replyMessage}`);
+                            subquery.content = replyMessage;
+                            subquery.references = referencesInfo;   
+                        } else {
+                            console.log(`external link undefiend`);
+                            subquery.content = '';
                         }
                     }
-                    console.log("回答を取得");
-                    console.log(this.depth);
-                    console.log(subqueryArg);
-                    let argModified = `${subqueryArg}\n${i18n.__("Answer in")}`;
-                    let replyMessage = (await this.invoke(argModified)).content;
-                    console.log(`reply: ${replyMessage}`);
-                    subquery.content = replyMessage;
-                    subquery.references = referencesInfo;
                     this.depth--;
                 }
             }
@@ -250,8 +258,8 @@ export default class ModelOllama {
                     }
                 }
                 for (let subquery of subqueries) {
-                    this.prompt.messages.push({ role: "user", content: subquery.query });
-                    this.prompt.messages.push({ role: "assistant", content: subquery.content });
+                    this.prompt.messages.push({ role: this.ROLE_USER, content: subquery.query });
+                    this.prompt.messages.push({ role: this.ROLE_ASSISTANT, content: subquery.content });
                 }
                 response.content = (await this.invoke(response.original_query)).content;
             }

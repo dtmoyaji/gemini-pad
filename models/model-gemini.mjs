@@ -13,19 +13,25 @@ const { app } = electronPackage;
 
 // 環境変数設定
 fileUtils.config();
+
 export default class ModelGemini {
 
-    ROLE_USER = "human";
-    ROLE_BOT = "AI";
-    ROLE_ASSISTANT = "assistant";
     ROLE_SYSTEM = "system";
+    ROLE_BOT = "AI";
+    ROLE_USER = "human";
+    ROLE_ASSISTANT = "assistant";
 
-    lines = [];
+    prompt = {
+        model: '',
+        messages: []
+    };
+
+    event = undefined;
 
     inputTokenCount = 0;
 
     constructor(modelName = "gemini-1.5-flash") {
-        this.model = new ChatGoogleGenerativeAI({
+        this.prompt.model = new ChatGoogleGenerativeAI({
             modelName: modelName,
             apiKey: process.env.GEMINI_API_KEY,
             temperature: process.env.GEMINI_TEMPERATURE,
@@ -53,32 +59,32 @@ export default class ModelGemini {
         });
     }
 
-    pushLine(role, text) {
-        // textを改行で分割してトリムした後、\\nで結合する.
-        if (text !== undefined) {
-            text = text.split("\n").map((line) => line.trim()).join("\\n");
-            this.lines.push([role, text]);
+    pushLine(role, content) {
+        // contentを改行で分割してトリムした後、\\nで結合する.
+        if (content !== undefined) {
+            content = content.split("\n").map((line) => line.trim()).join("\\n");
+            this.prompt.messages.push([role, content]);
         } else {
-            console.log("text is undefined");
+            console.log("content is undefined");
         }
-        // 2番目の変数がundefinedのlinesの要素を削除する。
-        this.lines = this.lines.filter((line) => line[1] !== undefined);
+        // 2番目の変数がundefinedのmessagesの要素を削除する。
+        this.prompt.messages = this.prompt.messages.filter((line) => line[1] !== undefined);
     }
 
-    setLines(lines) {
-        this.lines = lines;
+    setLines(messages) {
+        this.prompt.messages = messages;
     }
 
     getLines() {
-        let response = [...this.lines];
+        let response = [...this.prompt.messages];
         return response;
     }
 
-    async invoke(text) {
-        this.pushLine("human", text);
-        let forTokenCount = JSON.stringify(this.lines);
+    async invoke(content) {
+        this.pushLine(this.ROLE_USER, content);
+        let forTokenCount = JSON.stringify(this.prompt.messages);
         this.inputTokenCount = forTokenCount.length / 4; // 推定値
-        return await this.model.invoke(this.lines);
+        return await this.prompt.model.invoke(this.prompt.messages);
     }
 
     // promptにユーザー情報などの事前データを追加する。
@@ -110,8 +116,6 @@ export default class ModelGemini {
         }
     }
 
-    event = undefined;
-
     // Webの情報を利用して回答を生成する。
     async invokeWebRAG(arg, event = undefined) {
         if (event !== undefined) {
@@ -119,7 +123,7 @@ export default class ModelGemini {
         }
 
         if (process.env.DEEP_RAG_MODE === 'true') {
-            let deepRegResponse = await this.invokeDeepRAG(arg);
+            let deepRegResponse = await this.invokeDeepRAG(arg, event);
             return deepRegResponse;
         }
         // promptに事前情報を追加する。
@@ -171,7 +175,7 @@ export default class ModelGemini {
     async invokeDeepRAG(arg, event = undefined) {
         this.deepreferences = [];
         this.originalQuery = arg;
-        this.lines = [];
+        this.prompt.messages = [];
         await injectPersonality(process.env.PERSONALITY, this);
         this.pushPreModifcateInfo();
 
@@ -219,7 +223,7 @@ export default class ModelGemini {
         console.log(arg);
         console.log("命題を分割");
         let argModified = `${prompt}\n${i18n.__("Answer in")}`;
-        this.lines.push(["assistant", `あなたは、最終的に次の命題を解くために、この命題のサブセットを推論しているところです。\n命題: ${this.originalQuery}`]);
+        this.prompt.messages.push([this.ROLE_ASSISTANT, `あなたは、最終的に次の命題を解くために、この命題のサブセットを推論しているところです。\n命題: ${this.originalQuery}`]);
         let response = (await this.invoke(argModified)).content;
         // responseを ```jsonから```の間の文字列に変換する。
         if (response.includes('```json') === true && response.includes('```') === true) {
@@ -252,7 +256,7 @@ export default class ModelGemini {
                 } else {  //命題が分割できないのでRAGを行い、結果を格納する。
                     console.log("分割できない");
                     let referencesInfo = [];
-                    this.lines = [];
+                    this.prompt.messages = [];
                     await injectPersonality(process.env.PERSONALITY, this);
                     this.pushPreModifcateInfo();
                     if (process.env.USE_SEARCH_RESULT === 'true') {
@@ -284,23 +288,12 @@ export default class ModelGemini {
                 }
             }
             if (subqueries.length > 0) {
-                this.lines = [];
+                this.prompt.messages = [];
                 await injectPersonality(process.env.PERSONALITY, this);
                 this.pushPreModifcateInfo();
-                /*
-                if (process.env.USE_SEARCH_RESULT === 'true') {
-                    console.log(response.original_query);
-                    let externalInfo = await getExternalInfo(response.original_query, process.env.SEARCH_DOC_LIMIT, 2048);
-                    if (externalInfo !== undefined && externalInfo.length > 0) {
-                        for (let item of externalInfo) {
-                            this.pushLine(this.ROLE_ASSISTANT, `${item.title}:\n${item.content}\n`);
-                            this.deepReferences.push({ "title": item.title, "link": item.link });
-                        }
-                    }
-                }*/
                 for (let subquery of subqueries) {
-                    this.lines.push(["user", subquery.query]);
-                    this.lines.push(["assistant", subquery.content]);
+                    this.prompt.messages.push([this.ROLE_USER, subquery.query]);
+                    this.prompt.messages.push([this.ROLE_ASSISTANT, subquery.content]);
                 }
                 response.content = (await this.invoke(response.original_query)).content;
             }
