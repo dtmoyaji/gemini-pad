@@ -61,7 +61,7 @@ export default class ModelGemini {
 
     pushLine(role, content) {
         // contentを改行で分割してトリムした後、\\nで結合する.
-        if (content !== undefined) {
+        if (content !== undefined && content.length > 0) {
             content = content.split("\n").map((line) => line.trim()).join("\\n");
             this.prompt.messages.push([role, content]);
         } else {
@@ -84,6 +84,9 @@ export default class ModelGemini {
         this.pushLine(this.ROLE_USER, content);
         let forTokenCount = JSON.stringify(this.prompt.messages);
         this.inputTokenCount = forTokenCount.length / 4; // 推定値
+        console.log("QUEYRY:")
+        console.log(forTokenCount);
+        console.log();
         return await this.prompt.model.invoke(this.prompt.messages);
     }
 
@@ -135,8 +138,10 @@ export default class ModelGemini {
             let externalInfo = await getExternalInfo(arg, process.env.SEARCH_DOC_LIMIT, 4096);
             if (externalInfo !== undefined && externalInfo.length > 0) {
                 for (let item of externalInfo) {
-                    this.pushLine(this.ROLE_ASSISTANT, `${item.title}:\n${item.content}\n`);
-                    referencesInfo += `\n\n[${item.title}](${item.link}) `;
+                    if (item.content.length > 0) {
+                        this.pushLine(this.ROLE_ASSISTANT, `${item.title}:\n${item.content}\n`);
+                        referencesInfo += `\n\n[${item.title}](${item.link}) `;
+                    }
                 }
             }
         }
@@ -278,7 +283,7 @@ export default class ModelGemini {
                             console.log(`reply: ${replyMessage}`);
                             subquery.content = replyMessage;
                             subquery.references = referencesInfo;
-        
+
                         } else {
                             console.log(`external link undefiend`);
                             subquery.content = '';
@@ -292,8 +297,10 @@ export default class ModelGemini {
                 await injectPersonality(process.env.PERSONALITY, this);
                 this.pushPreModifcateInfo();
                 for (let subquery of subqueries) {
-                    this.prompt.messages.push([this.ROLE_USER, subquery.query]);
-                    this.prompt.messages.push([this.ROLE_ASSISTANT, subquery.content]);
+                    if (subquery.content !== undefined && subquery.content.length > 0) {
+                        this.prompt.messages.push([this.ROLE_USER, subquery.query]);
+                        this.prompt.messages.push([this.ROLE_ASSISTANT, subquery.content]);
+                    }
                 }
                 response.content = (await this.invoke(response.original_query)).content;
             }

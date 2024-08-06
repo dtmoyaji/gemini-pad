@@ -11,6 +11,12 @@ let searchDelay = 5000;
 let subwindow = undefined;
 
 async function searchDuckDuckGo(query, maxResults = 3, maxContentLength = 2048) {
+
+    // queryが200文字以上の場合、検索しない。
+    if (query.length > 200) {
+        return [];
+    }
+
     if(subwindow===undefined){
         subwindow = await new BrowserWindow({ show: true });
     }else{
