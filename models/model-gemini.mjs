@@ -132,10 +132,17 @@ export default class ModelGemini {
         // promptに事前情報を追加する。
         await this.pushPreModifcateInfo();
 
+        // 事前にLLMでargからキーワードを取得する。
+        let keywordsprompt = `精度の高いインデックス検索を目的とし、次の文書に関連するキーワードを推測し、カンマ区切りで最大10個を列挙してください。\n------\n${arg}}`;
+        let keywords = await this.invoke(keywordsprompt);
+        keywords = keywords.content.trim();
+
         // webの情報を取得する。
         let referencesInfo = "";
         if (process.env.USE_SEARCH_RESULT === 'true') {
-            let externalInfo = await getExternalInfo(arg, process.env.SEARCH_DOC_LIMIT, 4096);
+
+            //let externalInfo = await getExternalInfo(arg, process.env.SEARCH_DOC_LIMIT, 4096);
+            let externalInfo = await getExternalInfo(keywords, process.env.SEARCH_DOC_LIMIT, 4096);
             if (externalInfo !== undefined && externalInfo.length > 0) {
                 for (let item of externalInfo) {
                     if (item.content.length > 0) {
@@ -148,7 +155,7 @@ export default class ModelGemini {
 
         // 内部資料を取得する。
         if (process.env.USE_SOLR === 'true' || process.env.USE_ELASTICSEARCH === 'true') {
-            let searchResult = await LocalSearch.search(arg);
+            let searchResult = await LocalSearch.search(keywords);
             if (searchResult.references !== undefined) {
                 for (let item of searchResult.references) {
                     this.pushLine(this.ROLE_ASSISTANT, item[0]);
