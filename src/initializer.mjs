@@ -104,7 +104,7 @@ function initDirectories() {
     const appDir = fileUtils.getAppDir();
     // フォルダ階層を作成する。
     fileUtils.createDir(path.join(appUserDir, process.env.HISTORY_DIR === undefined ? 'talk_history' : process.env.HISTORY_DIR)); //ここに会話履歴を保存する。
-    fileUtils.createEmptyFile(path.join(appDir, 'temp/currentView.html'));
+    fileUtils.createEmptyFile(path.join(appDir, '../temp/currentView.html'));
 }
 
 /**

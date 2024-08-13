@@ -5,15 +5,16 @@ import i18n from 'i18n';
 import { marked } from 'marked';
 import path, { join } from 'path';
 import { fileURLToPath } from 'url';
+import packageInfo from '../package.json' with { type: "json" };
 import * as database from './database.mjs';
 import * as fileUtils from './fileUtils.mjs';
 import * as initializer from './initializer.mjs';
 import { createAiModel, injectPersonality } from './models/modelController.mjs';
-import packageInfo from './package.json' with { type: "json" };
 
 // __dirnameを設定する。
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const __projectRoot = path.resolve(__dirname, '..');
 
 const GEMINI_MODEL_FOR_TITLING = 'gemini-1.0-pro'
 
@@ -128,11 +129,12 @@ async function changePage(payload) {
             data: payload.data,
             locale: process.env.APPLICATION_LANG,
             dirname: __dirname.replace(/\\/g, '/'),
+            projectRoot: __projectRoot.replace(/\\/g, '/'),
             envParams: appEnv
         },
         {},
         function (err, str) {
-            const tempFile = join(fileUtils.getAppDir(), 'temp/currentView.html');
+            const tempFile = join(__projectRoot, 'temp/currentView.html');
             if (str === undefined) {
                 str = 'ページデータが生成できませんでした。';
             }
@@ -252,9 +254,9 @@ ipcMain.on('chat-message', async (event, arg) => {
 
 // マニュアルページを表示する。
 function showManual() {
-    let filename = join(__dirname, `README.${process.env.APPLICATION_LANG}.md`);
+    let filename = join(__projectRoot, `README.${process.env.APPLICATION_LANG}.md`);
     if (!fs.existsSync(filename)) {
-        filename = join(__dirname, 'README.md');
+        filename = join(__projectRoot, 'README.md');
     }
     console.log(filename);
     const readme = fs.readFileSync(filename, 'utf8');
@@ -325,9 +327,9 @@ ipcMain.on('markdown-to-html', async (event, arg) => {
 });
 
 ipcMain.on('manual-transfer', async (event, arg) => {
-    let filename = join(__dirname, `README.${process.env.APPLICATION_LANG}.md`);
+    let filename = join(__projectRoot, `README.${process.env.APPLICATION_LANG}.md`);
     if (!fs.existsSync(filename)) {
-        filename = join(__dirname, 'README.md');
+        filename = join(__projectRoot, 'README.md');
     }
     console.log(filename);
     const readme = fs.readFileSync(filename, 'utf8');

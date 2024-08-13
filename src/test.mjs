@@ -1,4 +1,4 @@
-import { ElasticDriver } from "./models/elasticDriver.mjs";
+import { ElasticDriver } from "models/elasticDriver.mjs";
 
 let elasticDriver = new ElasticDriver();
 
