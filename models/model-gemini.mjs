@@ -137,6 +137,9 @@ export default class ModelGemini {
         let keywords = await this.invoke(keywordsprompt);
         keywords = keywords.content.trim();
 
+        // promptのmessagesより、humanのメッセージを削除する。
+        this.prompt.messages = this.prompt.messages.filter((line) => line[0] !== this.ROLE_USER);
+
         // webの情報を取得する。
         let referencesInfo = "";
         if (process.env.USE_SEARCH_RESULT === 'true') {
