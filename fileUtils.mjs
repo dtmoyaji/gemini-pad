@@ -15,6 +15,10 @@ function getAppDir() {
     return appDir;
 }
 
+function getProjectDir() {
+    return getAppDir();
+}
+
 function createDir(path) {
     if (!fs.existsSync(path)) {
         fs.mkdirSync(path, { recursive: true });
@@ -73,6 +77,6 @@ function config() {
 
 export {
     config, createDir,
-    createEmptyFile, getAppDir, getAppUserDir, getEnvFilePath
+    createEmptyFile, getAppDir, getAppUserDir, getEnvFilePath, getProjectDir
 };
 

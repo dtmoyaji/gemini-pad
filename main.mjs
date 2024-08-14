@@ -5,18 +5,17 @@ import i18n from 'i18n';
 import { marked } from 'marked';
 import path, { join } from 'path';
 import { fileURLToPath } from 'url';
-import packageInfo from '../package.json' with { type: "json" };
 import * as database from './database.mjs';
 import * as fileUtils from './fileUtils.mjs';
 import * as initializer from './initializer.mjs';
 import { createAiModel, injectPersonality } from './models/modelController.mjs';
+import packageInfo from './package.json' with { type: "json" };
 
 // __dirnameを設定する。
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const __projectRoot = path.resolve(__dirname, '..');
 
-const GEMINI_MODEL_FOR_TITLING = 'gemini-1.0-pro'
+const GEMINI_MODEL_FOR_TITLING = 'gemini-1.5-flash'
 
 let appEnv = initializer.initEnv();
 
@@ -129,12 +128,12 @@ async function changePage(payload) {
             data: payload.data,
             locale: process.env.APPLICATION_LANG,
             dirname: __dirname.replace(/\\/g, '/'),
-            projectRoot: __projectRoot.replace(/\\/g, '/'),
+            projectRoot: fileUtils.getProjectDir().replace(/\\/g, '/'),
             envParams: appEnv
         },
         {},
         function (err, str) {
-            const tempFile = join(__projectRoot, 'temp/currentView.html');
+            const tempFile = join(fileUtils.getProjectDir(), 'temp/currentView.html');
             if (str === undefined) {
                 str = 'ページデータが生成できませんでした。';
             }
@@ -143,6 +142,7 @@ async function changePage(payload) {
                 stack = escapeHtml(stack);
                 str += join('\n---\n<pre>', stack, '</pre>');
             }
+            console.log(`Write ${tempFile}`);
             writeFileSync(tempFile, str, 'utf8');
             mainWindow.loadFile(tempFile);
         }
@@ -254,11 +254,11 @@ ipcMain.on('chat-message', async (event, arg) => {
 
 // マニュアルページを表示する。
 function showManual() {
-    let filename = join(__projectRoot, `README.${process.env.APPLICATION_LANG}.md`);
+    let filename = join(fileUtils.getProjectDir(), `README.${process.env.APPLICATION_LANG}.md`);
     if (!fs.existsSync(filename)) {
-        filename = join(__projectRoot, 'README.md');
+        filename = join(fileUtils.getProjectDir(), 'README.md');
     }
-    console.log(filename);
+    console.log(`showManual Reading: ${filename}`);
     const readme = fs.readFileSync(filename, 'utf8');
     let pageInfo = {
         page: 'index',
@@ -327,11 +327,11 @@ ipcMain.on('markdown-to-html', async (event, arg) => {
 });
 
 ipcMain.on('manual-transfer', async (event, arg) => {
-    let filename = join(__projectRoot, `README.${process.env.APPLICATION_LANG}.md`);
+    let filename = join(fileUtils.getProjectDir(), `README.${process.env.APPLICATION_LANG}.md`);
     if (!fs.existsSync(filename)) {
-        filename = join(__projectRoot, 'README.md');
+        filename = join(fileUtils.getProjectDir(), 'README.md');
     }
-    console.log(filename);
+    console.log(`manual-transfer Reading: ${filename}`);
     const readme = fs.readFileSync(filename, 'utf8');
     event.reply('manual-transfer-reply', readme);
 });

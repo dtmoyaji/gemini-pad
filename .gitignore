@@ -5,6 +5,7 @@ node_modules
 release-builds
 dist
 talk_history
+pnpm-lock.yaml
 package-lock.json
 yarn.lock
 test.bat
