@@ -333,6 +333,9 @@ ipcMain.on('manual-transfer', async (event, arg) => {
     }
     console.log(`manual-transfer Reading: ${filename}`);
     const readme = fs.readFileSync(filename, 'utf8');
+    console.log("----");
+    console.log(readme);
+    console.log("----");
     event.reply('manual-transfer-reply', readme);
 });
 

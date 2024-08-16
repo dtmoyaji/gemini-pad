@@ -1,7 +1,7 @@
 {
   "name": "gemini-pad",
   "productName": "Gemini Pad",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "Simple Gemini RAG chat",
   "main": "./main.mjs",
   "build": {
@@ -20,6 +20,14 @@
     "win": {
       "target": "nsis"
     },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
+      ],
+      "category": "Utility"
+    },
     "asar": true,
     "asarUnpack": [
       "assets/**/*",
@@ -29,6 +37,7 @@
       "views/**/*",
       "temp/README.md",
       "node_modules/@google/generative-ai/**/*",
+      "node_modules/monaco-editor/**/*",
       "splitPrompt.txt",
       "README.*md"
     ]
@@ -36,7 +45,7 @@
   "scripts": {
     "start": "electron .",
     "package": "node ./package.mjs",
-    "dist": "electron-builder --win",
+    "dist": "electron-builder",
     "test": "node ./test.mjs",
     "rebuild": "electron-rebuild"
   },
@@ -44,23 +53,24 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^31.3.1",
-    "electron-builder": "^24.13.3"
+    "electron-builder": "^24.13.3",
+    "electron-builder-squirrel-windows": "^24.13.3"
   },
   "dependencies": {
-    "7zip-bin": "^5.2.0",
     "@elastic/elasticsearch": "^8.15.0",
     "@electron/packager": "^18.3.3",
     "@google/generative-ai": "^0.17.0",
     "@langchain/community": "^0.2.27",
     "@langchain/google-genai": "^0.0.25",
     "@npmcli/fs": "^3.1.1",
+    "7zip-bin": "^5.2.0",
     "axios": "^1.7.3",
     "cheerio": "^1.0.0",
-    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "electron-i18n": "^1.3136.0",
     "esm": "^3.2.25",
+    "gemini-pad": "file:",
     "i18n": "^0.15.1",
     "marked": "^14.0.0",
     "mime": "^4.0.4",
@@ -85,6 +95,5 @@
     "semver": "^7.3.5",
     "glob": "^9.3.5"
   },
-  "peerDependencies": {},
   "repository": "https://github.com/dtmoyaji/gemini-pad.git"
 }
