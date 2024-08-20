@@ -1,6 +1,6 @@
-import crypto from 'crypto';
 import fs from 'fs';
 import fetch from 'node-fetch';
+import crypto from 'node:crypto';
 import path from 'path';
 import SolrNode from 'solr-node';
 import * as fileUtils from '../fileUtils.mjs';

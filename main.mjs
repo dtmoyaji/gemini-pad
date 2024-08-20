@@ -73,9 +73,9 @@ async function createWindow() {
     // Load your HTML file
     mainWindow = win;
     if (process.env.GEMINI_API_KEY === '' || process.env.GEMINI_API_KEY === undefined) {
-        changePage({ page: 'settings', title: 'Hello, World!', data: { env: process.env } });
+        await changePage({ page: 'settings', title: 'Hello, World!', data: { env: process.env } });
     } else {
-        showManual();
+        await showManual();
     }
     return win;
 }
@@ -162,14 +162,14 @@ function escapeHtml(unsafe) {
  * ページ遷移を受信した。
  */
 app.on('change-page', async (payload) => {
-    changePage(payload);
+    await changePage(payload);
 });
 
 /**
  * ページ遷移を受信した。
  */
 ipcMain.on('change-page', async (event, payload) => {
-    changePage(payload);
+    await changePage(payload);
 });
 
 /**
@@ -180,7 +180,7 @@ ipcMain.on('chat-message', async (event, arg) => {
     arg = arg.replace(/\n/g, '\\n');
 
     try {
-
+        
         event.reply('show-loading-reply', 'loading');
 
         // チャットメッセージを生成する。
@@ -190,11 +190,12 @@ ipcMain.on('chat-message', async (event, arg) => {
         } else {
             await injectPersonality(process.env.PERSONALITY, replyGetter);
         }
+
         let replyMessage = await replyGetter.invokeWebRAG(arg, event);
+        
         // \\nを改行コードに変換する。
         replyMessage = replyMessage.replace(/\\n/g, '\n');
         event.reply('chat-reply', replyMessage);
-
         event.reply('show-loading-reply', 'loaded');
 
         // タイトルを取得する。
@@ -214,7 +215,7 @@ ipcMain.on('chat-message', async (event, arg) => {
         // タイトルの先頭に日付をYYYYMMDD_として追加する。日付は0埋めする。
         let date = new Date();
         let dateStr = date.getFullYear() + ('00' + (date.getMonth() + 1)).slice(-2) + ('00' + date.getDate()).slice(-2) + '_';
-        queryTitle.content = dateStr + queryTitle.content;
+        queryTitle.content = dateStr + queryTitle.content.trim();
         event.reply('chat-title-reply', queryTitle.content);
         currentTitle = queryTitle.content;
 
@@ -248,12 +249,12 @@ ipcMain.on('chat-message', async (event, arg) => {
         } else {
             dialog.showErrorBox('エラー', error.message);
         }
-        showManual();
+        await showManual();
     }
 });
 
 // マニュアルページを表示する。
-function showManual() {
+async function showManual() {
     let filename = join(fileUtils.getProjectDir(), `README.${process.env.APPLICATION_LANG}.md`);
     if (!fs.existsSync(filename)) {
         filename = join(fileUtils.getProjectDir(), 'README.md');
@@ -268,7 +269,7 @@ function showManual() {
             manual: readme
         }
     }
-    changePage(pageInfo);
+    await changePage(pageInfo);
 }
 
 ipcMain.on('clip-response', async (event, arg) => {
@@ -333,6 +334,9 @@ ipcMain.on('manual-transfer', async (event, arg) => {
     }
     console.log(`manual-transfer Reading: ${filename}`);
     const readme = fs.readFileSync(filename, 'utf8');
+    console.log("----");
+    console.log(readme);
+    console.log("----");
     event.reply('manual-transfer-reply', readme);
 });
 
