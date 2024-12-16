@@ -132,8 +132,11 @@ export default class ModelGemini {
         // promptに事前情報を追加する。
         await this.pushPreModifcateInfo();
 
+        // キーワードの数を7から10の間で乱数で決定する。
+        let keywordCount = Math.floor(Math.random() * 4) + 7;
+
         // 事前にLLMでargからキーワードを取得する。
-        let keywordsprompt = `精度の高いインデックス検索を目的とし、次の文書に関連するキーワードを推測し、カンマ区切りで最大10個を列挙してください。\n------\n${arg}}`;
+        let keywordsprompt = `精度の高いインデックス検索を目的とし、次の文書に関連するキーワードを推測し、カンマ区切りで${keywordCount}個を列挙してください。\n------\n${arg}}`;
         let keywords = await this.invoke(keywordsprompt);
         keywords = keywords.content.trim();
 

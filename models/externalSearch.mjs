@@ -18,27 +18,32 @@ async function searchDuckDuckGo(query, maxResults = 3, maxContentLength = 2048) 
     }
 
     if(subwindow===undefined){
-        subwindow = await new BrowserWindow({ show: true });
-    }else{
-        subwindow.show();
+        subwindow = await new BrowserWindow({ show: false });
     }
+    //else{
+    //    subwindow.show();
+    //}
     const url = `https://duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
     await subwindow.loadURL(url);
     console.log(url);
     try {
-        let delayTime = searchDelay - (Date.now() - previousSearchTime);
-        if (delayTime > 0) {
-            console.log(`waiting ${delayTime}ms`);
-            await delay(delayTime);
-        }
+        //let delayTime = searchDelay - (Date.now() - previousSearchTime);
+        //if (delayTime > 0) {
+        //    console.log(`waiting ${delayTime}ms`);
+        //    await delay(delayTime);
+        //}
 
-        const response = await axios.get(url);
+        //let response = await axios.get(url);
+        let response = await subwindow.webContents.executeJavaScript('document.documentElement.outerHTML');
+        console.log(`response result: ${response.status}`);
+        let retry = 0;
         previousSearchTime = Date.now();
-
-        const $ = cheerio.load(response.data);
+        //const $ = cheerio.load(response.data);
+        const $ = cheerio.load(response);
         const results = [];
         const promises = [];
         $('.result__title').each((index, element) => {
+            let count = 0;
             if (index < maxResults) {
                 promises.push((async () => {
                     let pageTitle = $(element).text();
@@ -50,6 +55,8 @@ async function searchDuckDuckGo(query, maxResults = 3, maxContentLength = 2048) 
                     let url = $(element).find('a').attr('href');
                     url = decodeURIComponent(url.replace('//duckduckgo.com/l/?uddg=', ''));
                     url = url.split('&rut=')[0];
+                    count++;
+                    console.log(count);
                     results.push({
                         "role": "note",
                         "title": pageTitle,
