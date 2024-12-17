@@ -157,6 +157,7 @@ export default class ModelGemini {
                     }
                 }
             }
+            
         }
 
         // 内部資料を取得する。
