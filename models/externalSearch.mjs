@@ -129,9 +129,14 @@ async function searchGoogleCSE(query, maxResults = 3, maxContentLength = 2048) {
 }
 
 async function getPageContent(url, textLimit = 1536) {
+    let itemData = '';
     try {
-        let itemResponse = await axios.get(url);
-        let itemData = itemResponse.data;
+        let itemResponse = await axios.get(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+        });
+        itemData = itemResponse.data;
         const $ = cheerio.load(itemData);
         $('head').remove();
         $('script').remove();
@@ -146,10 +151,10 @@ async function getPageContent(url, textLimit = 1536) {
         itemData = itemData.replace(/\s+/g, ' ');
         // 先頭から2k文字までで切り取る。
         itemData = itemData.substring(0, textLimit);
-        return itemData;
     } catch (error) {
-        console.error(`GetPageContent Error: ${url}`);
+        console.error(`GetPageContent Error: ${url}\n${error.message}`);
     }
+    return itemData;
 }
 
 // 外部検索を設定を元に判別し実行する。
@@ -167,3 +172,4 @@ export {
     searchDuckDuckGo,
     searchGoogleCSE
 };
+
