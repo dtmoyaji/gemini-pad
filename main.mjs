@@ -70,6 +70,10 @@ async function createWindow() {
         return { action: "deny" };
     });
 
+    win.on('closed', () => {
+        mainWindow = null;
+    });
+
     // Load your HTML file
     mainWindow = win;
     if (process.env.GEMINI_API_KEY === '' || process.env.GEMINI_API_KEY === undefined) {
@@ -112,6 +116,13 @@ app.whenReady().then(async () => {
         }
     });
 });
+
+app.on('before-quit', () => {
+    // すべてのウィンドウを閉じる
+    BrowserWindow.getAllWindows().forEach(window => {
+      window.close();
+    });
+  });
 
 // Event listener for when all windows are closed
 app.on('window-all-closed', function () {
