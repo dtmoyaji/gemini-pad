@@ -10,3 +10,4 @@ package-lock.json
 yarn.lock
 test.bat
 temp/currentView.html
+.sync-exclude.lst
