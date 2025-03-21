@@ -2,7 +2,7 @@ import fs from 'fs';
 import fetch from 'node-fetch';
 import crypto from 'node:crypto';
 import path from 'path';
-import SolrNode from 'solr-node';
+import SolrClient from 'solr-client';
 import * as fileUtils from '../fileUtils.mjs';
 
 export class SolrDriver {
@@ -14,19 +14,63 @@ export class SolrDriver {
             core: process.env.SOLR_CORE,
             protocol: process.env.SOLR_PROTOCOL
         };
-        this.client = new SolrNode(this.solrConfig);
+        this.client = SolrClient.createClient({
+            host: this.solrConfig.host,
+            port: this.solrConfig.port,
+            core: this.solrConfig.core,
+            protocol: this.solrConfig.protocol
+        });
     }
 
     async isActive() {
         let url = `${this.solrConfig.protocol}://${this.solrConfig.host}:${this.solrConfig.port}/solr/${this.solrConfig.core}/admin/ping`;
         try {
-            let response = await fetch(url);
-            let json = await response.json();
-            return json.status === 'OK';
+            const response = await fetch(url);
+            if (response.ok) {
+                return true;
+            } else {
+                return false;
+            }
         } catch (error) {
-            console.log('error: solr is not active. skip getting solr data.');
+            console.error('Error checking Solr status:', error);
             return false;
         }
+    }
+
+    async addDocument(doc) {
+        return new Promise((resolve, reject) => {
+            this.client.add(doc, (err, obj) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(obj);
+                }
+            });
+        });
+    }
+
+    async deleteDocument(id) {
+        return new Promise((resolve, reject) => {
+            this.client.delete('id', id, (err, obj) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(obj);
+                }
+            });
+        });
+    }
+
+    async search(query) {
+        return new Promise((resolve, reject) => {
+            this.client.search(query, (err, obj) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(obj);
+                }
+            });
+        });
     }
 
     async syncDocuments(dir) {
