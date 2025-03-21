@@ -1,77 +1,78 @@
-<!-- 2024-06-13 -->
-**Gemini Pad**
+# Gemini Pad
 
-Esta aplicación utiliza modelos de IA proporcionados por Google a través de API.
-También es compatible con Ollama, teniendo en cuenta el funcionamiento de LLM local.
+## Versión
+1.2.1
 
-El modelo de diálogo predeterminado es gemini-1.5-flash, que está disponible de forma gratuita a partir de junio de 2024 (se puede cambiar).
+Esta aplicación utiliza modelos de IA proporcionados por Google a través de una API.  
+Además, es compatible con Ollama para operar LLMs locales.
 
-Puede cambiar entre los distintos modelos de gemini y Ollama sobrescribiendo el modelo especificado en el elemento GEMINI_API_KEY en la pantalla de configuración.
+Por defecto, el modelo de diálogo configurado es "gemini-1.5-flash", que está disponible de forma gratuita a partir de junio de 2024 (puede ser modificado).
+
+En la pantalla de configuración, puede cambiar el modelo especificado en el campo GEMINI_API_KEY para alternar entre los diferentes modelos de Gemini y Ollama.
 
 ## Configuración
 
-1. Obtenga una clave de API de Gemini.
-Puede obtener la clave de API de Gemini [aquí](https://aistudio.google.com/app/prompts/new_freeform).
-Necesitará una cuenta de Google, así que créela de antemano si no la tiene.
+1. Obtenga una clave API de Gemini.  
+   Puede obtener la clave API de Gemini [aquí](https://aistudio.google.com/app/prompts/new_freeform).  
+   Necesitará una cuenta de Google. Si no tiene una, cree una con anticipación.
+2. Inicie la aplicación. Si la clave API de Gemini no está registrada en la aplicación, se abrirá la pantalla de configuración. Registre la clave obtenida allí.  
+   Una vez registrada, seleccione "Reiniciar" en el menú "Archivo" para reiniciar la aplicación.
+3. El registro de la afiliación del usuario y el nombre del usuario no es obligatorio, pero es útil, por ejemplo, para generar textos de correo electrónico.
+4. Al especificar el idioma de visualización, se cambiará el idioma de la interfaz. Actualmente, se admiten inglés, japonés, francés, alemán y español.
 
-2. Inicie la aplicación. Si la clave de API de Gemini no está registrada en la aplicación, se abrirá la pantalla de configuración, así que registre la clave obtenida.
-Una vez registrado, seleccione Reiniciar en el menú Archivo y reinicie la aplicación.
+Al iniciar la aplicación por primera vez después de la instalación, se mostrará automáticamente la pantalla de configuración.  
+Si desea cambiar la configuración nuevamente, seleccione "Configuración" en el menú "Editar" para abrir la pantalla de configuración.
 
-3. El registro de la afiliación y el nombre de usuario no es obligatorio, pero es conveniente registrarse cuando se redacta el texto del correo electrónico, etc.
+## Cómo usar
 
-4. Si especifica el idioma de visualización, cambiará el idioma de visualización de la interfaz. Actualmente es compatible con inglés, japonés, francés, alemán y español.
+Ingrese una pregunta en el cuadro de texto en la parte inferior de la pantalla, y la respuesta se mostrará en la parte superior.
 
-## Cómo utilizar
+En el historial de comunicación en el lado derecho de la pantalla, se muestran los títulos de las conversaciones anteriores. Al hacer clic en un título, se mostrarán la pregunta y la respuesta en la pantalla.
 
-Si escribe una pregunta en el cuadro de texto en la parte inferior de la pantalla, la respuesta aparecerá en la parte superior.
+Si marca la casilla "Usar texto anterior", la respuesta de Gemini se incluirá en la pregunta.
 
-El historial de comunicaciones en el lado derecho de la pantalla muestra los títulos de las conversaciones anteriores. Al hacer clic en el título, la pregunta y la respuesta se muestran en la pantalla.
+Al hacer clic en el icono del portapapeles, el contenido HTML se copiará al portapapeles.
 
-Si marca Utilizar texto anterior, puede incluir la respuesta de Gemini en la pregunta.
+Al hacer clic en el icono de la web, puede alternar entre habilitar o deshabilitar la búsqueda web.
 
-Al hacer clic en el icono del portapapeles, se copia el contenido HTML en el portapapeles.
+### Sobre la búsqueda web
 
-Al hacer clic en el icono web, puede activar/desactivar la búsqueda web.
+De forma predeterminada, se utiliza DuckDuckGo para la búsqueda web.
 
-### Acerca de la búsqueda web
-
-Inicialmente, DuckDuckGo se utiliza para la búsqueda web.
-
-Si obtiene la clave de API de Google y la ID de Google CSE y las registra en la configuración, utilizará la búsqueda de Google. Sin embargo, deberá pagar los costos establecidos por Google.
+Si obtiene una clave API de Google y una ID de CSE de Google y las registra en la configuración, se utilizará la búsqueda de Google. Sin embargo, tenga en cuenta que esto puede incurrir en costos según las políticas de Google.
 
 ### Sobre la búsqueda de documentos internos
 
-Es compatible con la búsqueda de texto completo utilizando Elasticsearch.
-Además, se espera que se utilice Nextcloud como servidor de archivos, por lo que al utilizar el complemento de búsqueda de texto completo de Nextcloud y vincularlo con Elasticsearch, la experiencia de uso será muy buena.
+La aplicación admite la búsqueda de texto completo utilizando Elasticsearch.  
+Además, se supone que se utiliza Nextcloud como servidor de archivos, por lo que al usar el complemento "fulltextsearch" de Nextcloud y conectarlo con Elasticsearch, se mejora significativamente la experiencia del usuario.
 
-La visualización de enlaces de documentos internos abrirá la página correspondiente en Nextcloud, por lo que ajuste el valor del prefijo de URL para abrir la página adecuada.
+Los enlaces a documentos internos abren la página correspondiente en Nextcloud. Para abrir la página correcta, ajuste el valor del prefijo de URL según sea necesario.
 
-Por favor, consulta [aquí](https://github.com/dtmoyaji/gemini-pad/wiki/Setting-for-Nextcloud---Elasticsearch-(gemini%E2%80%90pad%E2%80%90filesrv)) un ejemplo de configuración de integración de Elasticsearch.
+Puede encontrar un ejemplo de configuración para la integración con Elasticsearch [aquí](https://github.com/dtmoyaji/gemini-pad/wiki/Setting-for-Nextcloud---Elasticsearch-\(gemini%E2%80%90pad%E2%80%90filesrv\)).
 
-#### Acerca de gemini-pad-filesrv
+#### Sobre gemini-pad-filesrv
 
-Para facilitar la preparación de un servidor de documentos para búsquedas locales, se ha creado el mecanismo llamado gemini-pad-filesrv, el cual se encuentra disponible en [este enlace](https://github.com/dtmoyaji/gemini-pad-filesrv).
-Es una secuencia de construcción de contenedores para nextcloud + fulltextsearch Plugin + elasticsearch.
-Por favor, utilícelo conjuntamente.
+Para proporcionar fácilmente un servidor de documentos local para la búsqueda, se ha preparado el sistema "gemini-pad-filesrv" [aquí](https://github.com/dtmoyaji/gemini-pad-filesrv).  
+Es una secuencia de construcción de contenedores para Nextcloud + complemento fulltextsearch + Elasticsearch.  
+Úselo junto con esta aplicación.
 
-### Operación de teclas
+### Operaciones de teclado
 
-Cuando ingresa texto, presione Shift + Enter para un salto de línea, Enter para enviar una pregunta y Shift + Delete para borrar el contenido de la pregunta.
-Alt activa/desactiva la reutilización de la respuesta anterior.
+Al ingresar texto, puede usar Shift + Enter para insertar un salto de línea, Enter para enviar la pregunta y Shift + Delete para borrar el contenido de la pregunta.  
+Con Alt, puede activar o desactivar la reutilización de la respuesta anterior.
 
-## Acerca del formato de respuesta
+## Sobre el formato de las respuestas
 
-A menos que se especifique lo contrario, las respuestas de Gemini se proporcionan en formato Markdown.
+Las respuestas de Gemini se proporcionan en formato Markdown de manera predeterminada, a menos que se especifique lo contrario.
 
-## Acerca de los parámetros del modelo
+## Sobre los parámetros del modelo
 
-Para obtener más información sobre los parámetros del modelo de Gemini, consulte [Acerca de los modelos generativos](https://ai.google.dev/gemini-api/docs/models/generative-models?hl=ja&_gl=1*1fu959e*_up*MQ..*_ga*MTgyNTQxNDY0NC4xNzE0MDIxNDY3*_ga_P1DBVKWT6V*MTcxNDAyMTQ2Ny4xLjAuMTcxNDAyMTg1NC4wLjAuMA..) en Google AI for Developers.
+Para obtener más detalles sobre los parámetros del modelo de Gemini, consulte la documentación sobre modelos generativos en [Google AI for Developers](https://ai.google.dev/gemini-api/docs/models/generative-models?hl=es&_gl=1*1fu959e*_up*MQ..*_ga*MTgyNTQxNDY0NC4xNzE0MDIxNDY3*_ga_P1DBVKWT6V*MTcxNDAyMTQ2Ny4xLjAuMTcxNDAyMTg1NC4wLjAuMA..).
 
-## Acerca de la personalidad
+## Sobre las personalidades
 
-En el elemento **Personalidad** de la pantalla de configuración, puede seleccionar entre las siguientes 3 personalidades. Al cambiar la configuración, cambiará la tendencia de respuesta y el tono de la conversación.
+En la pantalla de configuración, en el apartado **Personalidad**, puede elegir entre las siguientes tres personalidades. Cambiar esta configuración afectará el tono y la tendencia de las respuestas.
 
-* **default:** Personalidad de chatbot predeterminada.
-* **kansai:** Personalidad de un hombre de Kansai.
-* **rin:** Personalidad de una señorita.
-<!-- gemini-1.0-pro -->
+* **default:** Personalidad predeterminada del chatbot.
+* **kansai:** Personalidad de un hombre de la región de Kansai.
+* **rin:** Personalidad de una joven dama.

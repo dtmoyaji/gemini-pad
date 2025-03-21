@@ -1,81 +1,78 @@
-<!-- 2024-06-13 -->
 # Gemini Pad
 
-## version
-1.2.0
+## Version
+1.2.1
 
-This application uses AI models provided by Google via APIs.
-It also supports Ollama, considering the operation of local LLMs.
+This application utilizes AI models provided by Google via an API.  
+It also supports Ollama for operating local LLMs.
 
-The default dialog model is gemini-1.5-flash, which is available for free as of June 2024 (subject to change).
+By default, the dialogue model is set to "gemini-1.5-flash," which is available for free as of June 2024 (modifiable).
 
-You can switch between gemini and Ollama models by overwriting the model specified in the GEMINI_API_KEY field on the settings screen.
+In the settings screen, you can change the model specified in the GEMINI_API_KEY field to switch between various models of Gemini and Ollama.
 
 ## Setup
 
-1. Obtain a Gemini API key.
-   You can get a Gemini API key from [here](https://aistudio.google.com/app/prompts/new_freeform).
-   You will need a Google account, so please create one if you do not have one.
+1. Obtain a Gemini API key.  
+   You can get the Gemini API key [here](https://aistudio.google.com/app/prompts/new_freeform).  
+   A Google account is required. If you don't have one, please create one in advance.
+2. Launch the application. If the Gemini API key is not registered in the application, the settings screen will open. Register the obtained key there.  
+   Once registered, select "Restart" from the "File" menu to restart the application.
+3. Registering user affiliation and username is not mandatory, but it can be useful, for example, when generating email content.
+4. By specifying the display language, the interface language will change. Currently, English, Japanese, French, German, and Spanish are supported.
 
-2. Launch the app. If the Gemini API key is not registered in the app, the settings screen will open, so register the key you obtained.
-   Once registered, select Restart from the File menu and restart the app.
+When the application is launched for the first time after installation, the settings screen will automatically be displayed.  
+If you want to change the settings again, select "Settings" from the "Edit" menu to open the settings screen.
 
-3. Registering your affiliation and user name is not mandatory, but it is convenient when creating emails, etc.
+## How to Use
 
-4. If you specify the display language, the display language of the interface will change. Currently, English, Japanese, French, German, and Spanish are supported.
+Enter a question in the text box at the bottom of the screen, and the answer will be displayed at the top.
 
-## Usage
+In the communication history on the right side of the screen, the titles of past conversations are displayed. Clicking on a title will display the question and answer on the screen.
 
-Enter your question in the text box at the bottom of the screen, and the answer will be displayed at the top.
+If you check the "Use the above text" box, Gemini's response will be included in the question.
 
-The communication history on the right side of the screen displays the titles of past conversations. Click on a title to display the question and answer on the screen.
+Clicking the clipboard icon will copy the HTML content to the clipboard.
 
-If you check Use above text, you can include Gemini's answer in your question.
+Clicking the web icon toggles web search on or off.
 
-Click the clipboard icon to copy the HTML content to the clipboard.
+### About Web Search
 
-Click the web icon to toggle web search on/off.
+By default, DuckDuckGo is used for web searches.
 
-### About web search
+If you obtain a Google API Key and Google CSE ID and register them in the settings, Google Search will be used. However, please note that this may incur costs as per Google's policies.
 
-Initially, DackDackGo is used for web search.
+### About Internal Document Search
 
-If you obtain a Google API Key and Google CSE ID from Google and register them in the settings, Google search will be used. However, you will need to pay the fees set by Google.
+The application supports full-text search using Elasticsearch.  
+It is also designed to use Nextcloud as a file server. By using the Nextcloud "fulltextsearch" plugin and connecting it with Elasticsearch, the user experience will be significantly improved.
 
-### About Internal Data Search
+Links to internal documents open the corresponding page in Nextcloud. To open the correct page, adjust the value of the URL prefix as needed.
 
-We support full-text search using Elasticsearch.
-In addition, we assume the use of Nextcloud as a file server, so it would be very convenient to integrate Nextcloud with Elasticsearch using the fulltextsearch plugin.
-
-The link display for internal documents opens the corresponding page on Nextcloud, so please adjust the value of the URL prefix to open the desired page.
-
-Please refer to [here](https://github.com/dtmoyaji/gemini-pad/wiki/Setting-for-Nextcloud---Elasticsearch-(gemini%E2%80%90pad%E2%80%90filesrv)) for an example of Elasticsearch integration settings. 
-
+You can find an example configuration for Elasticsearch integration [here](https://github.com/dtmoyaji/gemini-pad/wiki/Setting-for-Nextcloud---Elasticsearch-\(gemini%E2%80%90pad%E2%80%90filesrv\)).
 
 #### About gemini-pad-filesrv
 
-To easily set up a document server for local search, we have prepared a mechanism called gemini-pad-filesrv, which can be found [here](https://github.com/dtmoyaji/gemini-pad-filesrv).
-It is a container build sequence for nextcloud + fulltextsearch Plugin + elasticsearch.
-Please use it together.
+To easily provide a local document server for search, the "gemini-pad-filesrv" system has been prepared [here](https://github.com/dtmoyaji/gemini-pad-filesrv).  
+It is a container build sequence for Nextcloud + fulltextsearch plugin + Elasticsearch.  
+Please use it together with this application.
 
-### Key operation
+### Keyboard Operations
 
-When entering text, press Shift + Enter to create a new line, Enter to send a question, and Shift + Delete to delete the question content.
-Press Alt to toggle reuse of the previous answer on/off.
+When entering text, use Shift + Enter to insert a line break, Enter to send the question, and Shift + Delete to clear the question content.  
+Use Alt to toggle the reuse of the previous response on or off.
 
-## About the answer format
+## About Response Format
 
-Answers from Gemini are in Markdown format unless otherwise specified.
+Responses from Gemini are provided in Markdown format by default unless otherwise specified.
 
-## About model parameters
+## About Model Parameters
 
-For details on Gemini's model parameters, see Google AI for Developers' [Generative Models](https://ai.google.dev/gemini-api/docs/models/generative-models?hl=ja&_gl=1*1fu959e*_up*MQ..*_ga*MTgyNTQxNDY0NC4xNzE0MDIxNDY3*_ga_P1DBVKWT6V*MTcxNDAyMTQ2Ny4xLjAuMTcxNDAyMTg1NC4wLjAuMA..) .
+For details on Gemini's model parameters, refer to the [Generative Models Documentation](https://ai.google.dev/gemini-api/docs/models/generative-models?hl=en&_gl=1*1fu959e*_up*MQ..*_ga*MTgyNTQxNDY0NC4xNzE0MDIxNDY3*_ga_P1DBVKWT6V*MTcxNDAyMTQ2Ny4xLjAuMTcxNDAyMTg1NC4wLjAuMA..) on Google AI for Developers.
 
-## About personality
+## About Personalities
 
-You can choose from the following three personalities in the **Personality** field on the settings screen. Changing the setting will change the tendency of the answer and the tone of the conversation.
+In the **Personality** section of the settings screen, you can choose from the following three personalities. Changing this setting will affect the tone and tendencies of the responses.
 
 * **default:** Default chatbot personality.
-* **kansai:** Personality of a male from Kansai.
+* **kansai:** Personality of a man from the Kansai region.
 * **rin:** Personality of a young lady.
-<!-- gemini-1.0-pro -->
