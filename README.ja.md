@@ -51,6 +51,11 @@ Elasticsearch を使用した全文検索に対応しています。
 
 Elasticsearch連携の設定例は [こちら](https://github.com/dtmoyaji/gemini-pad/wiki/Setting-for-Nextcloud---Elasticsearch-\(gemini%E2%80%90pad%E2%80%90filesrv\)) を参照してください。
 
+#### wordpressの記事投稿について
+
+Wordpressの設定 use wordpress post をtrueにし、それぞれパラメータを登録すると、ワードプレスAPIを使い記事を投稿できるようになります。
+なお、wordpressに投稿する際には、パーマリンクの設定をデフォルト以外の設定にしておく必要があります。また、wordpressのユーザー設定でapplication passwordを作成し、gemini-padの設定に記入してください。
+
 #### gemini-pad-filesrv について
 
 ローカル検索用のドキュメントサーバを簡単に用意できるようにするため、gemini-pad-filesrvという仕組みを [ここ](https://github.com/dtmoyaji/gemini-pad-filesrv) に用意しました。
