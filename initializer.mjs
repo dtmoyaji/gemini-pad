@@ -59,6 +59,12 @@ function getEnvParams() {
         { param_name: 'LABEL080', param_value: '', label: 'Deep RAG(Examin)' },
         { param_name: 'DEEP_RAG_MODE', param_value: 'false', label: 'use Deep RAG mode (gemma2 only)' },
         { param_name: 'DEEP_RAG_DEPTH', param_value: '1', label: 'Depth of RAG mode' },
+        { param_name: 'LABEL080', param_value: '', label: 'WordPress' },
+        { param_name: 'WORDPRESS', param_value: 'false', label: 'use wordpress post' },
+        { param_name: 'WORDPRESS_HOST', param_value: 'http://localhost', label: 'wordpress host url' },
+        { param_name: 'WORDPRESS_USER', param_value: 'wordpress_user', label: 'user name of wordpress' },
+        { param_name: 'WORDPRESS_PASSWORD', param_value: 'password', label: 'application password of wordpress' },
+        { param_name: 'WORDPRESS_POST_STATUS', param_value: 'draft', label: 'status of post' },
     ];
     return envParams;
 }
@@ -144,9 +150,6 @@ export {
     getEnvParams,
     initDatabase,
     initDirectories,
-    initEnv,
-    initMenus,
-    initializePersonality,
-    saveEnv
+    initEnv, initializePersonality, initMenus, saveEnv
 };
 

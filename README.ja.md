@@ -1,6 +1,7 @@
 # Gemini Pad
 
 ## version
+
 1.2.1
 
 このアプリケーションは、Google から提供されている AI モデルを API で利用しています。

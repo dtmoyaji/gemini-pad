@@ -275,7 +275,7 @@ div[component='historyPanel'] {
 
 .inline-input-field {
     display: inline-block;
-    width: 75%;
+    width: 70%;
     height: 100%;
     vertical-align: middle;
     padding: 0 0.5em;
@@ -324,6 +324,32 @@ div[component='historyPanel'] {
 
 .button-use-web[status="unselected"] {
     background-image: url('../assets/web_gray.png');
+}
+
+.button-send-wp {
+    display: inline-block;
+    width: 24px;
+    height: 100%;
+    font-size: 0.9em;
+    vertical-align: top;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    cursor: pointer;
+    border: none;
+    background-color: var(--background-default);
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+
+}
+
+.button-send-wp[status="selected"] {
+    background-image: url('../assets/wordpress.png');
+}
+
+.button-send-wp[status="unselected"] {
+    background-image: url('../assets/wordpress_gray.png');
 }
 
 

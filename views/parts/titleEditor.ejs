@@ -4,6 +4,7 @@
     <input type="text" class="inline-input-field" id="query-title" name="title" value="">
     <a class="button-navigator-clip" id="clip">CLIP</a>
     <a class="button-use-web" id="use-web" status="selected">SELECTED</a>
+    <a class="button-send-wp" id="send-wp" status="unselected">SELECTED</a>
   </div>
 </form>
 
@@ -34,10 +35,25 @@
     }
   });
 
+  // wordpress送信の有効無効を受信したとき
+  window.electron.receive('use-wordpress-reply', (status) => {
+    if (status === 'selected') {
+      document.getElementById('send-wp').setAttribute('status', 'selected');
+      document.getElementById('send-wp').innerText = 'SELECT';
+    } else {
+      document.getElementById('send-wp').setAttribute('status', 'unselected');
+      document.getElementById('send-wp').innerText = 'UNSELECT';
+    }
+  });
+
   window.electron.receive('open-mdfile-reply', (message) => {
     window.queryTitle.value = message.title;
   });
 
+  window.electron.receive('send-wordpress-reply', (message) => {
+    window.queryTitle.value = message.title;
+    alert('WordPressに送信しました');
+  });
 
   // クリップボタンクリック時の処理
   document.getElementById('clip').addEventListener('click', () => {
@@ -45,7 +61,7 @@
     window.electron.send('clip-response', null);
   });
 
-  // クリップボタンクリック時の処理
+  // ウェブボタンクリック時の処理
   document.getElementById('use-web').addEventListener('click', () => {
     const title = window.queryTitle.value;
     let status = document.getElementById('use-web').getAttribute('status');
@@ -59,5 +75,14 @@
       status = 'selected';
     }
     window.electron.send('use-web', status);
+  });
+
+  // wordpressボタンクリック時の処理
+  document.getElementById('send-wp').addEventListener('click', () => {
+    const title = window.queryTitle.value;
+    let status = document.getElementById('send-wp').getAttribute('status');
+    if (status === 'selected') {
+      window.electron.send('send-wordpress', null);
+    }
   });
 </script>

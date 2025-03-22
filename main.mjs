@@ -10,6 +10,7 @@ import * as fileUtils from './fileUtils.mjs';
 import * as initializer from './initializer.mjs';
 import { createAiModel, injectPersonality } from './models/modelController.mjs';
 import packageInfo from './package.json' with { type: "json" };
+import { WordPressAPI } from './wordpress-api.mjs';
 
 // __dirnameを設定する。
 const __filename = fileURLToPath(import.meta.url);
@@ -26,9 +27,18 @@ i18n.configure({
 });
 i18n.setLocale(process.env.APPLICATION_LANG);
 
+const wpApi = new WordPressAPI(
+    appEnv.find((entry) => entry.param_name === 'WORDPRESS_HOST').param_value,
+    appEnv.find((entry) => entry.param_name === 'WORDPRESS_USER').param_value,
+    appEnv.find((entry) => entry.param_name === 'WORDPRESS_PASSWORD').param_value
+);
+
 let mainWindow;
+let currentQuery = '';
 let currentMarkdown = '';
+let currentHtml = '';
 let currentTitle = '';
+let currentTags = '';
 
 // マークダウンをHTMLに変換する処理の拡張
 const renderer = new marked.Renderer();
@@ -114,6 +124,12 @@ app.whenReady().then(async () => {
         } else {
             mainWindow.webContents.send('use-web-reply', 'unselected');
         }
+        // wordpressの設定を送信する。
+        if (process.env.WORDPRESS === 'true') {
+            mainWindow.webContents.send('use-wordpress-reply', 'selected');
+        } else {
+            mainWindow.webContents.send('use-wordpress-reply', 'unselected');
+        }
     });
 });
 
@@ -189,7 +205,7 @@ ipcMain.on('change-page', async (event, payload) => {
 ipcMain.on('chat-message', async (event, arg) => {
     // argの改行コードを\\nに変換する。
     arg = arg.replace(/\n/g, '\\n');
-
+    currentQuery = arg;
     try {
         
         event.reply('show-loading-reply', 'loading');
@@ -234,15 +250,18 @@ ipcMain.on('chat-message', async (event, arg) => {
         console.log("キーワードを取得");
         let keywordGetter = await createAiModel(GEMINI_MODEL_FOR_TITLING);
         await injectPersonality(process.env.PERSONALITY, keywordGetter);
-        await keywordGetter.pushLine(keywordGetter.ROLE_USER, arg);
-        await keywordGetter.pushLine(keywordGetter.ROLE_ASSISTANT, replyMessage);
         let keywords = await keywordGetter.invoke(`
-            会話内容について、SEOに効果的なキーワードを考えてください。
+            ${arg}
+            ${replyMessage}
+            ---
+            この文章について、SEOに効果的なキーワードを5つ考えてください。
+            キーワードはカンマで区切ってください。
             ${i18n.__("Answer in")}
             `);
 
         // 会話履歴に追加する。
         database.putTalk(queryTitle.content, arg, replyMessage, keywords.content);
+        currentTags = keywords.content;
         let talkList = await database.getTalkList(process.env.HISTORY_LIMIT);
         event.reply('chat-history-reply', talkList);
 
@@ -283,6 +302,32 @@ async function showManual() {
     await changePage(pageInfo);
 }
 
+ipcMain.on('send-wordpress', async (event, arg) => {
+    // カテゴリーを取得する。
+    let replyGetter = await createAiModel(process.env.GEMINI_MODEL);
+    replyGetter.pushLine(replyGetter.ROLE_USER, currentQuery);
+    replyGetter.pushLine(replyGetter.ROLE_ASSISTANT, `タイトル:${currentTitle} 回答: ${currentMarkdown}`);
+    let category = await replyGetter.invoke(`
+        この内容に適切なカテゴリーを１つ生成してください。回答のみ返すこと。
+        ${i18n.__("Answer in")}
+    `);
+    // currentTagsからタグを生成する。
+    let tags = currentTags.split(',');
+
+    wpApi.createPost(
+        currentQuery,
+        currentHtml,
+        appEnv.find((entry) => entry.param_name === 'WORDPRESS_POST_STATUS').param_value,
+        category.content,
+        tags,
+        null
+    ).then((postId) => {
+        event.reply('send-wordpress-reply', postId);
+    }).catch((error) => {
+        event.reply('send-wordpress-reply', error);
+    });
+});
+
 ipcMain.on('clip-response', async (event, arg) => {
     event.reply('clip-response', arg);
 });
@@ -313,6 +358,8 @@ ipcMain.on('talk-history-clicked', async (event, arg) => {
     const talk = await database.getTalk(arg);
     currentTitle = talk.title;
     currentMarkdown = talk.answer;
+    currentQuery = talk.query;
+    currentTags = talk.keywords;
     event.reply('one-history-reply', talk);
 });
 
@@ -334,8 +381,8 @@ ipcMain.on('bookmark-garbage-clicked', async (event, id) => {
 
 ipcMain.on('markdown-to-html', async (event, arg) => {
     currentMarkdown = arg;
-    const html = marked(arg);
-    event.reply('markdown-to-html-reply', html);
+    currentHtml = marked(arg);
+    event.reply('markdown-to-html-reply', currentHtml);
 });
 
 ipcMain.on('manual-transfer', async (event, arg) => {

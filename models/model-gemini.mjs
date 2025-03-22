@@ -94,7 +94,7 @@ export default class ModelGemini {
     async pushPreModifcateInfo() {
         await this.pushLine(
             this.ROLE_ASSISTANT,
-            "ユーザーから特に指定がないときは、必ずmarkdown記法を使って回答してください。"
+            "ユーザーから特に指定がないときは、必ずmarkdown記法を使って回答してください。回答にはURLを含めないでください。"
         );
 
         // ユーザーの連絡先を追加する。
@@ -174,7 +174,7 @@ export default class ModelGemini {
         let outTokenCount = 0;
 
         console.log("回答を取得");
-        let argModified = `${arg}\n${i18n.__("Answer in")}`;
+        let argModified = `${arg}\n回答にURLを含めないでください。\n${i18n.__("Answer in")}`;
         let reply = await this.invoke(argModified);
         let replyMessage = reply.content;
         outTokenCount = reply.content.length / 4; // 推定値
