@@ -1,7 +1,8 @@
 # Gemini Pad
 
 ## Versión
-1.2.1
+1.2.2
+
 
 Esta aplicación utiliza modelos de IA proporcionados por Google a través de una API.  
 Además, es compatible con Ollama para operar LLMs locales.

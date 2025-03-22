@@ -1,7 +1,7 @@
 # Gemini Pad
 
 ## Version
-1.2.1
+1.2.2
 
 Diese Anwendung nutzt die von Google bereitgestellten KI-Modelle über eine API.
 Außerdem unterstützt sie Ollama für den Betrieb lokaler LLMs.
