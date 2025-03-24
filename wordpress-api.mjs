@@ -126,7 +126,7 @@ export class WordPressAPI {
                 ? await this.uploadMedia(featuredImagePath, 'featured-image.jpg')
                 : null;
 
-            title = `Q: ${title}`;
+            title = `${title}`;
             // 投稿データを構築。
             const postData = {
                 title,
