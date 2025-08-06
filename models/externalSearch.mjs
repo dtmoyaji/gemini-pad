@@ -18,11 +18,11 @@ async function searchDuckDuckGo(query, maxResults = 3, maxContentLength = 2048) 
     }
 
     if(subwindow===undefined){
-        subwindow = await new BrowserWindow({ show: false });
+        subwindow = await new BrowserWindow({ show: true});
+    }else{
+        subwindow.show();
     }
-    //else{
-    //    subwindow.show();
-    //}
+
     const url = `https://duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
     await subwindow.loadURL(url);
     console.log(url);
@@ -69,7 +69,7 @@ async function searchDuckDuckGo(query, maxResults = 3, maxContentLength = 2048) 
         await Promise.all(promises);
         // resultを逆順にする。
         results.reverse();
-        subwindow.hide();
+        //subwindow.hide();
         return results;
     } catch (error) {
         console.error(error);
