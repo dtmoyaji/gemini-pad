@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { BrowserWindow } from 'electron';
 import * as fileUtils from '../fileUtils.mjs';
+import { getBraveSearchInfo } from './braveSearch.mjs';
 
 fileUtils.config();
 
@@ -95,7 +96,7 @@ async function searchGoogleCSE(query, maxResults = 3, maxContentLength = 2048) {
         const response = await axios.get('https://www.googleapis.com/customsearch/v1', {
             params: {
                 key: process.env.GOOGLE_API_KEY,
-                cx: process.env.GOOGLE_CSE_ID,
+                cx: process.env.GOOGLE_SEARCH_ENGINE_ID,
                 q: keyworkds,
                 num: maxResults,
             }
@@ -112,7 +113,7 @@ async function searchGoogleCSE(query, maxResults = 3, maxContentLength = 2048) {
                             "role": "note",
                             "title": item.title,
                             "link": itemLink,
-                            "content": await getPageContent(itemLink, maxContentLengthF)
+                            "content": await getPageContent(itemLink, maxContentLength)
                         });
                     } catch (error) {
                         console.error(error); // エラーメッセージをログに出力
@@ -159,12 +160,14 @@ async function getPageContent(url, textLimit = 1536) {
 
 // 外部検索を設定を元に判別し実行する。
 async function getExternalInfo(query, maxResults = 3, maxContentLength = 2048) {
-    // 環境変数が設定されていない場合、DuckDuckGoを使用する。
-    if (process.env.GOOGLE_API_KEY === '' || process.env.GOOGLE_CSE_ID === '') {
-        return await searchDuckDuckGo(query, maxResults, maxContentLength);
-    } else {
+    // 優先順: Brave -> Google CSE -> DuckDuckGo
+    if (process.env.BRAVE_SEARCH_API_KEY !== undefined && process.env.BRAVE_SEARCH_API_KEY !== '') {
+        return await getBraveSearchInfo(query, maxResults, maxContentLength);
+    }
+    if (process.env.GOOGLE_API_KEY !== undefined && process.env.GOOGLE_API_KEY !== '' && process.env.GOOGLE_SEARCH_ENGINE_ID !== undefined && process.env.GOOGLE_SEARCH_ENGINE_ID !== '') {
         return await searchGoogleCSE(query, maxResults, maxContentLength);
     }
+    return await searchDuckDuckGo(query, maxResults, maxContentLength);
 }
 
 export {
