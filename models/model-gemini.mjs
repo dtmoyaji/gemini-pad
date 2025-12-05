@@ -30,7 +30,7 @@ export default class ModelGemini {
 
     inputTokenCount = 0;
 
-    constructor(modelName = "gemini-2.0-flash") {
+    constructor(modelName = "gemini-flash-latest") {
         this.prompt.model = new ChatGoogleGenerativeAI({
             modelName: modelName,
             apiKey: process.env.GEMINI_API_KEY,

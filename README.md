@@ -6,7 +6,7 @@
 This application utilizes AI models provided by Google via an API.  
 It also supports Ollama for operating local LLMs.
 
-By default, the dialogue model is set to "gemini-2.0-flash," which is available for free as of June 2024 (modifiable).
+By default, the dialogue model is set to "gemini-flash-latest" (modifiable).
 
 In the settings screen, you can change the model specified in the GEMINI_API_KEY field to switch between various models of Gemini and Ollama.
 
@@ -37,9 +37,9 @@ Clicking the web icon toggles web search on or off.
 
 ### About Web Search
 
-By default, DuckDuckGo is used for web searches.
+By default, DuckDuckGo is used for web searches, but DuckDuckGo support is deprecated and will be removed in a future release. We recommend using Brave Search (register your key in the application's settings under the "Brave Search API Key" field) or Google Search when available.
 
-If you obtain a Google API Key and Google CSE ID and register them in the settings, Google Search will be used. However, please note that this may incur costs as per Google's policies.
+If you obtain a Google API Key and Google CSE ID and register them in the settings, Google Search will be used; note that this may incur costs according to Google's policies.
 
 ### About Internal Document Search
 

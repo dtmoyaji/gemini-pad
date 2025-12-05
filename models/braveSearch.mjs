@@ -50,34 +50,53 @@ async function searchBrave(query, maxResults = 3, maxContentLength = 2048) {
         const endpoint = 'https://api.search.brave.com/res/v1/web/search';
         const headers = {
             'Accept': 'application/json',
-            // Brave の API は x-api-key ヘッダを推奨する場合があるためセットする
-            'x-api-key': process.env.BRAVE_SEARCH_API_KEY
+            'Accept-Encoding': 'gzip',
+            // Brave requires X-Subscription-Token header with the API key
+            'X-Subscription-Token': process.env.BRAVE_SEARCH_API_KEY
         };
 
         const params = {
             q: query,
-            limit: maxResults
+            count: maxResults
         };
 
         const response = await axios.get(endpoint, { params, headers });
 
-        if (!response.data || !response.data.results) {
+        if (!response.data) {
             return [];
         }
 
+        // Brave API returns results under different keys depending on plan:
+        // - web.results: array of web result objects (title, url, description)
+        // - results: some endpoints may return a flat results array
+        const data = response.data;
+        let rawResults = [];
+        if (data.web && Array.isArray(data.web.results) && data.web.results.length > 0) {
+            rawResults = data.web.results;
+        } else if (Array.isArray(data.results) && data.results.length > 0) {
+            rawResults = data.results;
+        } else if (data.mixed && data.web && Array.isArray(data.web.results) && data.web.results.length > 0) {
+            rawResults = data.web.results;
+        }
+
         const results = [];
-        for (let item of response.data.results.slice(0, maxResults)) {
+        for (let item of rawResults.slice(0, maxResults)) {
             try {
-                const title = item.title || item.snippet || '';
-                const link = item.url || item.link || item.canonical_url || '';
+                // Normalize fields across possible result formats
+                const title = (item.title || item.name || item.snippet || item.description || '').toString().trim();
+                let link = item.url || item.link || (item.meta_url && item.meta_url.scheme && item.meta_url.netloc ? `${item.meta_url.scheme}://${item.meta_url.netloc}${item.meta_url.path || ''}` : '');
+                const contentSnippet = (item.description || item.snippet || item.summary || '').toString();
+
+                const content = (contentSnippet.length > 0) ? contentSnippet : await getPageContent(link, maxContentLength);
+
                 results.push({
                     role: 'note',
-                    title: title.trim(),
+                    title: title,
                     link: link,
-                    content: await getPageContent(link, maxContentLength)
+                    content: content
                 });
             } catch (err) {
-                console.error('Error fetching item content', err.message);
+                console.error('Error processing Brave item', err && err.message ? err.message : err);
             }
         }
 
