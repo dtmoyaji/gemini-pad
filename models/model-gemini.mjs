@@ -30,7 +30,7 @@ export default class ModelGemini {
 
     inputTokenCount = 0;
 
-    constructor(modelName = "gemini-1.5-flash") {
+    constructor(modelName = "gemini-2.0-flash") {
         this.prompt.model = new ChatGoogleGenerativeAI({
             modelName: modelName,
             apiKey: process.env.GEMINI_API_KEY,
@@ -136,7 +136,7 @@ export default class ModelGemini {
         let keywordCount = Math.floor(Math.random() * 4) + 7;
 
         // 事前にLLMでargからキーワードを取得する。
-        let keywordsprompt = `精度の高いインデックス検索を目的とし、次の文書に関連するキーワードを推測し、カンマ区切りで${keywordCount}個を列挙してください。キーワードのみを出力すること。\n------\n${arg}}`;
+        let keywordsprompt = `次の文章の意図をくみ取って情報収集に必要なWeb検索のキーワードを推測し、カンマ区切りで${keywordCount}個を列挙してください。キーワードは重要な順に並べること。キーワードのみを出力すること。\n------\n${arg}}`;
         let keywords = await this.invoke(keywordsprompt);
         keywords = keywords.content.trim();
 
