@@ -50,13 +50,14 @@ async function searchBrave(query, maxResults = 3, maxContentLength = 2048) {
         const endpoint = 'https://api.search.brave.com/res/v1/web/search';
         const headers = {
             'Accept': 'application/json',
-            // Brave の API は x-api-key ヘッダを推奨する場合があるためセットする
-            'x-api-key': process.env.BRAVE_SEARCH_API_KEY
+            'Accept-Encoding': 'gzip',
+            // Brave requires X-Subscription-Token header with the API key
+            'X-Subscription-Token': process.env.BRAVE_SEARCH_API_KEY
         };
 
         const params = {
             q: query,
-            limit: maxResults
+            count: maxResults
         };
 
         const response = await axios.get(endpoint, { params, headers });
