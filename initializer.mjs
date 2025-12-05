@@ -21,7 +21,7 @@ function getEnvParams() {
         { param_name: 'PERSONALITY', param_value: 'default', label: 'Personality' },
         { param_name: 'APPLICATION_LANG', param_value: 'ja', label: 'Application Language' },
         { param_name: 'LABEL020', param_value: '', label: 'LLM Model' },
-        { param_name: 'GEMINI_MODEL', param_value: 'gemini-2.0-flash', label: 'LLM Model of gemini/ollama' },
+        { param_name: 'GEMINI_MODEL', param_value: 'gemini-flash-latest', label: 'LLM Model of gemini/ollama' },
         { param_name: 'LABEL025', param_value: '', label: 'Gemini API info' },
         { param_name: 'GEMINI_API_KEY', param_value: '', label: 'Gemini API Key' },
         { param_name: 'GEMINI_TEMPERATURE', param_value: '0.2', label: 'Gemini Temperature' },

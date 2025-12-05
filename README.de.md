@@ -6,7 +6,7 @@
 Diese Anwendung nutzt die von Google bereitgestellten KI-Modelle über eine API.
 Außerdem unterstützt sie Ollama für den Betrieb lokaler LLMs.
 
-Standardmäßig ist das Dialogmodell "gemini-2.0-flash", das ab Juni 2024 kostenlos verfügbar ist, voreingestellt (änderbar).
+Standardmäßig ist das Dialogmodell "gemini-flash-latest" (änderbar).
 
 Im Einstellungsmenü können Sie das Modell, das im Feld GEMINI_API_KEY angegeben ist, ändern, um zwischen den verschiedenen Modellen von Gemini und Ollama zu wechseln.
 
@@ -37,9 +37,9 @@ Mit einem Klick auf das Web-Symbol können Sie die Websuche aktivieren oder deak
 
 ### Über die Websuche
 
-Standardmäßig wird für die Websuche DuckDuckGo verwendet.
+Standardmäßig wird DuckDuckGo für die Websuche verwendet, aber die Unterstützung für DuckDuckGo ist veraltet und wird in einer zukünftigen Version entfernt. Wir empfehlen die Verwendung von Brave Search (registrieren Sie Ihren Schlüssel im Einstellungsbildschirm unter "Brave Search API Key") oder Google Search, falls verfügbar.
 
-Wenn Sie einen Google API-Schlüssel und eine Google CSE-ID erhalten und in den Einstellungen registrieren, wird die Google-Suche verwendet. Beachten Sie jedoch, dass hierfür Kosten gemäß den Google-Richtlinien anfallen können.
+Wenn Sie einen Google API-Schlüssel und eine Google CSE-ID erhalten und in den Einstellungen registrieren, wird die Google-Suche verwendet; beachten Sie jedoch, dass hierfür Kosten gemäß den Google-Richtlinien anfallen können.
 
 ### Interne Dokumentensuche
 

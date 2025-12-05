@@ -7,7 +7,7 @@
 このアプリケーションは、Google から提供されている AI モデルを API で利用しています。
 また、ローカルのLLMの運用を考慮してOllamaにも対応しております。
 
-規定値では対話モデルは2024年6月現在、無料で利用可能な gemini-2.0-flash が設定されています(変更可能)。
+規定値では対話モデルは、無料で利用可能な gemini-flash-latest が設定されています(変更可能)。
 
 設定画面よりGEMINI_API_KEYの項目に記載のモデルを書き換えることで、geminiおよびOllamaの各モデルを切り替えることが可能です。
 
@@ -38,9 +38,11 @@
 
 ### ウェブ検索について
 
-初期状態では、ウェブ検索にDackDackGoを用いるようにしています。
+初期状態では、DuckDuckGo を使用していますが、DuckDuckGo のサポートは廃止予定です。現在は Brave Search（設定画面の `Brave Search API Key` にキーを登録）や、Google Search の利用を推奨します。
 
 Googleより Google API Key と Google CSE ID を入手し、設定登録すると、Google検索を使用するようになります。ただし、Googleの定める費用を支払う必要があります。
+
+Brave Search API 対応: Brave のサーチ API 用のキーを入手し、設定画面の `Brave Search API Key` 項目に登録すると、キーが存在する場合は Brave Search が優先的にウェブ検索に使用されます。Brave の API はサブスクリプション用のトークンを必要とし、利用制限やポリシーがあります。詳細は Brave のドキュメントを参照してください。
 
 ### 内部資料検索について
 

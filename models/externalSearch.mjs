@@ -160,7 +160,7 @@ async function getPageContent(url, textLimit = 1536) {
 
 // 外部検索を設定を元に判別し実行する。
 async function getExternalInfo(query, maxResults = 3, maxContentLength = 2048) {
-    // 優先順: Brave -> Google CSE -> DuckDuckGo
+    // 優先順: Brave -> Google CSE -> (deprecated) DuckDuckGo
     if (process.env.BRAVE_SEARCH_API_KEY !== undefined && process.env.BRAVE_SEARCH_API_KEY !== '') {
         return await getBraveSearchInfo(query, maxResults, maxContentLength);
     }

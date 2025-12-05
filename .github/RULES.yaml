@@ -1,0 +1,18 @@
+code_generation:
+  forbidden_patterns:
+    - id: iife
+      title: "即時実行無名関数（IIFE）の生成禁止"
+      description: >
+        自動生成されるコードに即時実行無名関数（例: (function(){})(); ）を含めないこと。
+        可読性・テスト性・デバッグ性を優先するため。IIFE の代わりに名前付き関数やモジュール化、
+        明示的な初期化関数を使用すること。
+      rationale:
+        - "可読性の向上"
+        - "ユニットテストの容易化"
+        - "デバッガでのトレース性向上"
+      bad_examples:
+        - "(function(){ /* ... */ })();"
+        - "( () => { /* ... */ } )();"
+      good_examples:
+        - "function init(){ /* ... */ }\ninit();"
+        - "export function setup(){ /* ... */ }\nsetup();"
