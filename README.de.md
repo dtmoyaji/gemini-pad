@@ -1,12 +1,12 @@
 # Gemini Pad
 
 ## Version
-1.2.2
+1.2.3
 
 Diese Anwendung nutzt die von Google bereitgestellten KI-Modelle über eine API.
 Außerdem unterstützt sie Ollama für den Betrieb lokaler LLMs.
 
-Standardmäßig ist das Dialogmodell "gemini-1.5-flash", das ab Juni 2024 kostenlos verfügbar ist, voreingestellt (änderbar).
+Standardmäßig ist das Dialogmodell "gemini-2.0-flash", das ab Juni 2024 kostenlos verfügbar ist, voreingestellt (änderbar).
 
 Im Einstellungsmenü können Sie das Modell, das im Feld GEMINI_API_KEY angegeben ist, ändern, um zwischen den verschiedenen Modellen von Gemini und Ollama zu wechseln.
 

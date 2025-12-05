@@ -16,7 +16,7 @@ import { WordPressAPI } from './wordpress-api.mjs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const GEMINI_MODEL_FOR_TITLING = 'gemini-1.5-flash'
+const GEMINI_MODEL_FOR_TITLING = 'gemini-2.0-flash'
 
 let appEnv = initializer.initEnv();
 

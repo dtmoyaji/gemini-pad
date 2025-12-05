@@ -1,12 +1,12 @@
 # Gemini Pad
 
 ## Version
-1.2.2
+1.2.3
 
 Cette application utilise des modèles d'IA fournis par Google via une API.  
 Elle prend également en charge Ollama pour l'utilisation de LLM locaux.
 
-Par défaut, le modèle de dialogue configuré est "gemini-1.5-flash", disponible gratuitement à partir de juin 2024 (modifiable).
+Par défaut, le modèle de dialogue configuré est "gemini-2.0-flash", disponible gratuitement à partir de juin 2024 (modifiable).
 
 Dans l'écran de configuration, vous pouvez modifier le modèle spécifié dans le champ GEMINI_API_KEY pour basculer entre les différents modèles de Gemini et Ollama.
 
